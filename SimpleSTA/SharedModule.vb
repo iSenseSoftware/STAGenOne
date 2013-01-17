@@ -62,20 +62,5 @@ Public Module SharedModule
         End If
         Return input
     End Function
-    'Public Sub LogException(ByVal theException As Exception)
-    '    ' Generate a database record to log the exception
-    '    Try
-    '        Dim strQuery As String
-    '        strQuery = "INSERT INTO exception_logs (time, operator, message, stacktrace) VALUES (" & DateTime.Now() & ", '" & currentTestFile.OperatorID & "', '" & theException.Message & "', '" & theException.ToString & "')"
-    '        If (dataBuddy.Execute(strQuery)) Then
-    '            '
-    '        Else
-    '            Throw New Exception("Unable to log exception.  Oh the irony...")
-    '        End If
-    '    Catch ex As Exception
-    '        ' there is a chance of an infinite loop here.  Address in the future
-    '        LogException(ex)
-    '    End Try
 
-    'End Sub
 End Module

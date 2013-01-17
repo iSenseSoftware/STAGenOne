@@ -82,21 +82,7 @@
         End If
 
     End Sub
-    'Public Sub WriteToDatabase()
-    '    Try
-    '        Dim strQuery As String
-    '        strQuery = "INSERT INTO Sensors (batch, fixture_slot) VALUES (" & strBatch & ", " & strFixtureSlot & ")"
-    '        If (dataBuddy.Execute(strQuery)) Then
-    '            ''
-    '            databaseId = dataBuddy.LastID
-    '        Else
-    '            Throw New Exception("Unable to insert sensor data into database record")
-    '        End If
-    '    Catch ex As Exception
-    '        MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-    '    End Try
 
-    'End Sub
     ' The sensorFactory returns an instance of this object with the inputted properties set.  
     ' This cannot be done in the constructor because we will be serializing this object to xml
     ' for the test file and the Serializer requires a parameterless constructor

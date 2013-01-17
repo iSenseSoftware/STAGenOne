@@ -219,35 +219,7 @@ Public Class TestFile
             Return Nothing
         End Try
     End Function
-    'Public Sub WriteToDatabase()
-    '    ' Serializes the current instance to xml and records the file in the database
-    '    Try
-    '        Dim strQuery As String
-    '        ' create entry for this test
-    '        strQuery = "INSERT INTO tests (name, operator, date, raw_data) VALUES ('" & strTestName & "', '" & strOperator & "', " & dtTestStart & ", '" & serializeToString() & "')"
-    '        If (dataBuddy.Execute(strQuery)) Then
-    '            ''
-    '            databaseId = dataBuddy.LastID
-    '        Else
-    '            Throw New Exception("Unable to insert test data into database record")
-    '        End If
-    '        ' Create a record for each sensor tested in the Sensors table
-    '        ' NOTE: This should also check for existing records as sensors are all tested twice
-    '        For Each aSensor In arySensors
-    '            aSensor.WriteToDatabase()
-    '            ' create join table records to link sensor to the test
-    '            strQuery = "INSERT INTO sensors_tests (sensor_id, test_id) VALUES (" & aSensor.ID & ", " & ID & ")"
-    '            If (dataBuddy.Execute(strQuery)) Then
 
-    '            Else
-    '                Throw New Exception("Unable to insert test data into database record")
-    '            End If
-    '        Next
-    '    Catch ex As Exception
-    '        MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-    '    End Try
-
-    'End Sub
     Public Sub addSensor(ByVal newSensor As Sensor)
         If arySensors Is Nothing Then
             ReDim arySensors(0)

@@ -26,7 +26,6 @@ Partial Class frmMain
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.NewTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OpenTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CreateReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StartTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -50,7 +49,7 @@ Partial Class frmMain
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestToolStripMenuItem, Me.OpenTestToolStripMenuItem, Me.CreateReportToolStripMenuItem, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestToolStripMenuItem, Me.OpenTestToolStripMenuItem, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
@@ -58,25 +57,19 @@ Partial Class frmMain
         'NewTestToolStripMenuItem
         '
         Me.NewTestToolStripMenuItem.Name = "NewTestToolStripMenuItem"
-        Me.NewTestToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.NewTestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.NewTestToolStripMenuItem.Text = "New Test..."
         '
         'OpenTestToolStripMenuItem
         '
         Me.OpenTestToolStripMenuItem.Name = "OpenTestToolStripMenuItem"
-        Me.OpenTestToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.OpenTestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.OpenTestToolStripMenuItem.Text = "Open Test..."
-        '
-        'CreateReportToolStripMenuItem
-        '
-        Me.CreateReportToolStripMenuItem.Name = "CreateReportToolStripMenuItem"
-        Me.CreateReportToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
-        Me.CreateReportToolStripMenuItem.Text = "Create Report..."
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(155, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'TestToolStripMenuItem
@@ -89,19 +82,19 @@ Partial Class frmMain
         'StartTestToolStripMenuItem
         '
         Me.StartTestToolStripMenuItem.Name = "StartTestToolStripMenuItem"
-        Me.StartTestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.StartTestToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
         Me.StartTestToolStripMenuItem.Text = "Start Test"
         '
         'StopTestToolStripMenuItem
         '
         Me.StopTestToolStripMenuItem.Name = "StopTestToolStripMenuItem"
-        Me.StopTestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.StopTestToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
         Me.StopTestToolStripMenuItem.Text = "Stop Test"
         '
         'NoteInjectionToolStripMenuItem
         '
         Me.NoteInjectionToolStripMenuItem.Name = "NoteInjectionToolStripMenuItem"
-        Me.NoteInjectionToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.NoteInjectionToolStripMenuItem.Size = New System.Drawing.Size(149, 22)
         Me.NoteInjectionToolStripMenuItem.Text = "Note Injection"
         '
         'SettingsToolStripMenuItem
@@ -158,5 +151,4 @@ Partial Class frmMain
     Friend WithEvents EditConfigurationToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents CreateReportToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 End Class

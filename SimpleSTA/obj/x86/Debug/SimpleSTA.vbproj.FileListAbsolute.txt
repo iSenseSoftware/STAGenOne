@@ -1,0 +1,37 @@
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\bin\Debug\SimpleSTA.exe
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\bin\Debug\SimpleSTA.pdb
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\bin\Debug\SimpleSTA.xml
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.frmConfig.resources
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.Resources.resources
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.exe
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.xml
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.pdb
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.Main.resources
+C:\Users\etbmx.BHC-NA\AppData\Local\Temporary Projects\SimpleSTA\obj\x86\Debug\SimpleSTA.TestForm.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.InteropExtensionLib.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.IVIAPIInjector.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.IVIEVENTSERVERDLLLib.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.KCLHelperLib.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.KeithleyConfigLib.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.KeithleyConfigWiz.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.KESCPI.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\Interop.VBRUN.dll
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.vbproj.ResolveComReference.cache
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.exe
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.xml
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.pdb
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\ResolveAssemblyReference.cache
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.frmConfig.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.Resources.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\GenerateResource.read.1.tlog
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\GenerateResource.write.1.tlog
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\bin\Debug\SimpleSTA.exe
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\bin\Debug\SimpleSTA.pdb
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\bin\Debug\SimpleSTA.xml
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.frmMain.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.frmTestInfo.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.frmTestForm.resources
+\\huswivs0001.na.healthcare.cnb\users\etbmx\personal data\visual studio 2010\Projects\SimpleSTA\SimpleSTA\obj\x86\Debug\SimpleSTA.frmReportOptions.resources

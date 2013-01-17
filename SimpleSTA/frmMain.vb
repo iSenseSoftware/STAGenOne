@@ -26,8 +26,4 @@
         ' Set the testForm variable strOpenFileName to the file being opened
 
     End Sub
-
-    Private Sub CreateReportToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CreateReportToolStripMenuItem.Click
-        frmReportOptions.Show()
-    End Sub
 End Class

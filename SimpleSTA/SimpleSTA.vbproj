@@ -75,18 +75,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.vb" />
-    <Compile Include="CrudBuddy.vb" />
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportOptions.Designer.vb">
-      <DependentUpon>frmReportOptions.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportOptions.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTestInfo.Designer.vb">
@@ -117,7 +110,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Reading.vb" />
-    <Compile Include="ReportSensor.vb" />
     <Compile Include="Sensor.vb" />
     <Compile Include="SharedModule.vb" />
     <Compile Include="TestFile.vb" />
@@ -134,9 +126,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmReportOptions.resx">
-      <DependentUpon>frmReportOptions.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestInfo.resx">
       <DependentUpon>frmTestInfo.vb</DependentUpon>

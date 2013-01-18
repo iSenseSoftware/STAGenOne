@@ -33,7 +33,8 @@ Public Class frmTestForm
         Try
             If (boolIsTestRunning) Then
                 boolIsTestRunning = False
-                btnStartTest.Text = "Start"
+                btnStartTest.Text = "Test Complete"
+                btnStartTest.Enabled = False
             Else
                 boolIsTestRunning = True
                 btnStartTest.Text = "Stop"
@@ -393,10 +394,18 @@ Public Class frmTestForm
         End Try
     End Sub
 
-    Private Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+    Private Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomReset.Click
         Try
             TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
             TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+            TestChart.ChartAreas(0).AxisX.Maximum = 0
+            TestChart.ChartAreas(0).AxisX.Minimum = 0
+            TestChart.ChartAreas(0).AxisY.Maximum = 0
+            TestChart.ChartAreas(0).AxisY.Minimum = 0
+            txtXMax.Text = ""
+            txtYMax.Text = ""
+            txtXMin.Text = ""
+            txtYMin.Text = ""
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

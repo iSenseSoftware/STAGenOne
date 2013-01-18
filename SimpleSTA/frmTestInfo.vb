@@ -443,5 +443,50 @@
     Private Sub SaveFileDialog1_FileOK(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles SaveFileDialog1.FileOk
         txtTestFile.Text = SaveFileDialog1.FileName
     End Sub
+    Private Function ValidateForm() As Boolean
+        ' Check each field against its requirements and return true/false
+        Dim boolValidates As Boolean = True
 
+        ' Check save file field to insure it is non-empty and a valid file path
+        If Not (System.IO.File.Exists(txtTestFile.Text)) Then
+            boolValidates = False
+        End If
+
+        ' Check that operator initials are alpha-only and non-empty
+        Dim regexObj As New System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]*$")
+        If Not (regexObj.IsMatch(txtOperatorInitials.Text)) Then
+            boolValidates = False
+        End If
+
+        ' Check Test Name for non-empty
+        If (txtTestName.Text = "") Then
+            boolValidates = False
+        End If
+        ' Check Serials for non-empty
+        If (txtSourceSerial.Text = "") Then
+            boolValidates = False
+        End If
+        If (txtSwitchSerial.Text = "") Then
+            boolValidates = False
+        End If
+        If (txtCardOneSerial.Text = "") Then
+            boolValidates = False
+        End If
+        If (txtCard1Batch.Text = "") Then
+            boolValidates = False
+        End If
+        For Each aTab In Tabs.TabPages
+            If (aTab.Enabled) Then
+                ' check all fields for blankness
+                For Each aControl In aTab.Controls
+                    If (aControl.GetType() = GetType(System.Windows.Forms.TextBox) And aControl.Text = "") Then
+                        boolValidates = False
+                    End If
+                Next
+            End If
+        Next
+        ' Depending on the card configuration, check that the card serial field is non-null
+
+        Return boolValidates
+    End Function
 End Class

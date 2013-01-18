@@ -53,7 +53,6 @@ Public Class frmConfig
             txtNPLC.Text = config.NPLC
             txtAddress.Text = config.Address
             txtSTAID.Text = config.STAID
-            txtDumpDir.Text = config.DumpDir
             cmbCardConfig.SelectedValue = config.CardConfig
         Catch ex As Exception
             MsgBox("An exception occurred:" & Environment.NewLine & ex.Message)
@@ -74,7 +73,6 @@ Public Class frmConfig
                 config.NPLC = CLng(txtNPLC.Text)
                 config.Address = txtAddress.Text
                 config.STAID = txtSTAID.Text
-                config.DumpDir = txtDumpDir.Text
                 config.CardConfig = cmbCardConfig.SelectedValue
                 serializer.Serialize(writer, config)
                 writer.Close()
@@ -95,4 +93,28 @@ Public Class frmConfig
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
+    Private Function ValidateForm() As Boolean
+        ' Check each field against it's requirements and return true/false
+        Dim boolValidates As Boolean = True
+        ' Check record interval: integer non-null
+
+        ' Check Bias: double, non-null
+
+        ' Check Current Range: CURRENT_RANGE, non-null
+
+        ' Check filter type: FILTER_TYPE, non-null
+
+        ' Check samples: integer, non-null
+
+        ' Check NPLC: integer, non-null
+
+        ' Check address: non-null
+
+        ' STA ID: non-null
+
+        ' Card Configuration: CARD_CONFIGURATION, non-null
+
+        Return boolValidates
+    End Function
+
 End Class

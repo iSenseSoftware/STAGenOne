@@ -25,7 +25,6 @@ Partial Class frmConfig
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -43,8 +42,6 @@ Partial Class frmConfig
         Me.cmbCardConfig = New System.Windows.Forms.ComboBox()
         Me.btnSave = New System.Windows.Forms.Button()
         Me.btnCancel = New System.Windows.Forms.Button()
-        Me.txtDumpDir = New System.Windows.Forms.TextBox()
-        Me.btnChooseDumpDir = New System.Windows.Forms.Button()
         Me.cmbRange = New System.Windows.Forms.ComboBox()
         Me.SuspendLayout()
         '
@@ -72,21 +69,11 @@ Partial Class frmConfig
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(326, 176)
+        Me.Label3.Location = New System.Drawing.Point(326, 137)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(118, 16)
         Me.Label3.TabIndex = 2
         Me.Label3.Text = "Card Configuration"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(308, 134)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(136, 16)
-        Me.Label4.TabIndex = 3
-        Me.Label4.Text = "Data Dump Directory:"
         '
         'Label5
         '
@@ -164,7 +151,7 @@ Partial Class frmConfig
         Me.txtRecordInterval.Location = New System.Drawing.Point(155, 51)
         Me.txtRecordInterval.Name = "txtRecordInterval"
         Me.txtRecordInterval.Size = New System.Drawing.Size(59, 22)
-        Me.txtRecordInterval.TabIndex = 11
+        Me.txtRecordInterval.TabIndex = 0
         '
         'txtSTAID
         '
@@ -172,7 +159,7 @@ Partial Class frmConfig
         Me.txtSTAID.Location = New System.Drawing.Point(450, 92)
         Me.txtSTAID.Name = "txtSTAID"
         Me.txtSTAID.Size = New System.Drawing.Size(151, 22)
-        Me.txtSTAID.TabIndex = 14
+        Me.txtSTAID.TabIndex = 7
         '
         'txtAddress
         '
@@ -180,7 +167,7 @@ Partial Class frmConfig
         Me.txtAddress.Location = New System.Drawing.Point(450, 51)
         Me.txtAddress.Name = "txtAddress"
         Me.txtAddress.Size = New System.Drawing.Size(151, 22)
-        Me.txtAddress.TabIndex = 15
+        Me.txtAddress.TabIndex = 6
         '
         'txtNPLC
         '
@@ -188,7 +175,7 @@ Partial Class frmConfig
         Me.txtNPLC.Location = New System.Drawing.Point(155, 247)
         Me.txtNPLC.Name = "txtNPLC"
         Me.txtNPLC.Size = New System.Drawing.Size(59, 22)
-        Me.txtNPLC.TabIndex = 16
+        Me.txtNPLC.TabIndex = 5
         '
         'txtSamples
         '
@@ -196,7 +183,7 @@ Partial Class frmConfig
         Me.txtSamples.Location = New System.Drawing.Point(155, 210)
         Me.txtSamples.Name = "txtSamples"
         Me.txtSamples.Size = New System.Drawing.Size(59, 22)
-        Me.txtSamples.TabIndex = 17
+        Me.txtSamples.TabIndex = 4
         '
         'txtBias
         '
@@ -204,7 +191,7 @@ Partial Class frmConfig
         Me.txtBias.Location = New System.Drawing.Point(155, 92)
         Me.txtBias.Name = "txtBias"
         Me.txtBias.Size = New System.Drawing.Size(59, 22)
-        Me.txtBias.TabIndex = 20
+        Me.txtBias.TabIndex = 1
         '
         'cmbFilterType
         '
@@ -214,17 +201,17 @@ Partial Class frmConfig
         Me.cmbFilterType.Location = New System.Drawing.Point(155, 173)
         Me.cmbFilterType.Name = "cmbFilterType"
         Me.cmbFilterType.Size = New System.Drawing.Size(125, 24)
-        Me.cmbFilterType.TabIndex = 21
+        Me.cmbFilterType.TabIndex = 3
         '
         'cmbCardConfig
         '
         Me.cmbCardConfig.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbCardConfig.FormattingEnabled = True
         Me.cmbCardConfig.Items.AddRange(New Object() {"1 Card  (16 Sensors)", "2 Cards (32 Sensors)", "3 Cards (48 Sensors)", "4 Cards (64 Sensors)", "5 Cards (80 Sensors)", "6 Cards (96 Sensors)"})
-        Me.cmbCardConfig.Location = New System.Drawing.Point(450, 173)
+        Me.cmbCardConfig.Location = New System.Drawing.Point(450, 134)
         Me.cmbCardConfig.Name = "cmbCardConfig"
         Me.cmbCardConfig.Size = New System.Drawing.Size(151, 24)
-        Me.cmbCardConfig.TabIndex = 22
+        Me.cmbCardConfig.TabIndex = 8
         '
         'btnSave
         '
@@ -232,7 +219,7 @@ Partial Class frmConfig
         Me.btnSave.Location = New System.Drawing.Point(174, 303)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(117, 35)
-        Me.btnSave.TabIndex = 24
+        Me.btnSave.TabIndex = 9
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = True
         '
@@ -242,26 +229,9 @@ Partial Class frmConfig
         Me.btnCancel.Location = New System.Drawing.Point(311, 303)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(117, 35)
-        Me.btnCancel.TabIndex = 25
+        Me.btnCancel.TabIndex = 10
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'txtDumpDir
-        '
-        Me.txtDumpDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDumpDir.Location = New System.Drawing.Point(450, 131)
-        Me.txtDumpDir.Name = "txtDumpDir"
-        Me.txtDumpDir.Size = New System.Drawing.Size(151, 22)
-        Me.txtDumpDir.TabIndex = 28
-        '
-        'btnChooseDumpDir
-        '
-        Me.btnChooseDumpDir.Location = New System.Drawing.Point(607, 131)
-        Me.btnChooseDumpDir.Name = "btnChooseDumpDir"
-        Me.btnChooseDumpDir.Size = New System.Drawing.Size(25, 22)
-        Me.btnChooseDumpDir.TabIndex = 30
-        Me.btnChooseDumpDir.Text = "..."
-        Me.btnChooseDumpDir.UseVisualStyleBackColor = True
         '
         'cmbRange
         '
@@ -271,7 +241,7 @@ Partial Class frmConfig
         Me.cmbRange.Location = New System.Drawing.Point(155, 131)
         Me.cmbRange.Name = "cmbRange"
         Me.cmbRange.Size = New System.Drawing.Size(125, 24)
-        Me.cmbRange.TabIndex = 31
+        Me.cmbRange.TabIndex = 2
         '
         'frmConfig
         '
@@ -279,8 +249,6 @@ Partial Class frmConfig
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(645, 360)
         Me.Controls.Add(Me.cmbRange)
-        Me.Controls.Add(Me.btnChooseDumpDir)
-        Me.Controls.Add(Me.txtDumpDir)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.cmbCardConfig)
@@ -298,7 +266,6 @@ Partial Class frmConfig
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
@@ -311,7 +278,6 @@ Partial Class frmConfig
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents Label7 As System.Windows.Forms.Label
@@ -329,8 +295,6 @@ Partial Class frmConfig
     Friend WithEvents cmbCardConfig As System.Windows.Forms.ComboBox
     Friend WithEvents btnSave As System.Windows.Forms.Button
     Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents txtDumpDir As System.Windows.Forms.TextBox
-    Friend WithEvents btnChooseDumpDir As System.Windows.Forms.Button
     Friend WithEvents cmbRange As System.Windows.Forms.ComboBox
 
 End Class

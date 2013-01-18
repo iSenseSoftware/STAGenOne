@@ -70,29 +70,36 @@
     End Property
     ' Add a new reading to the aryReadings array
     Public Sub addReading(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double)
-        Dim aReading As Reading
-        aReading = Reading.readingFactory(time, current, potential)
-        If aryReadings Is Nothing Then
-            ReDim aryReadings(0)
-            aryReadings(0) = aReading
-        Else
-            Dim upper As Long = aryReadings.GetUpperBound(0)
-            ReDim Preserve aryReadings(upper + 1)
-            aryReadings(upper + 1) = aReading
-        End If
-
+        Try
+            Dim aReading As Reading
+            aReading = Reading.readingFactory(time, current, potential)
+            If aryReadings Is Nothing Then
+                ReDim aryReadings(0)
+                aryReadings(0) = aReading
+            Else
+                Dim upper As Long = aryReadings.GetUpperBound(0)
+                ReDim Preserve aryReadings(upper + 1)
+                aryReadings(upper + 1) = aReading
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     ' The sensorFactory returns an instance of this object with the inputted properties set.  
     ' This cannot be done in the constructor because we will be serializing this object to xml
     ' for the test file and the Serializer requires a parameterless constructor
     Public Shared Function sensorFactory(ByVal slot As Integer, ByVal column As Integer, ByVal batch As String, ByVal fixtureSlot As String)
-        Dim returnSensor As New Sensor
-        returnSensor.Slot = slot
-        returnSensor.Column = column
-        returnSensor.SensorID = batch & fixtureSlot
-        returnSensor.FixtureSlot = fixtureSlot
-        returnSensor.Batch = batch
-        Return returnSensor
+        Try
+            Dim returnSensor As New Sensor
+            returnSensor.Slot = slot
+            returnSensor.Column = column
+            returnSensor.SensorID = batch & fixtureSlot
+            returnSensor.FixtureSlot = fixtureSlot
+            returnSensor.Batch = batch
+            Return returnSensor
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Function
 End Class

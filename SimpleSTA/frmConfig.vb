@@ -5,41 +5,47 @@ Imports SimpleSTA.SharedModule
 Public Class frmConfig
     Dim errors As String()
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
-        saveConfiguration()
+        Try
+            saveConfiguration()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     Private Sub frmConfig_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Try
+            'populate comboboxes
+            Dim rangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
+            cmbRange.DataSource = rangeList
+            cmbRange.ValueMember = "Key"
+            cmbRange.DisplayMember = "Value"
 
-        'populate comboboxes
-        Dim rangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
-        rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
-        rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
-        rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
-        cmbRange.DataSource = rangeList
-        cmbRange.ValueMember = "Key"
-        cmbRange.DisplayMember = "Value"
+            Dim filterList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
+            filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Avg"))
+            filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
+            filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Avg"))
+            cmbFilterType.DataSource = filterList
+            cmbFilterType.ValueMember = "Key"
+            cmbFilterType.DisplayMember = "Value"
 
-        Dim filterList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
-        filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Avg"))
-        filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
-        filterList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Avg"))
-        cmbFilterType.DataSource = filterList
-        cmbFilterType.ValueMember = "Key"
-        cmbFilterType.DisplayMember = "Value"
+            Dim cardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
+            cmbCardConfig.DataSource = cardConfigList
+            cmbCardConfig.ValueMember = "Key"
+            cmbCardConfig.DisplayMember = "Value"
 
-        Dim cardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
-        cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
-        cmbCardConfig.DataSource = cardConfigList
-        cmbCardConfig.ValueMember = "Key"
-        cmbCardConfig.DisplayMember = "Value"
-
-        populateConfigurationForm()
-
+            populateConfigurationForm()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     Private Sub populateConfigurationForm()
@@ -55,13 +61,13 @@ Public Class frmConfig
             txtSTAID.Text = config.STAID
             cmbCardConfig.SelectedValue = config.CardConfig
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message)
+            GenericExceptionHandler(ex)
             Me.Close()
         End Try
     End Sub
     Private Sub saveConfiguration()
         Try
-            If (formValidates()) Then
+            If (ValidateForm()) Then
                 Dim serializer As New XmlSerializer(config.GetType)
                 MsgBox(My.Application.Info.DirectoryPath & configFileName)
                 Dim writer As New StreamWriter("C:\htdocs\Config.xml")
@@ -81,40 +87,39 @@ Public Class frmConfig
                 MsgBox(errors)
             End If
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
+            GenericExceptionHandler(ex)
             Me.Close()
         End Try
     End Sub
-    Private Function formValidates() As Boolean
-        ' Add validation functions here later
-        Return True
-    End Function
-
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
     Private Function ValidateForm() As Boolean
-        ' Check each field against it's requirements and return true/false
-        Dim boolValidates As Boolean = True
-        ' Check record interval: integer non-null
+        Try
+            ' Check each field against it's requirements and return true/false
+            Dim boolValidates As Boolean = True
+            ' Check record interval: integer non-null
 
-        ' Check Bias: double, non-null
+            ' Check Bias: double, non-null
 
-        ' Check Current Range: CURRENT_RANGE, non-null
+            ' Check Current Range: CURRENT_RANGE, non-null
 
-        ' Check filter type: FILTER_TYPE, non-null
+            ' Check filter type: FILTER_TYPE, non-null
 
-        ' Check samples: integer, non-null
+            ' Check samples: integer, non-null
 
-        ' Check NPLC: integer, non-null
+            ' Check NPLC: integer, non-null
 
-        ' Check address: non-null
+            ' Check address: non-null
 
-        ' STA ID: non-null
+            ' STA ID: non-null
 
-        ' Card Configuration: CARD_CONFIGURATION, non-null
-
-        Return boolValidates
+            ' Card Configuration: CARD_CONFIGURATION, non-null
+            Return boolValidates
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return False
+        End Try
     End Function
 
 End Class

@@ -26,16 +26,18 @@
             strTime = value
         End Set
     End Property
-
     ' The readingFactory returns an instance of this object with the inputted properties set.  
     ' This cannot be done in the constructor because we will be serializing this object to xml
     ' for the test file and the Serializer requires a parameterless constructor
     Public Shared Function readingFactory(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double)
-        Dim returnReading As New Reading
-        returnReading.Potential = potential
-        returnReading.Current = current
-        returnReading.Time = time
-        Return returnReading
+        Try
+            Dim returnReading As New Reading
+            returnReading.Potential = potential
+            returnReading.Current = current
+            returnReading.Time = time
+            Return returnReading
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Function
-
 End Class

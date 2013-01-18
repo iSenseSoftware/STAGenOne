@@ -30,69 +30,86 @@ Public Class frmTestForm
     Dim boolColorsSet As Boolean = False
 
     Private Sub btnStartTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStartTest.Click
-        If (boolIsTestRunning) Then
-            boolIsTestRunning = False
-            btnStartTest.Text = "Start"
-        Else
-            boolIsTestRunning = True
-            btnStartTest.Text = "Stop"
-            BackgroundWorker1.RunWorkerAsync()
-        End If
+        Try
+            If (boolIsTestRunning) Then
+                boolIsTestRunning = False
+                btnStartTest.Text = "Start"
+            Else
+                boolIsTestRunning = True
+                btnStartTest.Text = "Stop"
+                BackgroundWorker1.RunWorkerAsync()
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub TestForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
-        ' Close the instrument connection when exiting the test form
-        If (switchDriver.Initialized) Then
-            switchDriver.Close()
-        End If
+        Try
+            ' Close the instrument connection when exiting the test form
+            If (switchDriver.Initialized) Then
+                switchDriver.Close()
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Public Sub OpenFile(ByVal openFileName As String)
-        ' Set the testFile to the file to be opened
-        currentTestFile = TestFile.testFileFactory(openFileName)
-        ' If a test is still running, terminate it
-        boolIsTestRunning = False
-        ' Hide the Start/Stop buttons
-        btnStartTest.Hide()
-        btnNoteInjection.Hide()
-        prepareForm()
-        populateSeries()
+        Try
+            ' Set the testFile to the file to be opened
+            currentTestFile = TestFile.testFileFactory(openFileName)
+            ' If a test is still running, terminate it
+            boolIsTestRunning = False
+            ' Hide the Start/Stop buttons
+            btnStartTest.Hide()
+            btnNoteInjection.Hide()
+            prepareForm()
+            populateSeries()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub populateSeries()
-        For Each aSensor As Sensor In currentTestFile.Sensors
-            For Each aReading As Reading In aSensor.Readings
-                TestChart.Series(aSensor.SensorID).Points.AddXY(aReading.Time, aReading.Current)
+        Try
+            For Each aSensor As Sensor In currentTestFile.Sensors
+                For Each aReading As Reading In aSensor.Readings
+                    TestChart.Series(aSensor.SensorID).Points.AddXY(aReading.Time, aReading.Current)
+                Next
             Next
-        Next
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub prepareForm()
-        ' Clear the default or previous series and legends from the test chart
-        TestChart.Series.Clear()
-        TestChart.Legends.Clear()
-        ' Configure the test chart
-        With TestChart.ChartAreas(0)
-            .AxisY.Interval = 0
-            Dim aGrid As New Grid
-            aGrid.Interval = 0.5
-            .AxisY.MajorGrid = aGrid
-            Dim anotherGrid As New Grid
-            anotherGrid.Interval = 0.1
-            .AxisY.MinorGrid = anotherGrid
-            .CursorX.AutoScroll = False
-            .CursorY.AutoScroll = False
-            .CursorX.IsUserEnabled = True
-            .CursorY.IsUserEnabled = True
-            .CursorX.Interval = 0
-            .CursorY.Interval = 0
-            .AxisX.ScaleView.MinSize = 0
-            .AxisY.ScaleView.MinSize = 0
-            .AxisX.Title = "Elapsed Time (s)"
-            .AxisY.Title = "Current (nA)"
-            ' Setting IsMarginVisible to false increases the accuracy of deep zooming.  If this is true then zooms are padded
-            ' and do not show the actual area selected
-            .AxisX.IsMarginVisible = False
-            .AxisY.IsMarginVisible = False
-            .Name = "Main"
-        End With
-        ' Populate the chart series and legend
+        Try
+            ' Clear the default or previous series and legends from the test chart
+            TestChart.Series.Clear()
+            TestChart.Legends.Clear()
+            ' Configure the test chart
+            With TestChart.ChartAreas(0)
+                .AxisY.Interval = 0
+                Dim aGrid As New Grid
+                aGrid.Interval = 0.5
+                .AxisY.MajorGrid = aGrid
+                Dim anotherGrid As New Grid
+                anotherGrid.Interval = 0.1
+                .AxisY.MinorGrid = anotherGrid
+                .CursorX.AutoScroll = False
+                .CursorY.AutoScroll = False
+                .CursorX.IsUserEnabled = True
+                .CursorY.IsUserEnabled = True
+                .CursorX.Interval = 0
+                .CursorY.Interval = 0
+                .AxisX.ScaleView.MinSize = 0
+                .AxisY.ScaleView.MinSize = 0
+                .AxisX.Title = "Elapsed Time (s)"
+                .AxisY.Title = "Current (nA)"
+                ' Setting IsMarginVisible to false increases the accuracy of deep zooming.  If this is true then zooms are padded
+                ' and do not show the actual area selected
+                .AxisX.IsMarginVisible = False
+                .AxisY.IsMarginVisible = False
+                .Name = "Main"
+            End With
+            ' Populate the chart series and legend
             For Each aSensor As Sensor In currentTestFile.Sensors
                 TestChart.Series.Add(aSensor.SensorID)
                 With TestChart.Series(aSensor.SensorID)
@@ -100,25 +117,25 @@ Public Class frmTestForm
                     .BorderWidth = 2
                     ' other properties go here later
                 End With
-            TestChart.Legends.Add(aSensor.SensorID)
-            With TestChart.Legends(aSensor.SensorID)
-                .Title = aSensor.SensorID
-                .BorderColor = Color.Black
-                .BorderWidth = 2
-                .LegendStyle = LegendStyle.Column
-                .DockedToChartArea = "Main"
-                .IsDockedInsideChartArea = True
-            End With
-            Dim newBox As New CheckBox
-            With newBox
-                .Name = aSensor.SensorID
-                .Text = aSensor.SensorID
-                .Enabled = True
-                .Visible = True
-                .Checked = True
-                AddHandler newBox.Click, AddressOf UpdateTraces
-            End With
-            HideShowSensors.Controls.Add(newBox)
+                TestChart.Legends.Add(aSensor.SensorID)
+                With TestChart.Legends(aSensor.SensorID)
+                    .Title = aSensor.SensorID
+                    .BorderColor = Color.Black
+                    .BorderWidth = 2
+                    .LegendStyle = LegendStyle.Column
+                    .DockedToChartArea = "Main"
+                    .IsDockedInsideChartArea = True
+                End With
+                Dim newBox As New CheckBox
+                With newBox
+                    .Name = aSensor.SensorID
+                    .Text = aSensor.SensorID
+                    .Enabled = True
+                    .Visible = True
+                    .Checked = True
+                    AddHandler newBox.Click, AddressOf UpdateTraces
+                End With
+                HideShowSensors.Controls.Add(newBox)
             Next
             Dim showAllButton As New Button
             With showAllButton
@@ -138,6 +155,9 @@ Public Class frmTestForm
             HideShowSensors.Controls.Add(hideAllButton)
             AddHandler showAllButton.Click, AddressOf showAllButton_Click
             AddHandler hideAllButton.Click, AddressOf hideAllButton_Click
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
@@ -151,6 +171,13 @@ Public Class frmTestForm
             options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
             switchDriver.Initialize(config.Address, False, False, options)
             If (switchDriver.Initialized) Then
+                directIOWrapper("print(localnode.serialno)")
+                Dim serialNo As String
+                serialNo = switchDriver.System.DirectIO.ReadString()
+                currentTestFile.SwitchSerial = serialNo
+                'directIOWrapper("print(node[2].serialno)")
+                'serialNo = switchDriver.System.DirectIO.ReadString()
+                'currentTestFile.SourceMeterSerial = serialNo
                 prepareForm()
             Else
                 Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
@@ -161,9 +188,7 @@ Public Class frmTestForm
             ' Clear the source meter display and update the user
             directIOWrapper("node[2].display.clear()")
             directIOWrapper("node[2].display.settext('Ready to test')")
-            'Else
-            
-            'End If
+
         Catch ex As COMException
             MsgBox(ex.ErrorCode & " " & ex.ToString)
             Dim errMessage As String = ""
@@ -171,11 +196,9 @@ Public Class frmTestForm
             MsgBox(errMessage)
             Me.Close()
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message)
-            Debug.Print(ex.ToString)
+            GenericExceptionHandler(ex)
             Me.Close()
         End Try
-
     End Sub
     ' BackgroundWorker1 is the thread responsible for the instrument control loop.
     ' This runs in the background so that the test chart can be updated and the user can continue to make inputs while
@@ -184,7 +207,6 @@ Public Class frmTestForm
     ' @TODO: If decreasing the measurement interval becomes a priority, several threads can be run in parallel
     '        to distribute the measurement work among several SMU/DMMs
     Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
-
         Try
             ' Start with all intersections open
             switchDriver.Channel.OpenAll()
@@ -292,7 +314,6 @@ Public Class frmTestForm
                     currentCurrent = current * 10 ^ 9
                     ' Report progress so the chart can be updated
                     BackgroundWorker1.ReportProgress(0)
-                    Debug.Print(timer.ElapsedMilliseconds)
                 Next
                 BackgroundWorker1.ReportProgress(10)
                 Do Until timer.ElapsedMilliseconds >= interval * 1000
@@ -307,36 +328,57 @@ Public Class frmTestForm
             Dim errMessage As String = ""
             switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
             MsgBox(errMessage)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
         End Try
     End Sub
     ' This function is triggered by backgroundworker1.  Because it runs in the main thread we can use it to update the chart object
     Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged 
-        If (e.ProgressPercentage = 10) Then
-            TestChart.Update()
-            currentTestFile.writeToFile()
-            Debug.Print(currentTestFile.ID)
-        Else
-            TestChart.Series(currentID).Points.AddXY(currentTime / 1000, currentCurrent)
-        End If
+        Try
+            If (e.ProgressPercentage = 10) Then
+                TestChart.Update()
+                currentTestFile.writeToFile()
+            Else
+                TestChart.Series(currentID).Points.AddXY(currentTime / 1000, currentCurrent)
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     Private Sub btnNoteInjection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNoteInjection.Click
         ' Add the current time to the test file injections array
-        Dim timestamp As DateTime = DateTime.Now()
-        currentTestFile.addInjection(timestamp)
-        MsgBox("Injection noted at " & timestamp, vbOKOnly)
+        Try
+            Dim timestamp As DateTime = DateTime.Now()
+            currentTestFile.addInjection(timestamp)
+            MsgBox("Injection noted at " & timestamp, vbOKOnly)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     
     ' This method requires the series names to be the same as their legend entries
     Private Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
         ' Call hit test method
-        Dim result As HitTestResult = TestChart.HitTest(e.x, e.y)
-        If result.ChartElementType <> ChartElementType.DataPoint Then
-            If (result.ChartElementType <> ChartElementType.LegendItem) Then
-                Return
+        Try
+            Dim result As HitTestResult = TestChart.HitTest(e.X, e.Y)
+            If result.ChartElementType <> ChartElementType.DataPoint Then
+                If (result.ChartElementType <> ChartElementType.LegendItem) Then
+                    Return
+                Else
+                    Dim seriesName As String = result.Object.Name
+                    For Each aSeries As Series In TestChart.Series
+                        aSeries.BorderWidth = 2
+                    Next
+                    For Each aLegend As Legend In TestChart.Legends
+                        aLegend.BorderWidth = 2
+                    Next
+                    TestChart.Legends(seriesName).BorderWidth = 6
+                    TestChart.Series(seriesName).BorderWidth = 6
+                End If
             Else
-                Dim seriesName As String = result.Object.Name
+                Dim seriesName As String = result.Series.Name
                 For Each aSeries As Series In TestChart.Series
                     aSeries.BorderWidth = 2
                 Next
@@ -346,101 +388,127 @@ Public Class frmTestForm
                 TestChart.Legends(seriesName).BorderWidth = 6
                 TestChart.Series(seriesName).BorderWidth = 6
             End If
-
-        Else
-            Dim seriesName As String = result.Series.Name
-            For Each aSeries As Series In TestChart.Series
-                aSeries.BorderWidth = 2
-            Next
-            For Each aLegend As Legend In TestChart.Legends
-                aLegend.BorderWidth = 2
-            Next
-            TestChart.Legends(seriesName).BorderWidth = 6
-            TestChart.Series(seriesName).BorderWidth = 6
-        End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
-    Private Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomReset.Click
-        TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
-        TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+    Private Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Try
+            TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
+            TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     Private Sub chkZoomEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkZoomEnabled.CheckedChanged
-        If (chkZoomEnabled.Checked) Then
-            With TestChart.ChartAreas(0)
-                .AxisX.ScaleView.Zoomable = True
-                .AxisY.ScaleView.Zoomable = True
-                .CursorY.IsUserSelectionEnabled = True
-                .CursorX.IsUserSelectionEnabled = True
-            End With
-            
-        Else
-            With TestChart.ChartAreas(0)
-                .AxisX.ScaleView.Zoomable = False
-                .AxisY.ScaleView.Zoomable = False
-                .CursorY.IsUserSelectionEnabled = False
-                .CursorX.IsUserSelectionEnabled = False
-            End With
-        End If
+        Try
+            If (chkZoomEnabled.Checked) Then
+                With TestChart.ChartAreas(0)
+                    .AxisX.ScaleView.Zoomable = True
+                    .AxisY.ScaleView.Zoomable = True
+                    .CursorY.IsUserSelectionEnabled = True
+                    .CursorX.IsUserSelectionEnabled = True
+                End With
+
+            Else
+                With TestChart.ChartAreas(0)
+                    .AxisX.ScaleView.Zoomable = False
+                    .AxisY.ScaleView.Zoomable = False
+                    .CursorY.IsUserSelectionEnabled = False
+                    .CursorX.IsUserSelectionEnabled = False
+                End With
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+
     End Sub
 
     Private Sub chkScrollEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrollEnabled.CheckedChanged
-        If (chkZoomEnabled.Checked) Then
-            With TestChart.ChartAreas(0)
-                .CursorX.AutoScroll = True
-                .CursorY.AutoScroll = True
-            End With
-        Else
-            With TestChart.ChartAreas(0)
-                .CursorX.AutoScroll = False
-                .CursorY.AutoScroll = False
-            End With
-        End If
+        Try
+            If (chkZoomEnabled.Checked) Then
+                With TestChart.ChartAreas(0)
+                    .CursorX.AutoScroll = True
+                    .CursorY.AutoScroll = True
+                End With
+            Else
+                With TestChart.ChartAreas(0)
+                    .CursorX.AutoScroll = False
+                    .CursorY.AutoScroll = False
+                End With
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+
     End Sub
 
     Private Sub btnZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomOut.Click
-        TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset()
-        TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset()
+        Try
+            TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset()
+            TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
-        If Not (txtXMax.Text = "") Then
-            TestChart.ChartAreas(0).AxisX.Maximum = txtXMax.Text
-        Else
-            TestChart.ChartAreas(0).AxisX.Maximum = Double.NaN
-        End If
-        If Not (txtYMax.Text = "") Then
-            TestChart.ChartAreas(0).AxisY.Maximum = txtYMax.Text
-        End If
-        If Not (txtXMin.Text = "") Then
-            TestChart.ChartAreas(0).AxisX.Minimum = txtXMin.Text
-        End If
-        If Not (txtYMin.Text = "") Then
-            TestChart.ChartAreas(0).AxisY.Minimum = txtYMin.Text
-        End If
-        TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
-        TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+        Try
+            If Not (txtXMax.Text = "") Then
+                TestChart.ChartAreas(0).AxisX.Maximum = txtXMax.Text
+            Else
+                TestChart.ChartAreas(0).AxisX.Maximum = Double.NaN
+            End If
+            If Not (txtYMax.Text = "") Then
+                TestChart.ChartAreas(0).AxisY.Maximum = txtYMax.Text
+            End If
+            If Not (txtXMin.Text = "") Then
+                TestChart.ChartAreas(0).AxisX.Minimum = txtXMin.Text
+            End If
+            If Not (txtYMin.Text = "") Then
+                TestChart.ChartAreas(0).AxisY.Minimum = txtYMin.Text
+            End If
+            TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
+            TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+
     End Sub
     Private Sub UpdateTraces(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        If (sender.Checked) Then
-            TestChart.Series(sender.name).Enabled = True
-            TestChart.Series(sender.name).IsVisibleInLegend = True
-        Else
-            TestChart.Series(sender.name).Enabled = False
-            TestChart.Series(sender.name).IsVisibleInLegend = False
-        End If
+        Try
+            If (sender.Checked) Then
+                TestChart.Series(sender.name).Enabled = True
+                TestChart.Series(sender.name).IsVisibleInLegend = True
+            Else
+                TestChart.Series(sender.name).Enabled = False
+                TestChart.Series(sender.name).IsVisibleInLegend = False
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub showAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        For Each aSeries In TestChart.Series
-            aSeries.Enabled = True
-            aSeries.IsVisibleInLegend = True
-        Next
+        Try
+            For Each aSeries In TestChart.Series
+                aSeries.Enabled = True
+                aSeries.IsVisibleInLegend = True
+            Next
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub hideAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        For Each aSeries In TestChart.Series
-            aSeries.Enabled = False
-            aSeries.IsVisibleInLegend = False
-        Next
+        Try
+            For Each aSeries In TestChart.Series
+                aSeries.Enabled = False
+                aSeries.IsVisibleInLegend = False
+            Next
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 
 End Class

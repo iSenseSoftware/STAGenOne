@@ -203,23 +203,6 @@ Public Class TestFile
             MsgBox("Unable to dump test data to file")
         End Try
     End Sub
-    Public Function serializeToString() As String
-        ' Serializes the current instance to an xml string for writing to the database
-        Try
-            Dim serializer As New XmlSerializer(Me.GetType)
-            Dim writer As New StringWriter()
-            Dim strReturn As String
-            serializer.Serialize(writer, Me)
-            strReturn = writer.ToString
-            writer.Close()
-            Return strReturn
-        Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-            MsgBox("Unable to generate xml string")
-            Return Nothing
-        End Try
-    End Function
-
     Public Sub addSensor(ByVal newSensor As Sensor)
         If arySensors Is Nothing Then
             ReDim arySensors(0)

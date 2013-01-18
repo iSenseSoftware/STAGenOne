@@ -38,29 +38,43 @@ Public Module SharedModule
             config = serializer.Deserialize(reader)
             reader.Close()
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
+            GenericExceptionHandler(ex)
         End Try
     End Sub
-    ' As the name suggests, this is simply a wrapper for the .System.DirectIO.WriteString method of the Ke37xx driver.
+    ' As the name suggests, this is simply a wrapper for the System.DirectIO.WriteString method of the Ke37xx driver.
     Public Sub directIOWrapper(ByVal command As String)
-        switchDriver.System.DirectIO.WriteString(command)
+        Try
+            switchDriver.System.DirectIO.WriteString(command)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Public Sub Delay(ByVal milliseconds As Long)
-        Dim watch As New Stopwatch
-        watch.Start()
-        Do
+        Try
+            Dim watch As New Stopwatch
+            watch.Start()
+            Do
 
-        Loop Until watch.ElapsedMilliseconds >= milliseconds
-        watch.Stop()
+            Loop Until watch.ElapsedMilliseconds >= milliseconds
+            watch.Stop()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     ' Utility function to pad channel strings with leading zeroes
     Public Function strPad(ByVal input As String, ByVal padTo As Integer) As String
-        If (input.Length < padTo) Then
-            Do While (input.Length < padTo)
-                input = "0" & input
-            Loop
-        End If
-        Return input
+        Try
+            If (input.Length < padTo) Then
+                Do While (input.Length < padTo)
+                    input = "0" & input
+                Loop
+            End If
+            Return input
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Function
-
+    Public Sub GenericExceptionHandler(ByVal theException As Exception)
+        MsgBox(theException.Message & Environment.NewLine & theException.ToString)
+    End Sub
 End Module

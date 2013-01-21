@@ -13,7 +13,7 @@
 
     Private Sub EditConfigurationToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditConfigurationToolStripMenuItem.Click
         Try
-            frmTestInfo.Show()
+            frmConfig.Show()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -34,6 +34,6 @@
     End Sub
 
     Private Sub TestToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TestToolStripMenuItem1.Click
-        Form1.Show()
+
     End Sub
 End Class

@@ -10,6 +10,7 @@ Public Module SharedModule
     Public config As New Configuration
     Public currentTestFile As New TestFile
     Public switchDriver As New Ke37XX
+    Public appDir As String
     ' Declare Enums for configuration settings
     Public Enum CurrentRange
         one_uA = 0
@@ -34,9 +35,19 @@ Public Module SharedModule
     Public Sub loadConfiguration()
         Try
             Dim serializer As New XmlSerializer(config.GetType)
-            Dim reader As New StreamReader("C:\htdocs\Config.xml")
+            Dim reader As New StreamReader(appDir & configFileName)
             config = serializer.Deserialize(reader)
             reader.Close()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Public Sub initializeConfiguration()
+        Try
+            Dim serializer As New XmlSerializer(config.GetType)
+            Dim writer As New StreamWriter(appDir & configFileName)
+            serializer.Serialize(writer, config)
+            writer.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

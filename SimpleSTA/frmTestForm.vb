@@ -171,21 +171,23 @@ Public Class frmTestForm
             ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
             options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
             switchDriver.Initialize(config.Address, False, False, options)
+            switchDriver.TspLink.Reset()
             If (switchDriver.Initialized) Then
                 directIOWrapper("print(localnode.serialno)")
                 Dim serialNo As String
                 serialNo = switchDriver.System.DirectIO.ReadString()
                 currentTestFile.SwitchSerial = serialNo
-                'directIOWrapper("print(node[2].serialno)")
-                'serialNo = switchDriver.System.DirectIO.ReadString()
-                'currentTestFile.SourceMeterSerial = serialNo
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("print(node[2].serialno)")
+                serialNo = switchDriver.System.DirectIO.ReadString()
+                currentTestFile.SourceMeterSerial = serialNo
                 prepareForm()
             Else
                 Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
             End If
          
             ' Reset the TSPLink network between the devices
-            switchDriver.TspLink.Reset()
+
             ' Clear the source meter display and update the user
             directIOWrapper("node[2].display.clear()")
             directIOWrapper("node[2].display.settext('Ready to test')")

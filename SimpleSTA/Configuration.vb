@@ -7,16 +7,17 @@ Public Class Configuration
     '  It includes all the properties stored in the configuration as well as methods to load
     '  properties from a config file and update the config file with new properties
 
-    Dim dblBias As Double
-    Dim dblRecordInterval As Double
-    Dim crCurrentRange As CurrentRange
-    Dim ftFilterType As FilterType
-    Dim lngSamples As Long
-    Dim lngNPLC As Long
+    ' Declare vars, set defaults
+    Dim dblBias As Double = 0.65
+    Dim dblRecordInterval As Double = 8
+    Dim crCurrentRange As CurrentRange = CurrentRange.one_uA
+    Dim ftFilterType As FilterType = FilterType.FILTER_REPEAT_AVG
+    Dim lngSamples As Long = 6
+    Dim lngNPLC As Long = 1
     Dim strAddress As String
     Dim strSTAID As String
-    Dim strDumpDir As String
-    Dim ccfCardConfig As Integer
+    '    Dim strDumpDir As String
+    Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
 
     Public Property Bias() As Double
         Get
@@ -82,14 +83,14 @@ Public Class Configuration
             strSTAID = value
         End Set
     End Property
-    Public Property DumpDir As String
-        Get
-            Return strDumpDir
-        End Get
-        Set(ByVal value As String)
-            strDumpDir = value
-        End Set
-    End Property
+    'Public Property DumpDir As String
+    '    Get
+    '        Return strDumpDir
+    '    End Get
+    '    Set(ByVal value As String)
+    '        strDumpDir = value
+    '    End Set
+    'End Property
     Public Property CardConfig As CardConfiguration
         Get
             Return ccfCardConfig

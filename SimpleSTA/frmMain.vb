@@ -6,11 +6,6 @@
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
-    Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-    End Sub
-
     Private Sub EditConfigurationToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditConfigurationToolStripMenuItem.Click
         Try
             frmConfig.Show()
@@ -33,7 +28,13 @@
         End Try
     End Sub
 
-    Private Sub TestToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TestToolStripMenuItem1.Click
+    Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        appDir = My.Application.Info.DirectoryPath
+        If (System.IO.File.Exists(appDir & configFileName)) Then
+            loadConfiguration()
+        Else
+            initializeConfiguration()
+        End If
 
     End Sub
 End Class

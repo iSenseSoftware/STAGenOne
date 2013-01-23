@@ -57,7 +57,7 @@
     ' This subroutine updates the settings and creates the sensor objects in the currentTestFile global
     Private Sub updateTestFile()
         Try
-            config.DumpDir = txtTestFile.Text
+            'config.DumpDir = txtTestFile.Text
             currentTestFile.Config = config
             currentTestFile.OperatorID = Me.txtOperatorInitials.Text
             currentTestFile.Name = Me.txtTestName.Text

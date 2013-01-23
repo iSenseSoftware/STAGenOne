@@ -24,33 +24,6 @@ Partial Class frmTestInfo
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Tabs = New System.Windows.Forms.TabControl()
-        Me.TabOne = New System.Windows.Forms.TabPage()
-        Me.btnCancel = New System.Windows.Forms.Button()
-        Me.btnCreateTest = New System.Windows.Forms.Button()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.txtCardTwoSerial = New System.Windows.Forms.TextBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.txtCardThreeSerial = New System.Windows.Forms.TextBox()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.txtCardFourSerial = New System.Windows.Forms.TextBox()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.txtCardFiveSerial = New System.Windows.Forms.TextBox()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.txtCardSixSerial = New System.Windows.Forms.TextBox()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtTestName = New System.Windows.Forms.TextBox()
-        Me.txtSourceSerial = New System.Windows.Forms.TextBox()
-        Me.txtSwitchSerial = New System.Windows.Forms.TextBox()
-        Me.txtCardOneSerial = New System.Windows.Forms.TextBox()
-        Me.txtOperatorInitials = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.btnSelectFile = New System.Windows.Forms.Button()
-        Me.txtTestFile = New System.Windows.Forms.TextBox()
         Me.SlotOneTab = New System.Windows.Forms.TabPage()
         Me.txtCard1Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard1Col11 = New System.Windows.Forms.TextBox()
@@ -262,14 +235,37 @@ Partial Class frmTestInfo
         Me.Label115 = New System.Windows.Forms.Label()
         Me.txtCard6Batch = New System.Windows.Forms.TextBox()
         Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
+        Me.txtTestFile = New System.Windows.Forms.TextBox()
+        Me.btnSelectFile = New System.Windows.Forms.Button()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtOperatorInitials = New System.Windows.Forms.TextBox()
+        Me.txtCardOneSerial = New System.Windows.Forms.TextBox()
+        Me.txtTestName = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtCardSixSerial = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtCardFiveSerial = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.txtCardFourSerial = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.txtCardThreeSerial = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.txtCardTwoSerial = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.btnCreateTest = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.TabOne = New System.Windows.Forms.TabPage()
         Me.Tabs.SuspendLayout()
-        Me.TabOne.SuspendLayout()
         Me.SlotOneTab.SuspendLayout()
         Me.SlotTwoTab.SuspendLayout()
         Me.SlotThreeTab.SuspendLayout()
         Me.SlotFourTab.SuspendLayout()
         Me.SlotFiveTab.SuspendLayout()
         Me.SlotSixTab.SuspendLayout()
+        Me.TabOne.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -296,280 +292,6 @@ Partial Class frmTestInfo
         Me.Tabs.SelectedIndex = 0
         Me.Tabs.Size = New System.Drawing.Size(570, 605)
         Me.Tabs.TabIndex = 1
-        '
-        'TabOne
-        '
-        Me.TabOne.Controls.Add(Me.btnCancel)
-        Me.TabOne.Controls.Add(Me.btnCreateTest)
-        Me.TabOne.Controls.Add(Me.Label13)
-        Me.TabOne.Controls.Add(Me.txtCardTwoSerial)
-        Me.TabOne.Controls.Add(Me.Label12)
-        Me.TabOne.Controls.Add(Me.txtCardThreeSerial)
-        Me.TabOne.Controls.Add(Me.Label11)
-        Me.TabOne.Controls.Add(Me.txtCardFourSerial)
-        Me.TabOne.Controls.Add(Me.Label10)
-        Me.TabOne.Controls.Add(Me.txtCardFiveSerial)
-        Me.TabOne.Controls.Add(Me.Label9)
-        Me.TabOne.Controls.Add(Me.txtCardSixSerial)
-        Me.TabOne.Controls.Add(Me.Label8)
-        Me.TabOne.Controls.Add(Me.Label7)
-        Me.TabOne.Controls.Add(Me.Label6)
-        Me.TabOne.Controls.Add(Me.Label5)
-        Me.TabOne.Controls.Add(Me.Label4)
-        Me.TabOne.Controls.Add(Me.Label3)
-        Me.TabOne.Controls.Add(Me.txtTestName)
-        Me.TabOne.Controls.Add(Me.txtSourceSerial)
-        Me.TabOne.Controls.Add(Me.txtSwitchSerial)
-        Me.TabOne.Controls.Add(Me.txtCardOneSerial)
-        Me.TabOne.Controls.Add(Me.txtOperatorInitials)
-        Me.TabOne.Controls.Add(Me.Label2)
-        Me.TabOne.Controls.Add(Me.btnSelectFile)
-        Me.TabOne.Controls.Add(Me.txtTestFile)
-        Me.TabOne.Location = New System.Drawing.Point(4, 22)
-        Me.TabOne.Name = "TabOne"
-        Me.TabOne.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabOne.Size = New System.Drawing.Size(562, 579)
-        Me.TabOne.TabIndex = 0
-        Me.TabOne.Text = "Basic Info"
-        Me.TabOne.UseVisualStyleBackColor = True
-        '
-        'btnCancel
-        '
-        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(283, 507)
-        Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New System.Drawing.Size(134, 41)
-        Me.btnCancel.TabIndex = 12
-        Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = True
-        '
-        'btnCreateTest
-        '
-        Me.btnCreateTest.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCreateTest.Location = New System.Drawing.Point(125, 507)
-        Me.btnCreateTest.Name = "btnCreateTest"
-        Me.btnCreateTest.Size = New System.Drawing.Size(134, 41)
-        Me.btnCreateTest.TabIndex = 11
-        Me.btnCreateTest.Text = "Create"
-        Me.btnCreateTest.UseVisualStyleBackColor = True
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(180, 350)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(51, 16)
-        Me.Label13.TabIndex = 23
-        Me.Label13.Text = "Slot 2:"
-        '
-        'txtCardTwoSerial
-        '
-        Me.txtCardTwoSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardTwoSerial.Location = New System.Drawing.Point(241, 347)
-        Me.txtCardTwoSerial.Name = "txtCardTwoSerial"
-        Me.txtCardTwoSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardTwoSerial.TabIndex = 6
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(180, 378)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(51, 16)
-        Me.Label12.TabIndex = 21
-        Me.Label12.Text = "Slot 3:"
-        '
-        'txtCardThreeSerial
-        '
-        Me.txtCardThreeSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardThreeSerial.Location = New System.Drawing.Point(241, 375)
-        Me.txtCardThreeSerial.Name = "txtCardThreeSerial"
-        Me.txtCardThreeSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardThreeSerial.TabIndex = 7
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(180, 406)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(51, 16)
-        Me.Label11.TabIndex = 19
-        Me.Label11.Text = "Slot 4:"
-        '
-        'txtCardFourSerial
-        '
-        Me.txtCardFourSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardFourSerial.Location = New System.Drawing.Point(241, 403)
-        Me.txtCardFourSerial.Name = "txtCardFourSerial"
-        Me.txtCardFourSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardFourSerial.TabIndex = 8
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(180, 434)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(51, 16)
-        Me.Label10.TabIndex = 17
-        Me.Label10.Text = "Slot 5:"
-        '
-        'txtCardFiveSerial
-        '
-        Me.txtCardFiveSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardFiveSerial.Location = New System.Drawing.Point(241, 431)
-        Me.txtCardFiveSerial.Name = "txtCardFiveSerial"
-        Me.txtCardFiveSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardFiveSerial.TabIndex = 9
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(180, 462)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(51, 16)
-        Me.Label9.TabIndex = 15
-        Me.Label9.Text = "Slot 6:"
-        '
-        'txtCardSixSerial
-        '
-        Me.txtCardSixSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardSixSerial.Location = New System.Drawing.Point(241, 459)
-        Me.txtCardSixSerial.Name = "txtCardSixSerial"
-        Me.txtCardSixSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardSixSerial.TabIndex = 10
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(180, 322)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(51, 16)
-        Me.Label8.TabIndex = 13
-        Me.Label8.Text = "Slot 1:"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(144, 140)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(88, 16)
-        Me.Label7.TabIndex = 12
-        Me.Label7.Text = "Test Name:"
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(66, 182)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(158, 16)
-        Me.Label6.TabIndex = 11
-        Me.Label6.Text = "Keithley 2602A Serial:"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(16, 228)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(203, 16)
-        Me.Label5.TabIndex = 10
-        Me.Label5.Text = "Keithley 3706A-SNFP Serial:"
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(195, 276)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(156, 16)
-        Me.Label4.TabIndex = 9
-        Me.Label4.Text = "Keithley 3731 Serials:"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(109, 103)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(122, 16)
-        Me.Label3.TabIndex = 8
-        Me.Label3.Text = "Operator Initials:"
-        '
-        'txtTestName
-        '
-        Me.txtTestName.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTestName.Location = New System.Drawing.Point(241, 137)
-        Me.txtTestName.Name = "txtTestName"
-        Me.txtTestName.Size = New System.Drawing.Size(184, 22)
-        Me.txtTestName.TabIndex = 2
-        '
-        'txtSourceSerial
-        '
-        Me.txtSourceSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSourceSerial.Location = New System.Drawing.Point(241, 182)
-        Me.txtSourceSerial.Name = "txtSourceSerial"
-        Me.txtSourceSerial.Size = New System.Drawing.Size(184, 22)
-        Me.txtSourceSerial.TabIndex = 3
-        '
-        'txtSwitchSerial
-        '
-        Me.txtSwitchSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtSwitchSerial.Location = New System.Drawing.Point(241, 225)
-        Me.txtSwitchSerial.Name = "txtSwitchSerial"
-        Me.txtSwitchSerial.Size = New System.Drawing.Size(184, 22)
-        Me.txtSwitchSerial.TabIndex = 4
-        '
-        'txtCardOneSerial
-        '
-        Me.txtCardOneSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCardOneSerial.Location = New System.Drawing.Point(241, 319)
-        Me.txtCardOneSerial.Name = "txtCardOneSerial"
-        Me.txtCardOneSerial.Size = New System.Drawing.Size(103, 22)
-        Me.txtCardOneSerial.TabIndex = 5
-        '
-        'txtOperatorInitials
-        '
-        Me.txtOperatorInitials.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOperatorInitials.Location = New System.Drawing.Point(241, 100)
-        Me.txtOperatorInitials.Name = "txtOperatorInitials"
-        Me.txtOperatorInitials.Size = New System.Drawing.Size(103, 22)
-        Me.txtOperatorInitials.TabIndex = 1
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(65, 16)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(101, 16)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Save File To:"
-        '
-        'btnSelectFile
-        '
-        Me.btnSelectFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSelectFile.Location = New System.Drawing.Point(453, 35)
-        Me.btnSelectFile.Name = "btnSelectFile"
-        Me.btnSelectFile.Size = New System.Drawing.Size(26, 22)
-        Me.btnSelectFile.TabIndex = 1
-        Me.btnSelectFile.Text = "..."
-        Me.btnSelectFile.UseVisualStyleBackColor = True
-        '
-        'txtTestFile
-        '
-        Me.txtTestFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTestFile.Location = New System.Drawing.Point(68, 35)
-        Me.txtTestFile.Name = "txtTestFile"
-        Me.txtTestFile.Size = New System.Drawing.Size(379, 22)
-        Me.txtTestFile.TabIndex = 0
         '
         'SlotOneTab
         '
@@ -2674,6 +2396,240 @@ Partial Class frmTestInfo
         'SaveFileDialog1
         '
         '
+        'txtTestFile
+        '
+        Me.txtTestFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTestFile.Location = New System.Drawing.Point(68, 35)
+        Me.txtTestFile.Name = "txtTestFile"
+        Me.txtTestFile.Size = New System.Drawing.Size(379, 22)
+        Me.txtTestFile.TabIndex = 0
+        '
+        'btnSelectFile
+        '
+        Me.btnSelectFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSelectFile.Location = New System.Drawing.Point(453, 35)
+        Me.btnSelectFile.Name = "btnSelectFile"
+        Me.btnSelectFile.Size = New System.Drawing.Size(26, 22)
+        Me.btnSelectFile.TabIndex = 1
+        Me.btnSelectFile.Text = "..."
+        Me.btnSelectFile.UseVisualStyleBackColor = True
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(65, 16)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(101, 16)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "Save File To:"
+        '
+        'txtOperatorInitials
+        '
+        Me.txtOperatorInitials.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtOperatorInitials.Location = New System.Drawing.Point(241, 100)
+        Me.txtOperatorInitials.Name = "txtOperatorInitials"
+        Me.txtOperatorInitials.Size = New System.Drawing.Size(103, 22)
+        Me.txtOperatorInitials.TabIndex = 1
+        '
+        'txtCardOneSerial
+        '
+        Me.txtCardOneSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardOneSerial.Location = New System.Drawing.Point(241, 255)
+        Me.txtCardOneSerial.Name = "txtCardOneSerial"
+        Me.txtCardOneSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardOneSerial.TabIndex = 5
+        '
+        'txtTestName
+        '
+        Me.txtTestName.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtTestName.Location = New System.Drawing.Point(241, 137)
+        Me.txtTestName.Name = "txtTestName"
+        Me.txtTestName.Size = New System.Drawing.Size(184, 22)
+        Me.txtTestName.TabIndex = 2
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(109, 103)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(122, 16)
+        Me.Label3.TabIndex = 8
+        Me.Label3.Text = "Operator Initials:"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(195, 212)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(156, 16)
+        Me.Label4.TabIndex = 9
+        Me.Label4.Text = "Keithley 3731 Serials:"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(144, 140)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(88, 16)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Test Name:"
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(180, 258)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(51, 16)
+        Me.Label8.TabIndex = 13
+        Me.Label8.Text = "Slot 1:"
+        '
+        'txtCardSixSerial
+        '
+        Me.txtCardSixSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardSixSerial.Location = New System.Drawing.Point(241, 395)
+        Me.txtCardSixSerial.Name = "txtCardSixSerial"
+        Me.txtCardSixSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardSixSerial.TabIndex = 10
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(180, 398)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(51, 16)
+        Me.Label9.TabIndex = 15
+        Me.Label9.Text = "Slot 6:"
+        '
+        'txtCardFiveSerial
+        '
+        Me.txtCardFiveSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardFiveSerial.Location = New System.Drawing.Point(241, 367)
+        Me.txtCardFiveSerial.Name = "txtCardFiveSerial"
+        Me.txtCardFiveSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardFiveSerial.TabIndex = 9
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(180, 370)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(51, 16)
+        Me.Label10.TabIndex = 17
+        Me.Label10.Text = "Slot 5:"
+        '
+        'txtCardFourSerial
+        '
+        Me.txtCardFourSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardFourSerial.Location = New System.Drawing.Point(241, 339)
+        Me.txtCardFourSerial.Name = "txtCardFourSerial"
+        Me.txtCardFourSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardFourSerial.TabIndex = 8
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(180, 342)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(51, 16)
+        Me.Label11.TabIndex = 19
+        Me.Label11.Text = "Slot 4:"
+        '
+        'txtCardThreeSerial
+        '
+        Me.txtCardThreeSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardThreeSerial.Location = New System.Drawing.Point(241, 311)
+        Me.txtCardThreeSerial.Name = "txtCardThreeSerial"
+        Me.txtCardThreeSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardThreeSerial.TabIndex = 7
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(180, 314)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(51, 16)
+        Me.Label12.TabIndex = 21
+        Me.Label12.Text = "Slot 3:"
+        '
+        'txtCardTwoSerial
+        '
+        Me.txtCardTwoSerial.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCardTwoSerial.Location = New System.Drawing.Point(241, 283)
+        Me.txtCardTwoSerial.Name = "txtCardTwoSerial"
+        Me.txtCardTwoSerial.Size = New System.Drawing.Size(103, 22)
+        Me.txtCardTwoSerial.TabIndex = 6
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(180, 286)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(51, 16)
+        Me.Label13.TabIndex = 23
+        Me.Label13.Text = "Slot 2:"
+        '
+        'btnCreateTest
+        '
+        Me.btnCreateTest.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCreateTest.Location = New System.Drawing.Point(125, 443)
+        Me.btnCreateTest.Name = "btnCreateTest"
+        Me.btnCreateTest.Size = New System.Drawing.Size(134, 41)
+        Me.btnCreateTest.TabIndex = 11
+        Me.btnCreateTest.Text = "Create"
+        Me.btnCreateTest.UseVisualStyleBackColor = True
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancel.Location = New System.Drawing.Point(283, 443)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(134, 41)
+        Me.btnCancel.TabIndex = 12
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'TabOne
+        '
+        Me.TabOne.Controls.Add(Me.btnCancel)
+        Me.TabOne.Controls.Add(Me.btnCreateTest)
+        Me.TabOne.Controls.Add(Me.Label13)
+        Me.TabOne.Controls.Add(Me.txtCardTwoSerial)
+        Me.TabOne.Controls.Add(Me.Label12)
+        Me.TabOne.Controls.Add(Me.txtCardThreeSerial)
+        Me.TabOne.Controls.Add(Me.Label11)
+        Me.TabOne.Controls.Add(Me.txtCardFourSerial)
+        Me.TabOne.Controls.Add(Me.Label10)
+        Me.TabOne.Controls.Add(Me.txtCardFiveSerial)
+        Me.TabOne.Controls.Add(Me.Label9)
+        Me.TabOne.Controls.Add(Me.txtCardSixSerial)
+        Me.TabOne.Controls.Add(Me.Label8)
+        Me.TabOne.Controls.Add(Me.Label7)
+        Me.TabOne.Controls.Add(Me.Label4)
+        Me.TabOne.Controls.Add(Me.Label3)
+        Me.TabOne.Controls.Add(Me.txtTestName)
+        Me.TabOne.Controls.Add(Me.txtCardOneSerial)
+        Me.TabOne.Controls.Add(Me.txtOperatorInitials)
+        Me.TabOne.Controls.Add(Me.Label2)
+        Me.TabOne.Controls.Add(Me.btnSelectFile)
+        Me.TabOne.Controls.Add(Me.txtTestFile)
+        Me.TabOne.Location = New System.Drawing.Point(4, 22)
+        Me.TabOne.Name = "TabOne"
+        Me.TabOne.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabOne.Size = New System.Drawing.Size(562, 579)
+        Me.TabOne.TabIndex = 0
+        Me.TabOne.Text = "Basic Info"
+        Me.TabOne.UseVisualStyleBackColor = True
+        '
         'frmTestInfo
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2684,8 +2640,6 @@ Partial Class frmTestInfo
         Me.Name = "frmTestInfo"
         Me.Text = "New Test"
         Me.Tabs.ResumeLayout(False)
-        Me.TabOne.ResumeLayout(False)
-        Me.TabOne.PerformLayout()
         Me.SlotOneTab.ResumeLayout(False)
         Me.SlotOneTab.PerformLayout()
         Me.SlotTwoTab.ResumeLayout(False)
@@ -2698,38 +2652,15 @@ Partial Class frmTestInfo
         Me.SlotFiveTab.PerformLayout()
         Me.SlotSixTab.ResumeLayout(False)
         Me.SlotSixTab.PerformLayout()
+        Me.TabOne.ResumeLayout(False)
+        Me.TabOne.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents Tabs As System.Windows.Forms.TabControl
-    Friend WithEvents TabOne As System.Windows.Forms.TabPage
     Friend WithEvents SlotOneTab As System.Windows.Forms.TabPage
-    Friend WithEvents txtOperatorInitials As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents btnSelectFile As System.Windows.Forms.Button
-    Friend WithEvents txtTestFile As System.Windows.Forms.TextBox
-    Friend WithEvents txtTestName As System.Windows.Forms.TextBox
-    Friend WithEvents txtSourceSerial As System.Windows.Forms.TextBox
-    Friend WithEvents txtSwitchSerial As System.Windows.Forms.TextBox
-    Friend WithEvents txtCardOneSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents txtCardTwoSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label12 As System.Windows.Forms.Label
-    Friend WithEvents txtCardThreeSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents txtCardFourSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents txtCardFiveSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents txtCardSixSerial As System.Windows.Forms.TextBox
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents SlotTwoTab As System.Windows.Forms.TabPage
     Friend WithEvents SlotThreeTab As System.Windows.Forms.TabPage
     Friend WithEvents SlotFourTab As System.Windows.Forms.TabPage
@@ -2737,8 +2668,6 @@ Partial Class frmTestInfo
     Friend WithEvents SlotSixTab As System.Windows.Forms.TabPage
     Friend WithEvents Label14 As System.Windows.Forms.Label
     Friend WithEvents txtCard1Batch As System.Windows.Forms.TextBox
-    Friend WithEvents btnCancel As System.Windows.Forms.Button
-    Friend WithEvents btnCreateTest As System.Windows.Forms.Button
     Friend WithEvents txtCard1Col10 As System.Windows.Forms.TextBox
     Friend WithEvents txtCard1Col11 As System.Windows.Forms.TextBox
     Friend WithEvents txtCard1Col12 As System.Windows.Forms.TextBox
@@ -2942,4 +2871,27 @@ Partial Class frmTestInfo
     Friend WithEvents Label115 As System.Windows.Forms.Label
     Friend WithEvents txtCard6Batch As System.Windows.Forms.TextBox
     Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
+    Friend WithEvents TabOne As System.Windows.Forms.TabPage
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents btnCreateTest As System.Windows.Forms.Button
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents txtCardTwoSerial As System.Windows.Forms.TextBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents txtCardThreeSerial As System.Windows.Forms.TextBox
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents txtCardFourSerial As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents txtCardFiveSerial As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents txtCardSixSerial As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtTestName As System.Windows.Forms.TextBox
+    Friend WithEvents txtCardOneSerial As System.Windows.Forms.TextBox
+    Friend WithEvents txtOperatorInitials As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents btnSelectFile As System.Windows.Forms.Button
+    Friend WithEvents txtTestFile As System.Windows.Forms.TextBox
 End Class

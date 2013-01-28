@@ -259,14 +259,16 @@ Public Class frmTestForm
             ' Add backplane relay channels as well
             ' @TODO: After hardware change to utilize backplane for card 1, the cardCount > 1 condition must be removed
             Dim cardCount As Integer = currentTestFile.Sensors.Length / 16
+            Debug.Print(cardCount)
             If (cardCount > 1) Then
                 For x As Integer = 1 To cardCount
-                    channelString = channelString & "," & x & "911," & x + "912"
+                    channelString = channelString & "," & x & "911," & x & "912"
                 Next
             End If
             directIOWrapper("node[2].display.reset()")
             ' close all relays in row 1
             directIOWrapper("node[1].channel.exclusiveclose('" & channelString & "')")
+            Debug.Print(channelString)
             ' Configure the DMM
             directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter)
             directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter)

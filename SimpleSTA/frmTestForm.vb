@@ -162,6 +162,7 @@ Public Class frmTestForm
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
+            Debug.Print("wtf mate?")
             boolIsTestRunning = False
             btnStartTest.Show()
             btnNoteInjection.Show()
@@ -185,7 +186,7 @@ Public Class frmTestForm
             Else
                 Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
             End If
-         
+
             ' Reset the TSPLink network between the devices
 
             ' Clear the source meter display and update the user
@@ -292,8 +293,10 @@ Public Class frmTestForm
                 For z = 0 To currentTestFile.Sensors.Length - 1
                     ' 1. Open relay to row 1
                     directIOWrapper("node[1].channel.open('" & currentTestFile.Sensors(z).Slot & "1" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
+                    Debug.Print("node[1].channel.open('" & currentTestFile.Sensors(z).Slot & "1" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
                     ' 2. Close relay to row 2
                     directIOWrapper("node[1].channel.close('" & currentTestFile.Sensors(z).Slot & "2" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
+                    Debug.Print("node[1].channel.close('" & currentTestFile.Sensors(z).Slot & "2" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
                     ' 3. Allow settling time
                     Delay(lngSettling)
                     ' 4. Record V and I readings to buffer

@@ -4,10 +4,16 @@ Imports System.Xml.Serialization
 Imports SimpleSTA.SharedModule
 Public Class frmConfig
     Dim errors As String()
+
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             saveConfiguration()
             Me.Close()
+            If (verifyConfiguration()) Then
+                frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
+            Else
+                frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+            End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -74,6 +80,11 @@ Public Class frmConfig
     End Sub
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
+        If (verifyConfiguration()) Then
+            frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
+        Else
+            frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+        End If
     End Sub
     Private Function ValidateForm() As Boolean
         Try

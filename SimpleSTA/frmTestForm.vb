@@ -28,6 +28,7 @@ Public Class frmTestForm
     Dim boolOpenTest As Boolean = False
     Dim strOpenFileName As String
     Dim boolColorsSet As Boolean = False
+    Dim totalTime As New Stopwatch
 
     Private Sub btnStartTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStartTest.Click
         Try
@@ -85,6 +86,8 @@ Public Class frmTestForm
             ' Clear the default or previous series and legends from the test chart
             TestChart.Series.Clear()
             TestChart.Legends.Clear()
+            txtTestName.Text = "Test Name: " & currentTestFile.Name
+            txtOperator.Text = "Operator: " & currentTestFile.OperatorID
             ' Configure the test chart
             With TestChart.ChartAreas(0)
                 .AxisY.Interval = 0
@@ -129,6 +132,7 @@ Public Class frmTestForm
                 End With
                 Dim newBox As New CheckBox
                 With newBox
+                    .Width = 140
                     .Name = aSensor.SensorID
                     .Text = aSensor.SensorID
                     .Enabled = True
@@ -162,16 +166,12 @@ Public Class frmTestForm
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            Debug.Print("wtf mate?")
             boolIsTestRunning = False
             btnStartTest.Show()
             btnNoteInjection.Show()
             ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
             BackgroundWorker1.WorkerReportsProgress = True
-            Dim options As String
-            ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
-            options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
-            switchDriver.Initialize(config.Address, False, False, options)
+            
             switchDriver.TspLink.Reset()
             If (switchDriver.Initialized) Then
                 directIOWrapper("print(localnode.serialno)")
@@ -259,19 +259,19 @@ Public Class frmTestForm
             ' Add backplane relay channels as well
             ' @TODO: After hardware change to utilize backplane for card 1, the cardCount > 1 condition must be removed
             Dim cardCount As Integer = currentTestFile.Sensors.Length / 16
-            Debug.Print(cardCount)
-            If (cardCount > 1) Then
-                For x As Integer = 1 To cardCount
-                    channelString = channelString & "," & x & "911," & x & "912"
-                Next
-            End If
+            ''Debug.Print(cardCount)
+            ''If (cardCount > 1) Then
+            For x As Integer = 1 To cardCount
+                channelString = channelString & "," & x & "911," & x & "912"
+            Next
+            ''End If
             directIOWrapper("node[2].display.reset()")
             ' close all relays in row 1
             directIOWrapper("node[1].channel.exclusiveclose('" & channelString & "')")
             Debug.Print(channelString)
             ' Configure the DMM
-            directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter)
-            directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter)
+            directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
+            directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
             directIOWrapper("node[2].smua.measure.filter.count = " & config.Samples)
             directIOWrapper("node[2].smub.measure.filter.count = " & config.Samples)
             directIOWrapper("node[2].smua.measure.filter.enable = 1")
@@ -284,9 +284,10 @@ Public Class frmTestForm
 
             ' timer is reset after each loop, totalTime is used for the x-axis of the test chart
             Dim timer As New Stopwatch
-            Dim totalTime As New Stopwatch
+
             Dim interval As Integer = config.RecordInterval
             Dim theTime As Date
+            ElapsedTimer.Start()
             timer.Start()
             totalTime.Start()
             currentTestFile.TestStart = DateTime.Now()
@@ -347,7 +348,9 @@ Public Class frmTestForm
                 TestChart.Update()
                 currentTestFile.writeToFile()
             Else
-                TestChart.Series(currentID).Points.AddXY(currentTime / 1000, currentCurrent)
+                ' Note that the  \ division operator is used instead of  / to force rounding to the nearest integer.  This
+                ' helps improve readability of the graph
+                TestChart.Series(currentID).Points.AddXY(currentTime \ 1000, currentCurrent)
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -359,7 +362,10 @@ Public Class frmTestForm
         Try
             Dim timestamp As DateTime = DateTime.Now()
             currentTestFile.addInjection(timestamp)
-            MsgBox("Injection noted at " & timestamp, vbOKOnly)
+            Dim txtNewInjection As New Label
+            txtNewInjection.Text = strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+            flwInjections.Controls.Add(txtNewInjection)
+            MsgBox("Injection noted", vbOKOnly)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -527,4 +533,7 @@ Public Class frmTestForm
         End Try
     End Sub
 
+    Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
+        txtTime.Text = "Time Elapsed: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+    End Sub
 End Class

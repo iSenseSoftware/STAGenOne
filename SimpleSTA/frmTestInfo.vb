@@ -3,6 +3,25 @@
     Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             loadConfiguration()
+            If (verifyConfiguration()) Then
+                frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
+                Dim options As String
+                ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
+                options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
+                switchDriver.Initialize(config.Address, False, False, options)
+                If (switchDriver.Initialized()) Then
+                    MsgBox("System Drivers loaded.  I/O with test system established.")
+                    frmMain.SystemStatusLabel.Text = "System Status: Standby; I/O established."
+                Else
+                    MsgBox("Unable to establish connection to test system.  Verify connections and configuration settings and try again.")
+                    Me.Close()
+                End If
+            Else
+                frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+                Me.Close()
+                frmConfig.Show()
+                frmConfig.BringToFront()
+            End If
             ' Set form control visibility based upon the card configuration 
             Select Case config.CardConfig
                 Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS
@@ -11,35 +30,20 @@
                     Me.Tabs.TabPages.Remove(SlotFourTab)
                     Me.Tabs.TabPages.Remove(SlotFiveTab)
                     Me.Tabs.TabPages.Remove(SlotSixTab)
-                    Me.txtCardTwoSerial.Enabled = False
-                    Me.txtCardThreeSerial.Enabled = False
-                    Me.txtCardFourSerial.Enabled = False
-                    Me.txtCardFiveSerial.Enabled = False
-                    Me.txtCardSixSerial.Enabled = False
                 Case CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
                     Me.Tabs.TabPages.Remove(SlotThreeTab)
                     Me.Tabs.TabPages.Remove(SlotFourTab)
                     Me.Tabs.TabPages.Remove(SlotFiveTab)
                     Me.Tabs.TabPages.Remove(SlotSixTab)
-                    Me.txtCardThreeSerial.Enabled = False
-                    Me.txtCardFourSerial.Enabled = False
-                    Me.txtCardFiveSerial.Enabled = False
-                    Me.txtCardSixSerial.Enabled = False
                 Case CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS
                     Me.Tabs.TabPages.Remove(SlotFourTab)
                     Me.Tabs.TabPages.Remove(SlotFiveTab)
                     Me.Tabs.TabPages.Remove(SlotSixTab)
-                    Me.txtCardFourSerial.Enabled = False
-                    Me.txtCardFiveSerial.Enabled = False
-                    Me.txtCardSixSerial.Enabled = False
                 Case CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS
                     Me.Tabs.TabPages.Remove(SlotFiveTab)
                     Me.Tabs.TabPages.Remove(SlotSixTab)
-                    Me.txtCardFiveSerial.Enabled = False
-                    Me.txtCardSixSerial.Enabled = False
                 Case CardConfiguration.FIVE_CARD_EIGHTY_SENSORS
                     Me.Tabs.TabPages.Remove(SlotSixTab)
-                    Me.txtCardSixSerial.Enabled = False
             End Select
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -50,6 +54,7 @@
         Try
             updateTestFile()
             frmTestForm.Show()
+            Me.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -62,12 +67,6 @@
             currentTestFile.OperatorID = Me.txtOperatorInitials.Text
             currentTestFile.Name = Me.txtTestName.Text
             currentTestFile.DumpFile = Me.txtTestFile.Text
-            currentTestFile.MatrixCardOneSerial = Me.txtCardOneSerial.Text
-            currentTestFile.MatrixCardTwoSerial = Me.txtCardTwoSerial.Text
-            currentTestFile.MatrixCardThreeSerial = Me.txtCardThreeSerial.Text
-            currentTestFile.MatrixCardFourSerial = Me.txtCardFourSerial.Text
-            currentTestFile.MatrixCardFiveSerial = Me.txtCardFiveSerial.Text
-            currentTestFile.MatrixCardSixSerial = Me.txtCardSixSerial.Text
 
             Select Case config.CardConfig
                 Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS
@@ -489,78 +488,6 @@
                     Next
                 End If
             Next
-            ' Depending on the card configuration, check that the card serial field is non-null
-            Select Case config.CardConfig
-                Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                Case CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardTwoSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                Case CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardTwoSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardThreeSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                Case CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardTwoSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardThreeSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardFourSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                Case CardConfiguration.FIVE_CARD_EIGHTY_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardTwoSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardThreeSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardFourSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardFiveSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                Case CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS
-                    If (txtCardOneSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardTwoSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardThreeSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardFourSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardFiveSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-                    If (txtCardSixSerial.Text = "") Then
-                        boolValidates = False
-                    End If
-            End Select
             Return boolValidates
         Catch ex As Exception
             GenericExceptionHandler(ex)

@@ -22,6 +22,7 @@ Partial Class frmTestForm
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTestForm))
         Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
         Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
@@ -31,12 +32,6 @@ Partial Class frmTestForm
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
         Me.TestChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.btnStartTest = New System.Windows.Forms.Button()
-        Me.btnNoteInjection = New System.Windows.Forms.Button()
-        Me.HideShowSensors = New System.Windows.Forms.FlowLayoutPanel()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Panel4 = New System.Windows.Forms.Panel()
         Me.btnApply = New System.Windows.Forms.Button()
         Me.chkScrollEnabled = New System.Windows.Forms.CheckBox()
@@ -53,11 +48,23 @@ Partial Class frmTestForm
         Me.txtXMin = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.txtTestName = New System.Windows.Forms.Label()
+        Me.btnStartTest = New System.Windows.Forms.Button()
+        Me.btnNoteInjection = New System.Windows.Forms.Button()
+        Me.HideShowSensors = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtOperator = New System.Windows.Forms.Label()
+        Me.txtTime = New System.Windows.Forms.Label()
+        Me.flwInjections = New System.Windows.Forms.FlowLayoutPanel()
+        Me.txtInjections = New System.Windows.Forms.Label()
+        Me.ElapsedTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.TestChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
+        Me.Panel4.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.HideShowSensors.SuspendLayout()
-        Me.Panel4.SuspendLayout()
+        Me.flwInjections.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolStrip1
@@ -92,43 +99,6 @@ Partial Class frmTestForm
         Me.Panel1.Controls.Add(Me.Panel4)
         resources.ApplyResources(Me.Panel1, "Panel1")
         Me.Panel1.Name = "Panel1"
-        '
-        'Panel2
-        '
-        Me.Panel2.Controls.Add(Me.btnStartTest)
-        Me.Panel2.Controls.Add(Me.btnNoteInjection)
-        resources.ApplyResources(Me.Panel2, "Panel2")
-        Me.Panel2.Name = "Panel2"
-        '
-        'btnStartTest
-        '
-        resources.ApplyResources(Me.btnStartTest, "btnStartTest")
-        Me.btnStartTest.Name = "btnStartTest"
-        Me.btnStartTest.UseVisualStyleBackColor = True
-        '
-        'btnNoteInjection
-        '
-        resources.ApplyResources(Me.btnNoteInjection, "btnNoteInjection")
-        Me.btnNoteInjection.Name = "btnNoteInjection"
-        Me.btnNoteInjection.UseVisualStyleBackColor = True
-        '
-        'HideShowSensors
-        '
-        resources.ApplyResources(Me.HideShowSensors, "HideShowSensors")
-        Me.HideShowSensors.Controls.Add(Me.Label7)
-        Me.HideShowSensors.Controls.Add(Me.Button1)
-        Me.HideShowSensors.Name = "HideShowSensors"
-        '
-        'Label7
-        '
-        resources.ApplyResources(Me.Label7, "Label7")
-        Me.Label7.Name = "Label7"
-        '
-        'Button1
-        '
-        resources.ApplyResources(Me.Button1, "Button1")
-        Me.Button1.Name = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
         '
         'Panel4
         '
@@ -231,6 +201,75 @@ Partial Class frmTestForm
         resources.ApplyResources(Me.Label1, "Label1")
         Me.Label1.Name = "Label1"
         '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.flwInjections)
+        Me.Panel2.Controls.Add(Me.btnStartTest)
+        Me.Panel2.Controls.Add(Me.btnNoteInjection)
+        resources.ApplyResources(Me.Panel2, "Panel2")
+        Me.Panel2.Name = "Panel2"
+        '
+        'txtTestName
+        '
+        resources.ApplyResources(Me.txtTestName, "txtTestName")
+        Me.flwInjections.SetFlowBreak(Me.txtTestName, True)
+        Me.txtTestName.Name = "txtTestName"
+        '
+        'btnStartTest
+        '
+        resources.ApplyResources(Me.btnStartTest, "btnStartTest")
+        Me.btnStartTest.Name = "btnStartTest"
+        Me.btnStartTest.UseVisualStyleBackColor = True
+        '
+        'btnNoteInjection
+        '
+        resources.ApplyResources(Me.btnNoteInjection, "btnNoteInjection")
+        Me.btnNoteInjection.Name = "btnNoteInjection"
+        Me.btnNoteInjection.UseVisualStyleBackColor = True
+        '
+        'HideShowSensors
+        '
+        resources.ApplyResources(Me.HideShowSensors, "HideShowSensors")
+        Me.HideShowSensors.Controls.Add(Me.Label7)
+        Me.HideShowSensors.Name = "HideShowSensors"
+        '
+        'Label7
+        '
+        resources.ApplyResources(Me.Label7, "Label7")
+        Me.Label7.Name = "Label7"
+        '
+        'txtOperator
+        '
+        resources.ApplyResources(Me.txtOperator, "txtOperator")
+        Me.flwInjections.SetFlowBreak(Me.txtOperator, True)
+        Me.txtOperator.Name = "txtOperator"
+        '
+        'txtTime
+        '
+        resources.ApplyResources(Me.txtTime, "txtTime")
+        Me.flwInjections.SetFlowBreak(Me.txtTime, True)
+        Me.txtTime.Name = "txtTime"
+        '
+        'flwInjections
+        '
+        Me.flwInjections.Controls.Add(Me.txtTestName)
+        Me.flwInjections.Controls.Add(Me.txtOperator)
+        Me.flwInjections.Controls.Add(Me.txtTime)
+        Me.flwInjections.Controls.Add(Me.txtInjections)
+        resources.ApplyResources(Me.flwInjections, "flwInjections")
+        Me.flwInjections.Name = "flwInjections"
+        '
+        'txtInjections
+        '
+        resources.ApplyResources(Me.txtInjections, "txtInjections")
+        Me.flwInjections.SetFlowBreak(Me.txtInjections, True)
+        Me.txtInjections.Name = "txtInjections"
+        '
+        'ElapsedTimer
+        '
+        Me.ElapsedTimer.Enabled = True
+        Me.ElapsedTimer.Interval = 1000
+        '
         'frmTestForm
         '
         resources.ApplyResources(Me, "$this")
@@ -244,11 +283,13 @@ Partial Class frmTestForm
         Me.Name = "frmTestForm"
         CType(Me.TestChart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.HideShowSensors.ResumeLayout(False)
         Me.HideShowSensors.PerformLayout()
-        Me.Panel4.ResumeLayout(False)
-        Me.Panel4.PerformLayout()
+        Me.flwInjections.ResumeLayout(False)
+        Me.flwInjections.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -279,5 +320,10 @@ Partial Class frmTestForm
     Friend WithEvents btnNoteInjection As System.Windows.Forms.Button
     Friend WithEvents HideShowSensors As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents txtTestName As System.Windows.Forms.Label
+    Friend WithEvents txtInjections As System.Windows.Forms.Label
+    Friend WithEvents flwInjections As System.Windows.Forms.FlowLayoutPanel
+    Friend WithEvents txtTime As System.Windows.Forms.Label
+    Friend WithEvents txtOperator As System.Windows.Forms.Label
+    Friend WithEvents ElapsedTimer As System.Windows.Forms.Timer
 End Class

@@ -16,7 +16,6 @@ Public Class Configuration
     Dim lngNPLC As Long = 1
     Dim strAddress As String
     Dim strSTAID As String
-    '    Dim strDumpDir As String
     Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
 
     Public Property Bias() As Double
@@ -83,14 +82,6 @@ Public Class Configuration
             strSTAID = value
         End Set
     End Property
-    'Public Property DumpDir As String
-    '    Get
-    '        Return strDumpDir
-    '    End Get
-    '    Set(ByVal value As String)
-    '        strDumpDir = value
-    '    End Set
-    'End Property
     Public Property CardConfig As CardConfiguration
         Get
             Return ccfCardConfig

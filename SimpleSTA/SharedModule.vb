@@ -12,15 +12,17 @@ Public Module SharedModule
     Public switchDriver As New Ke37XX
     Public appDir As String
     ' Declare Enums for configuration settings
+    ' Because of a quirk of VB, a value of 0 for an enumerated variable is equivalent to Nothing, making validation difficult
+    ' When the CurrentRange and FilterType enums are used for direct input to the test system switch we must subtract 1
     Public Enum CurrentRange
-        one_uA = 0
-        ten_uA = 1
-        hundred_uA = 2
+        one_uA = 1
+        ten_uA = 2
+        hundred_uA = 3
     End Enum
     Public Enum FilterType
-        FILTER_REPEAT_AVG = 0
-        FILTER_MOVING_AVG = 1
-        FILTER_MEDIAN = 2
+        FILTER_REPEAT_AVG = 1
+        FILTER_MOVING_AVG = 2
+        FILTER_MEDIAN = 3
     End Enum
     Public Enum CardConfiguration
         ONE_CARD_SIXTEEN_SENSORS = 1
@@ -38,6 +40,9 @@ Public Module SharedModule
             Dim reader As New StreamReader(appDir & configFileName)
             config = serializer.Deserialize(reader)
             reader.Close()
+        Catch parseException As InvalidOperationException
+            MsgBox("Invalid configuration file.  Delete " & appDir & "\Config.xml and reload.")
+            frmMain.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -52,6 +57,37 @@ Public Module SharedModule
             GenericExceptionHandler(ex)
         End Try
     End Sub
+    Public Function verifyConfiguration() As Boolean
+        Dim verifies As Boolean = True
+        If (config.Bias = Nothing) Then
+            verifies = False
+        End If
+        If (config.RecordInterval = Nothing) Then
+            verifies = False
+        End If
+        If (config.Range = Nothing) Then
+            verifies = False
+        End If
+        If (config.Filter = Nothing) Then
+            verifies = False
+        End If
+        If (config.Samples = Nothing) Then
+            verifies = False
+        End If
+        If (config.NPLC = Nothing) Then
+            verifies = False
+        End If
+        If (config.Address = Nothing Or config.Address = "") Then
+            verifies = False
+        End If
+        If (config.STAID = Nothing Or config.STAID = "") Then
+            verifies = False
+        End If
+        If (config.CardConfig = Nothing) Then
+            verifies = False
+        End If
+        Return verifies
+    End Function
     ' As the name suggests, this is simply a wrapper for the System.DirectIO.WriteString method of the Ke37xx driver.
     Public Sub directIOWrapper(ByVal command As String)
         Try
@@ -87,5 +123,6 @@ Public Module SharedModule
     End Function
     Public Sub GenericExceptionHandler(ByVal theException As Exception)
         MsgBox(theException.Message & Environment.NewLine & theException.ToString)
+        MsgBox(theException.GetType.ToString())
     End Sub
 End Module

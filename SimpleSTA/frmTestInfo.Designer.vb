@@ -31,9 +31,6 @@ Partial Class frmTestInfo
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtTestName = New System.Windows.Forms.TextBox()
         Me.txtOperatorInitials = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.btnSelectFile = New System.Windows.Forms.Button()
-        Me.txtTestFile = New System.Windows.Forms.TextBox()
         Me.SlotOneTab = New System.Windows.Forms.TabPage()
         Me.txtCard1Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard1Col11 = New System.Windows.Forms.TextBox()
@@ -288,9 +285,6 @@ Partial Class frmTestInfo
         Me.TabOne.Controls.Add(Me.Label3)
         Me.TabOne.Controls.Add(Me.txtTestName)
         Me.TabOne.Controls.Add(Me.txtOperatorInitials)
-        Me.TabOne.Controls.Add(Me.Label2)
-        Me.TabOne.Controls.Add(Me.btnSelectFile)
-        Me.TabOne.Controls.Add(Me.txtTestFile)
         Me.TabOne.Location = New System.Drawing.Point(4, 22)
         Me.TabOne.Name = "TabOne"
         Me.TabOne.Padding = New System.Windows.Forms.Padding(3)
@@ -323,7 +317,7 @@ Partial Class frmTestInfo
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(144, 140)
+        Me.Label7.Location = New System.Drawing.Point(158, 63)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(88, 16)
         Me.Label7.TabIndex = 12
@@ -333,7 +327,7 @@ Partial Class frmTestInfo
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(109, 103)
+        Me.Label3.Location = New System.Drawing.Point(123, 26)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(122, 16)
         Me.Label3.TabIndex = 8
@@ -342,7 +336,7 @@ Partial Class frmTestInfo
         'txtTestName
         '
         Me.txtTestName.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTestName.Location = New System.Drawing.Point(241, 137)
+        Me.txtTestName.Location = New System.Drawing.Point(255, 60)
         Me.txtTestName.Name = "txtTestName"
         Me.txtTestName.Size = New System.Drawing.Size(184, 22)
         Me.txtTestName.TabIndex = 2
@@ -350,38 +344,10 @@ Partial Class frmTestInfo
         'txtOperatorInitials
         '
         Me.txtOperatorInitials.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtOperatorInitials.Location = New System.Drawing.Point(241, 100)
+        Me.txtOperatorInitials.Location = New System.Drawing.Point(255, 23)
         Me.txtOperatorInitials.Name = "txtOperatorInitials"
         Me.txtOperatorInitials.Size = New System.Drawing.Size(103, 22)
         Me.txtOperatorInitials.TabIndex = 1
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(65, 16)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(101, 16)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Save File To:"
-        '
-        'btnSelectFile
-        '
-        Me.btnSelectFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSelectFile.Location = New System.Drawing.Point(453, 35)
-        Me.btnSelectFile.Name = "btnSelectFile"
-        Me.btnSelectFile.Size = New System.Drawing.Size(26, 22)
-        Me.btnSelectFile.TabIndex = 5
-        Me.btnSelectFile.Text = "..."
-        Me.btnSelectFile.UseVisualStyleBackColor = True
-        '
-        'txtTestFile
-        '
-        Me.txtTestFile.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTestFile.Location = New System.Drawing.Point(68, 35)
-        Me.txtTestFile.Name = "txtTestFile"
-        Me.txtTestFile.Size = New System.Drawing.Size(379, 22)
-        Me.txtTestFile.TabIndex = 0
         '
         'SlotOneTab
         '
@@ -772,7 +738,7 @@ Partial Class frmTestInfo
         Me.SlotTwoTab.Location = New System.Drawing.Point(4, 22)
         Me.SlotTwoTab.Name = "SlotTwoTab"
         Me.SlotTwoTab.Padding = New System.Windows.Forms.Padding(3)
-        Me.SlotTwoTab.Size = New System.Drawing.Size(562, 523)
+        Me.SlotTwoTab.Size = New System.Drawing.Size(562, 439)
         Me.SlotTwoTab.TabIndex = 2
         Me.SlotTwoTab.Text = "Card 2"
         Me.SlotTwoTab.UseVisualStyleBackColor = True
@@ -1822,7 +1788,7 @@ Partial Class frmTestInfo
         Me.SlotFiveTab.Location = New System.Drawing.Point(4, 22)
         Me.SlotFiveTab.Name = "SlotFiveTab"
         Me.SlotFiveTab.Padding = New System.Windows.Forms.Padding(3)
-        Me.SlotFiveTab.Size = New System.Drawing.Size(562, 579)
+        Me.SlotFiveTab.Size = New System.Drawing.Size(562, 439)
         Me.SlotFiveTab.TabIndex = 5
         Me.SlotFiveTab.Text = "Card 5"
         Me.SlotFiveTab.UseVisualStyleBackColor = True
@@ -2172,7 +2138,7 @@ Partial Class frmTestInfo
         Me.SlotSixTab.Location = New System.Drawing.Point(4, 22)
         Me.SlotSixTab.Name = "SlotSixTab"
         Me.SlotSixTab.Padding = New System.Windows.Forms.Padding(3)
-        Me.SlotSixTab.Size = New System.Drawing.Size(562, 579)
+        Me.SlotSixTab.Size = New System.Drawing.Size(562, 439)
         Me.SlotSixTab.TabIndex = 6
         Me.SlotSixTab.Text = "Card 6"
         Me.SlotSixTab.UseVisualStyleBackColor = True
@@ -2734,7 +2700,4 @@ Partial Class frmTestInfo
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtTestName As System.Windows.Forms.TextBox
     Friend WithEvents txtOperatorInitials As System.Windows.Forms.TextBox
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents btnSelectFile As System.Windows.Forms.Button
-    Friend WithEvents txtTestFile As System.Windows.Forms.TextBox
 End Class

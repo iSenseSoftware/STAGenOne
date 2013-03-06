@@ -97,6 +97,12 @@
       <DependentUpon>frmConfig.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmPassword.Designer.vb">
+      <DependentUpon>frmPassword.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmPassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTestInfo.Designer.vb">
       <DependentUpon>frmTestInfo.vb</DependentUpon>
     </Compile>
@@ -141,6 +147,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPassword.resx">
+      <DependentUpon>frmPassword.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestForm.af-ZA.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>

@@ -1,8 +1,10 @@
-﻿Public Class frmTestInfo
+﻿Imports System.IO
+
+Public Class frmTestInfo
 
     Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            loadConfiguration()
+            'loadConfiguration()
             If (verifyConfiguration()) Then
                 frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
                 Dim options As String
@@ -52,9 +54,14 @@
 
     Private Sub btnCreateTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateTest.Click
         Try
-            updateTestFile()
-            frmTestForm.Show()
-            Me.Close()
+            If (File.Exists(config.DumpDirectory & Path.DirectorySeparatorChar & txtTestName.Text & ".xml")) Then
+                MsgBox("A file with that name already exists.  Choose a new name.")
+                txtTestName.SelectAll()
+            Else
+                updateTestFile()
+                frmTestForm.Show()
+                Me.Close()
+            End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -66,8 +73,7 @@
             currentTestFile.Config = config
             currentTestFile.OperatorID = Me.txtOperatorInitials.Text
             currentTestFile.Name = Me.txtTestName.Text
-            currentTestFile.DumpFile = Me.txtTestFile.Text
-
+            currentTestFile.DumpFile = config.DumpDirectory & Path.DirectorySeparatorChar & txtTestName.Text & ".xml"
             Select Case config.CardConfig
                 Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS
                     ' Add all sensors
@@ -432,40 +438,21 @@
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    ' Create a file select dialog so the user can choose the data dump location
-    Private Sub btnSelectFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSelectFile.Click
-        Try
-            SaveFileDialog1.Title = "Select location to save test file"
-            SaveFileDialog1.InitialDirectory = "C:\"
-            SaveFileDialog1.ValidateNames = True
-            SaveFileDialog1.DefaultExt = ".xml"
-            SaveFileDialog1.Filter = "XML Files (*.xml)|*.xml"
-            SaveFileDialog1.ShowDialog()
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-    Private Sub SaveFileDialog1_FileOK(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles SaveFileDialog1.FileOk
-        Try
-            txtTestFile.Text = SaveFileDialog1.FileName
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
     Private Function ValidateForm() As Boolean
         ' Check each field against its requirements and return true/false
         Try
             Dim boolValidates As Boolean = True
 
+            ' update to reflect file name being derived from config and given test name
             ' Check save file field to insure it is non-empty and a valid file path
-            If (System.IO.File.Exists(txtTestFile.Text)) Then
-                ' do nothing
-            Else
-                System.IO.File.Create(txtTestFile.Text)
-                If Not (System.IO.File.Exists(txtTestFile.Text)) Then
-                    boolValidates = False
-                End If
-            End If
+            'If (File.Exists(txtTestFile.Text)) Then
+            '    ' do nothing
+            'Else
+            '    File.Create(txtTestFile.Text)
+            '    If Not (File.Exists(txtTestFile.Text)) Then
+            '        boolValidates = False
+            '    End If
+            'End If
 
             ' Check that operator initials are alpha-only and non-empty
             Dim regexObj As New System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]*$")

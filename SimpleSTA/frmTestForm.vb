@@ -7,8 +7,6 @@ Imports Keithley.Ke37XX.Interop
 Imports System.Runtime.InteropServices
 
 Public Class frmTestForm
-    Dim lngSettling As Long = 20 ' The default settling time in milliseconds
-    Dim strConfigFileLocation As String
     Dim dblBias As Double
     Dim dblRecordInterval As Double
     Dim strCurrentRange As String
@@ -36,6 +34,7 @@ Public Class frmTestForm
                 boolIsTestRunning = False
                 btnStartTest.Text = "Test Complete"
                 btnStartTest.Enabled = False
+                btnNoteInjection.Enabled = False
             Else
                 boolIsTestRunning = True
                 btnStartTest.Text = "Stop"
@@ -51,32 +50,6 @@ Public Class frmTestForm
             If (switchDriver.Initialized) Then
                 switchDriver.Close()
             End If
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-    Public Sub OpenFile(ByVal openFileName As String)
-        Try
-            ' Set the testFile to the file to be opened
-            currentTestFile = TestFile.testFileFactory(openFileName)
-            ' If a test is still running, terminate it
-            boolIsTestRunning = False
-            ' Hide the Start/Stop buttons
-            btnStartTest.Hide()
-            btnNoteInjection.Hide()
-            prepareForm()
-            populateSeries()
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-    Private Sub populateSeries()
-        Try
-            For Each aSensor As Sensor In currentTestFile.Sensors
-                For Each aReading As Reading In aSensor.Readings
-                    TestChart.Series(aSensor.SensorID).Points.AddXY(aReading.Time, aReading.Current)
-                Next
-            Next
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -257,10 +230,7 @@ Public Class frmTestForm
             Next
 
             ' Add backplane relay channels as well
-            ' @TODO: After hardware change to utilize backplane for card 1, the cardCount > 1 condition must be removed
-            Dim cardCount As Integer = currentTestFile.Sensors.Length / 16
-            ''Debug.Print(cardCount)
-            ''If (cardCount > 1) Then
+            Dim cardCount As Integer = config.CardConfig
             For x As Integer = 1 To cardCount
                 channelString = channelString & "," & x & "911," & x & "912"
             Next
@@ -301,7 +271,7 @@ Public Class frmTestForm
                     directIOWrapper("node[1].channel.close('" & currentTestFile.Sensors(z).Slot & "2" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
                     Debug.Print("node[1].channel.close('" & currentTestFile.Sensors(z).Slot & "2" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
                     ' 3. Allow settling time
-                    Delay(lngSettling)
+                    Delay(config.SettlingTime)
                     ' 4. Record V and I readings to buffer
                     theTime = DateTime.Now()
                     directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")

@@ -17,7 +17,24 @@ Public Class Configuration
     Dim strAddress As String
     Dim strSTAID As String
     Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
-
+    Dim strDumpDirectory As String = appDir & Path.DirectorySeparatorChar & "RawTestData"
+    Dim intSettlingTime As Integer = 20
+    Public Property SettlingTime As Integer
+        Get
+            Return intSettlingTime
+        End Get
+        Set(value As Integer)
+            intSettlingTime = value
+        End Set
+    End Property
+    Public Property DumpDirectory As String
+        Get
+            Return strDumpDirectory
+        End Get
+        Set(value As String)
+            strDumpDirectory = value
+        End Set
+    End Property
     Public Property Bias() As Double
         Get
             Return dblBias

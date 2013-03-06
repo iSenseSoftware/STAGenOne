@@ -4,20 +4,34 @@ Imports System.Xml.Serialization
 Imports SimpleSTA.SharedModule
 Public Class frmConfig
     Dim errors As String()
-
+    Private boolLocked As Boolean = True
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
-            saveConfiguration()
-            Me.Close()
-            If (verifyConfiguration()) Then
-                frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
+            If (boolLocked) Then
+                frmPassword.Show()
             Else
-                frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+                saveConfiguration()
+                Me.Close()
+                If (verifyConfiguration()) Then
+                    frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
+                Else
+                    frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+                End If
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
     End Sub
+    Public Function validatePassword(password As String) As Boolean
+        If (password = strAdminPassword) Then
+            boolLocked = False
+            EnableControls()
+            btnSave.Text = "Save"
+            Return True
+        Else
+            Return False
+        End If
+    End Function
 
     Private Sub frmConfig_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
@@ -33,13 +47,21 @@ Public Class frmConfig
             Dim cardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
             cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
             cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
-            'cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
-            'cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
-            'cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
-            'cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
             cmbCardConfig.DataSource = cardConfigList
             cmbCardConfig.ValueMember = "Key"
             cmbCardConfig.DisplayMember = "Value"
+
+            Dim filterTypeList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Average"))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Average"))
+            cmbFilterType.DataSource = filterTypeList
+            cmbFilterType.ValueMember = "Key"
+            cmbFilterType.DisplayMember = "Value"
 
             populateConfigurationForm()
         Catch ex As Exception
@@ -51,9 +73,16 @@ Public Class frmConfig
         Try
             loadConfiguration()
             cmbRange.SelectedValue = config.Range
+            cmbCardConfig.SelectedValue = config.CardConfig
+            cmbFilterType.SelectedValue = config.Filter
             txtAddress.Text = config.Address
             txtSTAID.Text = config.STAID
-            cmbCardConfig.SelectedValue = config.CardConfig
+            txtBias.Text = config.Bias
+            txtInterval.Text = config.RecordInterval
+            txtNPLC.Text = config.NPLC
+            txtSamples.Text = config.Samples
+            txtDumpDir.Text = config.DumpDirectory
+            txtSettlingTime.Text = config.SettlingTime
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -68,6 +97,13 @@ Public Class frmConfig
                 config.Address = txtAddress.Text
                 config.STAID = txtSTAID.Text
                 config.CardConfig = cmbCardConfig.SelectedValue
+                config.Bias = txtBias.Text
+                config.RecordInterval = txtInterval.Text
+                config.Samples = txtSamples.Text
+                config.DumpDirectory = txtDumpDir.Text
+                config.NPLC = txtNPLC.Text
+                config.Filter = cmbFilterType.SelectedValue
+                config.SettlingTime = txtSettlingTime.Text
                 serializer.Serialize(writer, config)
                 writer.Close()
             Else
@@ -113,5 +149,32 @@ Public Class frmConfig
             Return False
         End Try
     End Function
+    Private Sub btnSelectFile_Click(sender As Object, e As EventArgs) Handles btnSelectFile.Click
+        Try
+            FolderBrowserDialog1.Description = "Select test data default directory"
+            FolderBrowserDialog1.ShowNewFolderButton = True
+            Dim dlgResult As DialogResult = FolderBrowserDialog1.ShowDialog()
 
+            If dlgResult = Windows.Forms.DialogResult.OK Then
+                txtDumpDir.Text = FolderBrowserDialog1.SelectedPath
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Private Sub EnableControls()
+        ' enable all controls after password check has been passed
+        txtAddress.Enabled = True
+        txtBias.Enabled = True
+        txtDumpDir.Enabled = True
+        txtInterval.Enabled = True
+        txtNPLC.Enabled = True
+        txtSamples.Enabled = True
+        txtSTAID.Enabled = True
+        txtSettlingTime.Enabled = True
+        cmbCardConfig.Enabled = True
+        cmbFilterType.Enabled = True
+        cmbRange.Enabled = True
+        btnSelectFile.Enabled = True
+    End Sub
 End Class

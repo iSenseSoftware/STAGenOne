@@ -6,11 +6,13 @@ Imports Keithley.Ke37XX.Interop
 ' and global variables for use in all objects and forms
 Public Module SharedModule
     Public Const configFileName As String = "\Config.xml"
-    'Public dataBuddy As New CrudBuddy
     Public config As New Configuration
     Public currentTestFile As New TestFile
     Public switchDriver As New Ke37XX
     Public appDir As String
+    ' The admin password to unlock the configuration settings is hardcoded.  In the future
+    ' it may be desireable to incorporate user authentication / authorization modules for granular permissions
+    Public strAdminPassword As String = "C0balt22"
     ' Declare Enums for configuration settings
     ' Because of a quirk of VB, a value of 0 for an enumerated variable is equivalent to Nothing, making validation difficult
     ' When the CurrentRange and FilterType enums are used for direct input to the test system switch we must subtract 1

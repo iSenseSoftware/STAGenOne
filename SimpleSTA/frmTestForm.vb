@@ -140,12 +140,12 @@ Public Class frmTestForm
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            MsgBox("Preparing to perform channel audit check.  Make sure all fixtures are open before proceeding", vbOKOnly)
+            MsgBox("Preparing to perform system self check.  Make sure all fixtures are open before proceeding", vbOKOnly)
             currentTestFile.AuditCheck = New AuditCheck
             RunAuditCheck()
             currentTestFile.AuditCheck.Validate()
             If (currentTestFile.AuditCheck.Pass) Then
-                MsgBox("Continuity Check successful!")
+                MsgBox("Self check successful!")
                 boolIsTestRunning = False
                 btnStartTest.Show()
                 btnNoteInjection.Show()
@@ -171,7 +171,7 @@ Public Class frmTestForm
                 directIOWrapper("node[2].display.clear()")
                 directIOWrapper("node[2].display.settext('Ready to test')")
             Else
-                MsgBox("Calibration check failed!")
+                MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
                 Me.Close()
             End If
         Catch ex As COMException

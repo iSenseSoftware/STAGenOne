@@ -443,17 +443,6 @@ Public Class frmTestInfo
         Try
             Dim boolValidates As Boolean = True
 
-            ' update to reflect file name being derived from config and given test name
-            ' Check save file field to insure it is non-empty and a valid file path
-            'If (File.Exists(txtTestFile.Text)) Then
-            '    ' do nothing
-            'Else
-            '    File.Create(txtTestFile.Text)
-            '    If Not (File.Exists(txtTestFile.Text)) Then
-            '        boolValidates = False
-            '    End If
-            'End If
-
             ' Check that operator initials are alpha-only and non-empty
             Dim regexObj As New System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]*$")
             If Not (regexObj.IsMatch(txtOperatorInitials.Text)) Then

@@ -127,4 +127,7 @@ Public Module SharedModule
         MsgBox(theException.Message & Environment.NewLine & theException.ToString)
         MsgBox(theException.GetType.ToString())
     End Sub
+    Public Function GetBestDynamicRange(maxCurrent As Double) As CurrentRange
+        Return CurrentRange.one_uA
+    End Function
 End Module

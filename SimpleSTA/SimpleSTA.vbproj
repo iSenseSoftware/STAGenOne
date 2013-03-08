@@ -89,18 +89,21 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuditChannel.vb" />
+    <Compile Include="AuditCheck.vb" />
+    <Compile Include="AuditReading.vb" />
     <Compile Include="Configuration.vb" />
+    <Compile Include="frmAuditStatus.Designer.vb">
+      <DependentUpon>frmAuditStatus.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAuditStatus.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmPassword.Designer.vb">
-      <DependentUpon>frmPassword.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmPassword.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTestInfo.Designer.vb">
@@ -142,14 +145,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAuditStatus.resx">
+      <DependentUpon>frmAuditStatus.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmPassword.resx">
-      <DependentUpon>frmPassword.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestForm.af-ZA.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>

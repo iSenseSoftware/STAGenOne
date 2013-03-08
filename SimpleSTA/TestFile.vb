@@ -25,6 +25,15 @@ Public Class TestFile
     Dim strCardFourID As String 'The serial number for the slot 4 matrix card
     Dim strCardFiveID As String 'The serial number for the slot 5 matrix card
     Dim strCardSixID As String 'The serial number for the slot 6 matrix card
+    Dim acAuditCheck As AuditCheck
+    Public Property AuditCheck As AuditCheck
+        Get
+            Return acAuditCheck
+        End Get
+        Set(value As AuditCheck)
+            acAuditCheck = value
+        End Set
+    End Property
     Public ReadOnly Property ID As Long
         Get
             Return databaseId

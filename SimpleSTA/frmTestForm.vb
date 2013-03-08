@@ -5,6 +5,7 @@ Imports Keithley.Ke37XX
 Imports Ivi.Driver.Interop
 Imports Keithley.Ke37XX.Interop
 Imports System.Runtime.InteropServices
+Imports System.Xml.Serialization
 
 Public Class frmTestForm
     Dim dblBias As Double
@@ -139,33 +140,40 @@ Public Class frmTestForm
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            boolIsTestRunning = False
-            btnStartTest.Show()
-            btnNoteInjection.Show()
-            ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
-            BackgroundWorker1.WorkerReportsProgress = True
-            
-            switchDriver.TspLink.Reset()
-            If (switchDriver.Initialized) Then
-                directIOWrapper("print(localnode.serialno)")
-                Dim serialNo As String
-                serialNo = switchDriver.System.DirectIO.ReadString()
-                currentTestFile.SwitchSerial = serialNo
-                switchDriver.System.DirectIO.FlushRead()
-                directIOWrapper("print(node[2].serialno)")
-                serialNo = switchDriver.System.DirectIO.ReadString()
-                currentTestFile.SourceMeterSerial = serialNo
-                prepareForm()
+            MsgBox("Preparing to perform channel audit check.  Make sure all fixtures are open before proceeding", vbOKOnly)
+            currentTestFile.AuditCheck = New AuditCheck
+            RunAuditCheck()
+            currentTestFile.AuditCheck.Validate()
+            If (currentTestFile.AuditCheck.Pass) Then
+                MsgBox("Continuity Check successful!")
+                boolIsTestRunning = False
+                btnStartTest.Show()
+                btnNoteInjection.Show()
+                ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
+                BackgroundWorker1.WorkerReportsProgress = True
+
+                'switchDriver.TspLink.Reset()
+                If (switchDriver.Initialized) Then
+                    directIOWrapper("print(localnode.serialno)")
+                    Dim serialNo As String
+                    serialNo = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.SwitchSerial = serialNo
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(node[2].serialno)")
+                    serialNo = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.SourceMeterSerial = serialNo
+                    prepareForm()
+                Else
+                    Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
+                End If
+
+                ' Clear the source meter display and update the user
+                directIOWrapper("node[2].display.clear()")
+                directIOWrapper("node[2].display.settext('Ready to test')")
             Else
-                Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
+                MsgBox("Calibration check failed!")
+                Me.Close()
             End If
-
-            ' Reset the TSPLink network between the devices
-
-            ' Clear the source meter display and update the user
-            directIOWrapper("node[2].display.clear()")
-            directIOWrapper("node[2].display.settext('Ready to test')")
-
         Catch ex As COMException
             MsgBox(ex.ErrorCode & " " & ex.ToString)
             Dim errMessage As String = ""
@@ -185,8 +193,6 @@ Public Class frmTestForm
     '        to distribute the measurement work among several SMU/DMMs
     Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
         Try
-            ' Start with all intersections open
-            switchDriver.Channel.OpenAll()
             ' set both SMU channels to DC volts
             ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
             directIOWrapper("node[2].smua.source.func = 1")
@@ -238,7 +244,7 @@ Public Class frmTestForm
             directIOWrapper("node[2].display.reset()")
             ' close all relays in row 1
             directIOWrapper("node[1].channel.exclusiveclose('" & channelString & "')")
-            Debug.Print(channelString)
+            Debug.Print("Initial Close: " & channelString)
             ' Configure the DMM
             directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
             directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
@@ -312,7 +318,7 @@ Public Class frmTestForm
         End Try
     End Sub
     ' This function is triggered by backgroundworker1.  Because it runs in the main thread we can use it to update the chart object
-    Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged 
+    Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
         Try
             If (e.ProgressPercentage = 10) Then
                 TestChart.Update()
@@ -341,7 +347,7 @@ Public Class frmTestForm
         End Try
     End Sub
 
-    
+
     ' This method requires the series names to be the same as their legend entries
     Private Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
         ' Call hit test method
@@ -505,5 +511,106 @@ Public Class frmTestForm
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
         txtTime.Text = "Time Elapsed: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+    End Sub
+
+    Private Sub RunAuditCheck()
+        Try
+            ' Start with all intersections open
+            switchDriver.Channel.OpenAll()
+            switchDriver.TspLink.Reset()
+            ' set both SMU channels to DC volts
+            ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
+            directIOWrapper("node[2].smub.source.func = 1")
+            ' Set the bias for both channels based on the value in config
+            directIOWrapper("node[2].smub.source.levelv = " & config.Bias)
+            ' Range is hard-coded to 1.  Does this need to be a config setting in the future?
+            directIOWrapper("node[2].smub.source.rangev = 1")
+            ' disable autorange for both output channels
+            directIOWrapper("node[2].smub.source.autorangei = 0")
+            Dim i As Integer = 1
+            Dim z As Integer = 1
+            Dim aChannel As New AuditChannel
+            For i = 1 To config.CardConfig
+                For z = 1 To 16
+                    currentTestFile.AuditCheck.AddChannel(aChannel.ChannelFactory(i, z))
+                Next
+            Next
+
+            directIOWrapper("node[2].smub.source.output = 1")
+
+            ' Set connection rule to "make before break"
+            ' @TODO: This is the setting from the old software.  Should this be changed?
+            directIOWrapper("node[1].channel.connectrule = 2")
+            directIOWrapper("node[2].display.reset()")
+            ' Configure the DMM
+            directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
+            directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
+            directIOWrapper("node[2].smua.measure.filter.count = " & config.Samples)
+            directIOWrapper("node[2].smub.measure.filter.count = " & config.Samples)
+            directIOWrapper("node[2].smua.measure.filter.enable = 1")
+            directIOWrapper("node[2].smub.measure.filter.enable = 1")
+            directIOWrapper("node[2].smua.measure.nplc = " & config.NPLC)
+            directIOWrapper("node[2].smub.measure.nplc = " & config.NPLC)
+            ' Clear the non-volatile measurement buffers
+            directIOWrapper("node[2].smub.nvbuffer1.clear()")
+            directIOWrapper("node[2].smub.nvbuffer2.clear()")
+            directIOWrapper("node[2].smub.source.rangei = .00001")
+
+            For Each aChannel In currentTestFile.AuditCheck.AuditChannels
+                'Take readings from first resistor
+                Dim row As Integer = 3
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
+                Delay(config.SettlingTime)
+                Delay(config.SettlingTime)
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                Dim current As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                Dim volts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                Dim aReading As New AuditReading
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor1Resistance, row))
+
+                'Take readings from second resistor
+                row = 4
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                current = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                volts = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor2Resistance, row))
+
+                'Take readings from third resistor
+                row = 5
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                current = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                volts = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor3Resistance, row))
+            Next
+            directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+        Catch ex As COMException
+            MsgBox(ex.ErrorCode & " " & ex.ToString)
+            Dim errMessage As String = ""
+            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
+            MsgBox(errMessage)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 End Class

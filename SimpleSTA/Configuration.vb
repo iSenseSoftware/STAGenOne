@@ -19,6 +19,42 @@ Public Class Configuration
     Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
     Dim strDumpDirectory As String = appDir & Path.DirectorySeparatorChar & "RawTestData"
     Dim intSettlingTime As Integer = 20
+    Dim dblResistor1NominalResistance As Double = 10 ^ 8    '1 megaohm
+    Dim dblResistor2NominalResistance As Double = 10 ^ 7    '10 megaohm
+    Dim dblResistor3NominalResistance As Double = 10 ^ 6    '100 megaohm
+    Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
+    Public Property AuditTolerance As Double
+        Get
+            Return dblAuditCheckTolerance
+        End Get
+        Set(value As Double)
+            dblAuditCheckTolerance = value
+        End Set
+    End Property
+    Public Property Resistor1Resistance As Double
+        Get
+            Return dblResistor1NominalResistance
+        End Get
+        Set(value As Double)
+            dblResistor1NominalResistance = value
+        End Set
+    End Property
+    Public Property Resistor2Resistance As Double
+        Get
+            Return dblResistor2NominalResistance
+        End Get
+        Set(value As Double)
+            dblResistor2NominalResistance = value
+        End Set
+    End Property
+    Public Property Resistor3Resistance As Double
+        Get
+            Return dblResistor3NominalResistance
+        End Get
+        Set(value As Double)
+            dblResistor3NominalResistance = value
+        End Set
+    End Property
     Public Property SettlingTime As Integer
         Get
             Return intSettlingTime

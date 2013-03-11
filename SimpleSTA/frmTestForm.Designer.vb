@@ -24,9 +24,9 @@ Partial Class frmTestForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTestForm))
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
         Me.MainStrip = New System.Windows.Forms.MenuStrip()
         Me.BackgroundWorker1 = New System.ComponentModel.BackgroundWorker()
@@ -49,22 +49,24 @@ Partial Class frmTestForm
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.flwInjections = New System.Windows.Forms.FlowLayoutPanel()
         Me.txtTestName = New System.Windows.Forms.Label()
+        Me.txtOperator = New System.Windows.Forms.Label()
+        Me.txtTimeSinceInjection = New System.Windows.Forms.Label()
+        Me.txtInjections = New System.Windows.Forms.Label()
         Me.btnStartTest = New System.Windows.Forms.Button()
         Me.btnNoteInjection = New System.Windows.Forms.Button()
         Me.HideShowSensors = New System.Windows.Forms.FlowLayoutPanel()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.txtOperator = New System.Windows.Forms.Label()
-        Me.txtTime = New System.Windows.Forms.Label()
-        Me.flwInjections = New System.Windows.Forms.FlowLayoutPanel()
-        Me.txtInjections = New System.Windows.Forms.Label()
         Me.ElapsedTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.txtTime = New System.Windows.Forms.Label()
+        Me.InjectionTimer = New System.Windows.Forms.Timer(Me.components)
         CType(Me.TestChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel1.SuspendLayout()
         Me.Panel4.SuspendLayout()
         Me.Panel2.SuspendLayout()
-        Me.HideShowSensors.SuspendLayout()
         Me.flwInjections.SuspendLayout()
+        Me.HideShowSensors.SuspendLayout()
         Me.SuspendLayout()
         '
         'ToolStrip1
@@ -82,16 +84,16 @@ Partial Class frmTestForm
         '
         'TestChart
         '
-        ChartArea1.Name = "ChartArea1"
-        Me.TestChart.ChartAreas.Add(ChartArea1)
+        ChartArea3.Name = "ChartArea1"
+        Me.TestChart.ChartAreas.Add(ChartArea3)
         resources.ApplyResources(Me.TestChart, "TestChart")
-        Legend1.Name = "Legend1"
-        Me.TestChart.Legends.Add(Legend1)
+        Legend3.Name = "Legend1"
+        Me.TestChart.Legends.Add(Legend3)
         Me.TestChart.Name = "TestChart"
-        Series1.ChartArea = "ChartArea1"
-        Series1.Legend = "Legend1"
-        Series1.Name = "Series1"
-        Me.TestChart.Series.Add(Series1)
+        Series3.ChartArea = "ChartArea1"
+        Series3.Legend = "Legend1"
+        Series3.Name = "Series1"
+        Me.TestChart.Series.Add(Series3)
         '
         'Panel1
         '
@@ -209,11 +211,39 @@ Partial Class frmTestForm
         resources.ApplyResources(Me.Panel2, "Panel2")
         Me.Panel2.Name = "Panel2"
         '
+        'flwInjections
+        '
+        Me.flwInjections.Controls.Add(Me.txtTestName)
+        Me.flwInjections.Controls.Add(Me.txtOperator)
+        Me.flwInjections.Controls.Add(Me.txtTime)
+        Me.flwInjections.Controls.Add(Me.txtTimeSinceInjection)
+        Me.flwInjections.Controls.Add(Me.txtInjections)
+        resources.ApplyResources(Me.flwInjections, "flwInjections")
+        Me.flwInjections.Name = "flwInjections"
+        '
         'txtTestName
         '
         resources.ApplyResources(Me.txtTestName, "txtTestName")
         Me.flwInjections.SetFlowBreak(Me.txtTestName, True)
         Me.txtTestName.Name = "txtTestName"
+        '
+        'txtOperator
+        '
+        resources.ApplyResources(Me.txtOperator, "txtOperator")
+        Me.flwInjections.SetFlowBreak(Me.txtOperator, True)
+        Me.txtOperator.Name = "txtOperator"
+        '
+        'txtTimeSinceInjection
+        '
+        resources.ApplyResources(Me.txtTimeSinceInjection, "txtTimeSinceInjection")
+        Me.flwInjections.SetFlowBreak(Me.txtTimeSinceInjection, True)
+        Me.txtTimeSinceInjection.Name = "txtTimeSinceInjection"
+        '
+        'txtInjections
+        '
+        resources.ApplyResources(Me.txtInjections, "txtInjections")
+        Me.flwInjections.SetFlowBreak(Me.txtInjections, True)
+        Me.txtInjections.Name = "txtInjections"
         '
         'btnStartTest
         '
@@ -238,11 +268,10 @@ Partial Class frmTestForm
         resources.ApplyResources(Me.Label7, "Label7")
         Me.Label7.Name = "Label7"
         '
-        'txtOperator
+        'ElapsedTimer
         '
-        resources.ApplyResources(Me.txtOperator, "txtOperator")
-        Me.flwInjections.SetFlowBreak(Me.txtOperator, True)
-        Me.txtOperator.Name = "txtOperator"
+        Me.ElapsedTimer.Enabled = True
+        Me.ElapsedTimer.Interval = 1000
         '
         'txtTime
         '
@@ -250,25 +279,10 @@ Partial Class frmTestForm
         Me.flwInjections.SetFlowBreak(Me.txtTime, True)
         Me.txtTime.Name = "txtTime"
         '
-        'flwInjections
+        'InjectionTimer
         '
-        Me.flwInjections.Controls.Add(Me.txtTestName)
-        Me.flwInjections.Controls.Add(Me.txtOperator)
-        Me.flwInjections.Controls.Add(Me.txtTime)
-        Me.flwInjections.Controls.Add(Me.txtInjections)
-        resources.ApplyResources(Me.flwInjections, "flwInjections")
-        Me.flwInjections.Name = "flwInjections"
-        '
-        'txtInjections
-        '
-        resources.ApplyResources(Me.txtInjections, "txtInjections")
-        Me.flwInjections.SetFlowBreak(Me.txtInjections, True)
-        Me.txtInjections.Name = "txtInjections"
-        '
-        'ElapsedTimer
-        '
-        Me.ElapsedTimer.Enabled = True
-        Me.ElapsedTimer.Interval = 1000
+        Me.InjectionTimer.Enabled = True
+        Me.InjectionTimer.Interval = 1000
         '
         'frmTestForm
         '
@@ -286,10 +300,10 @@ Partial Class frmTestForm
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         Me.Panel2.ResumeLayout(False)
-        Me.HideShowSensors.ResumeLayout(False)
-        Me.HideShowSensors.PerformLayout()
         Me.flwInjections.ResumeLayout(False)
         Me.flwInjections.PerformLayout()
+        Me.HideShowSensors.ResumeLayout(False)
+        Me.HideShowSensors.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -323,7 +337,9 @@ Partial Class frmTestForm
     Friend WithEvents txtTestName As System.Windows.Forms.Label
     Friend WithEvents txtInjections As System.Windows.Forms.Label
     Friend WithEvents flwInjections As System.Windows.Forms.FlowLayoutPanel
-    Friend WithEvents txtTime As System.Windows.Forms.Label
+    Friend WithEvents txtTimeSinceInjection As System.Windows.Forms.Label
     Friend WithEvents txtOperator As System.Windows.Forms.Label
     Friend WithEvents ElapsedTimer As System.Windows.Forms.Timer
+    Friend WithEvents txtTime As System.Windows.Forms.Label
+    Friend WithEvents InjectionTimer As System.Windows.Forms.Timer
 End Class

@@ -83,6 +83,10 @@ Public Class frmConfig
             txtSamples.Text = config.Samples
             txtDumpDir.Text = config.DumpDirectory
             txtSettlingTime.Text = config.SettlingTime
+            txtRow3Resistor.Text = config.Resistor1Resistance / 10 ^ 6
+            txtRow4Resistor.Text = config.Resistor2Resistance / 10 ^ 6
+            txtRow5Resistor.Text = config.Resistor3Resistance / 10 ^ 6
+            txtTolerance.Text = config.AuditTolerance * 100
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -97,13 +101,17 @@ Public Class frmConfig
                 config.Address = txtAddress.Text
                 config.STAID = txtSTAID.Text
                 config.CardConfig = cmbCardConfig.SelectedValue
-                config.Bias = txtBias.Text
-                config.RecordInterval = txtInterval.Text
+                config.Bias = CDbl(txtBias.Text)
+                config.RecordInterval = CDbl(txtInterval.Text)
                 config.Samples = txtSamples.Text
                 config.DumpDirectory = txtDumpDir.Text
                 config.NPLC = txtNPLC.Text
                 config.Filter = cmbFilterType.SelectedValue
                 config.SettlingTime = txtSettlingTime.Text
+                config.Resistor1Resistance = CDbl(txtRow3Resistor.Text) * 10 ^ 6
+                config.Resistor2Resistance = CDbl(txtRow4Resistor.Text) * 10 ^ 6
+                config.Resistor3Resistance = CDbl(txtRow5Resistor.Text) * 10 ^ 6
+                config.AuditTolerance = CDbl(txtTolerance.Text) / 100
                 serializer.Serialize(writer, config)
                 writer.Close()
             Else
@@ -176,5 +184,9 @@ Public Class frmConfig
         cmbFilterType.Enabled = True
         cmbRange.Enabled = True
         btnSelectFile.Enabled = True
+        txtRow3Resistor.Enabled = True
+        txtRow4Resistor.Enabled = True
+        txtRow5Resistor.Enabled = True
+        txtTolerance.Enabled = True
     End Sub
 End Class

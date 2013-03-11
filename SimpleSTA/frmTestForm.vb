@@ -28,6 +28,7 @@ Public Class frmTestForm
     Dim strOpenFileName As String
     Dim boolColorsSet As Boolean = False
     Dim totalTime As New Stopwatch
+    Dim injectionTime As New Stopwatch
 
     Private Sub btnStartTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnStartTest.Click
         Try
@@ -341,6 +342,11 @@ Public Class frmTestForm
             Dim txtNewInjection As New Label
             txtNewInjection.Text = strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
             flwInjections.Controls.Add(txtNewInjection)
+            If (injectionTime.IsRunning) Then
+                injectionTime.Restart()
+            Else
+                injectionTime.Start()
+            End If
             MsgBox("Injection noted", vbOKOnly)
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -510,9 +516,11 @@ Public Class frmTestForm
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
-        txtTime.Text = "Time Elapsed: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+        txtTime.Text = "Total Time: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
     End Sub
-
+    Private Sub InjectionTimer_Tick(sender As Object, e As EventArgs) Handles InjectionTimer.Tick
+        txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
+    End Sub
     Private Sub RunAuditCheck()
         Try
             ' Start with all intersections open
@@ -613,4 +621,6 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
+
+    
 End Class

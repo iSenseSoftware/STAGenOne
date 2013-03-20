@@ -32,6 +32,7 @@ Partial Class frmTestInfo
         Me.txtTestName = New System.Windows.Forms.TextBox()
         Me.txtOperatorInitials = New System.Windows.Forms.TextBox()
         Me.SlotOneTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard1 = New System.Windows.Forms.CheckBox()
         Me.txtCard1Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard1Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard1Col12 = New System.Windows.Forms.TextBox()
@@ -67,6 +68,7 @@ Partial Class frmTestInfo
         Me.Label14 = New System.Windows.Forms.Label()
         Me.txtCard1Batch = New System.Windows.Forms.TextBox()
         Me.SlotTwoTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard2 = New System.Windows.Forms.CheckBox()
         Me.txtCard2Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard2Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard2Col12 = New System.Windows.Forms.TextBox()
@@ -102,6 +104,7 @@ Partial Class frmTestInfo
         Me.Label47 = New System.Windows.Forms.Label()
         Me.txtCard2Batch = New System.Windows.Forms.TextBox()
         Me.SlotThreeTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard3 = New System.Windows.Forms.CheckBox()
         Me.txtCard3Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard3Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard3Col12 = New System.Windows.Forms.TextBox()
@@ -137,6 +140,7 @@ Partial Class frmTestInfo
         Me.Label64 = New System.Windows.Forms.Label()
         Me.txtCard3Batch = New System.Windows.Forms.TextBox()
         Me.SlotFourTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard4 = New System.Windows.Forms.CheckBox()
         Me.txtCard4Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard4Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard4Col12 = New System.Windows.Forms.TextBox()
@@ -172,6 +176,7 @@ Partial Class frmTestInfo
         Me.Label81 = New System.Windows.Forms.Label()
         Me.txtCard4Batch = New System.Windows.Forms.TextBox()
         Me.SlotFiveTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard5 = New System.Windows.Forms.CheckBox()
         Me.txtCard5Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard5Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard5Col12 = New System.Windows.Forms.TextBox()
@@ -207,6 +212,7 @@ Partial Class frmTestInfo
         Me.Label98 = New System.Windows.Forms.Label()
         Me.txtCard5Batch = New System.Windows.Forms.TextBox()
         Me.SlotSixTab = New System.Windows.Forms.TabPage()
+        Me.chkSameCard6 = New System.Windows.Forms.CheckBox()
         Me.txtCard6Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard6Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard6Col12 = New System.Windows.Forms.TextBox()
@@ -351,6 +357,7 @@ Partial Class frmTestInfo
         '
         'SlotOneTab
         '
+        Me.SlotOneTab.Controls.Add(Me.chkSameCard1)
         Me.SlotOneTab.Controls.Add(Me.txtCard1Col10)
         Me.SlotOneTab.Controls.Add(Me.txtCard1Col11)
         Me.SlotOneTab.Controls.Add(Me.txtCard1Col12)
@@ -393,6 +400,16 @@ Partial Class frmTestInfo
         Me.SlotOneTab.Text = "Card 1"
         Me.SlotOneTab.UseVisualStyleBackColor = True
         '
+        'chkSameCard1
+        '
+        Me.chkSameCard1.AutoSize = True
+        Me.chkSameCard1.Location = New System.Drawing.Point(404, 23)
+        Me.chkSameCard1.Name = "chkSameCard1"
+        Me.chkSameCard1.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard1.TabIndex = 34
+        Me.chkSameCard1.Text = "Same for all cards"
+        Me.chkSameCard1.UseVisualStyleBackColor = True
+        '
         'txtCard1Col10
         '
         Me.txtCard1Col10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -400,6 +417,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col10.Name = "txtCard1Col10"
         Me.txtCard1Col10.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col10.TabIndex = 10
+        Me.txtCard1Col10.Text = "10"
         '
         'txtCard1Col11
         '
@@ -408,6 +426,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col11.Name = "txtCard1Col11"
         Me.txtCard1Col11.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col11.TabIndex = 11
+        Me.txtCard1Col11.Text = "11"
         '
         'txtCard1Col12
         '
@@ -416,6 +435,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col12.Name = "txtCard1Col12"
         Me.txtCard1Col12.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col12.TabIndex = 12
+        Me.txtCard1Col12.Text = "12"
         '
         'txtCard1Col13
         '
@@ -424,6 +444,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col13.Name = "txtCard1Col13"
         Me.txtCard1Col13.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col13.TabIndex = 13
+        Me.txtCard1Col13.Text = "13"
         '
         'txtCard1Col15
         '
@@ -432,6 +453,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col15.Name = "txtCard1Col15"
         Me.txtCard1Col15.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col15.TabIndex = 15
+        Me.txtCard1Col15.Text = "15"
         '
         'txtCard1Col16
         '
@@ -440,6 +462,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col16.Name = "txtCard1Col16"
         Me.txtCard1Col16.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col16.TabIndex = 16
+        Me.txtCard1Col16.Text = "16"
         '
         'txtCard1Col14
         '
@@ -448,6 +471,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col14.Name = "txtCard1Col14"
         Me.txtCard1Col14.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col14.TabIndex = 14
+        Me.txtCard1Col14.Text = "14"
         '
         'txtCard1Col9
         '
@@ -456,6 +480,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col9.Name = "txtCard1Col9"
         Me.txtCard1Col9.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col9.TabIndex = 9
+        Me.txtCard1Col9.Text = "9"
         '
         'Label16
         '
@@ -544,6 +569,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col2.Name = "txtCard1Col2"
         Me.txtCard1Col2.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col2.TabIndex = 2
+        Me.txtCard1Col2.Text = "2"
         '
         'txtCard1Col3
         '
@@ -552,6 +578,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col3.Name = "txtCard1Col3"
         Me.txtCard1Col3.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col3.TabIndex = 3
+        Me.txtCard1Col3.Text = "3"
         '
         'txtCard1Col4
         '
@@ -560,6 +587,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col4.Name = "txtCard1Col4"
         Me.txtCard1Col4.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col4.TabIndex = 4
+        Me.txtCard1Col4.Text = "4"
         '
         'txtCard1Col5
         '
@@ -568,6 +596,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col5.Name = "txtCard1Col5"
         Me.txtCard1Col5.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col5.TabIndex = 5
+        Me.txtCard1Col5.Text = "5"
         '
         'txtCard1Col7
         '
@@ -576,6 +605,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col7.Name = "txtCard1Col7"
         Me.txtCard1Col7.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col7.TabIndex = 7
+        Me.txtCard1Col7.Text = "7"
         '
         'txtCard1Col8
         '
@@ -584,6 +614,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col8.Name = "txtCard1Col8"
         Me.txtCard1Col8.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col8.TabIndex = 8
+        Me.txtCard1Col8.Text = "8"
         '
         'txtCard1Col6
         '
@@ -592,6 +623,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col6.Name = "txtCard1Col6"
         Me.txtCard1Col6.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col6.TabIndex = 6
+        Me.txtCard1Col6.Text = "6"
         '
         'txtCard1Col1
         '
@@ -600,6 +632,7 @@ Partial Class frmTestInfo
         Me.txtCard1Col1.Name = "txtCard1Col1"
         Me.txtCard1Col1.Size = New System.Drawing.Size(122, 22)
         Me.txtCard1Col1.TabIndex = 1
+        Me.txtCard1Col1.Text = "1"
         '
         'Label30
         '
@@ -685,7 +718,7 @@ Partial Class frmTestInfo
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(116, 25)
+        Me.Label14.Location = New System.Drawing.Point(61, 25)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(109, 16)
         Me.Label14.TabIndex = 1
@@ -694,13 +727,14 @@ Partial Class frmTestInfo
         'txtCard1Batch
         '
         Me.txtCard1Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard1Batch.Location = New System.Drawing.Point(235, 22)
+        Me.txtCard1Batch.Location = New System.Drawing.Point(180, 22)
         Me.txtCard1Batch.Name = "txtCard1Batch"
         Me.txtCard1Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard1Batch.TabIndex = 0
         '
         'SlotTwoTab
         '
+        Me.SlotTwoTab.Controls.Add(Me.chkSameCard2)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col10)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col11)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col12)
@@ -743,6 +777,16 @@ Partial Class frmTestInfo
         Me.SlotTwoTab.Text = "Card 2"
         Me.SlotTwoTab.UseVisualStyleBackColor = True
         '
+        'chkSameCard2
+        '
+        Me.chkSameCard2.AutoSize = True
+        Me.chkSameCard2.Location = New System.Drawing.Point(394, 36)
+        Me.chkSameCard2.Name = "chkSameCard2"
+        Me.chkSameCard2.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard2.TabIndex = 68
+        Me.chkSameCard2.Text = "Same for all cards"
+        Me.chkSameCard2.UseVisualStyleBackColor = True
+        '
         'txtCard2Col10
         '
         Me.txtCard2Col10.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -750,6 +794,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col10.Name = "txtCard2Col10"
         Me.txtCard2Col10.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col10.TabIndex = 10
+        Me.txtCard2Col10.Text = "26"
         '
         'txtCard2Col11
         '
@@ -758,6 +803,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col11.Name = "txtCard2Col11"
         Me.txtCard2Col11.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col11.TabIndex = 11
+        Me.txtCard2Col11.Text = "27"
         '
         'txtCard2Col12
         '
@@ -766,6 +812,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col12.Name = "txtCard2Col12"
         Me.txtCard2Col12.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col12.TabIndex = 12
+        Me.txtCard2Col12.Text = "28"
         '
         'txtCard2Col13
         '
@@ -774,6 +821,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col13.Name = "txtCard2Col13"
         Me.txtCard2Col13.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col13.TabIndex = 13
+        Me.txtCard2Col13.Text = "29"
         '
         'txtCard2Col15
         '
@@ -782,6 +830,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col15.Name = "txtCard2Col15"
         Me.txtCard2Col15.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col15.TabIndex = 15
+        Me.txtCard2Col15.Text = "31"
         '
         'txtCard2Col16
         '
@@ -790,6 +839,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col16.Name = "txtCard2Col16"
         Me.txtCard2Col16.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col16.TabIndex = 16
+        Me.txtCard2Col16.Text = "32"
         '
         'txtCard2Col14
         '
@@ -798,6 +848,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col14.Name = "txtCard2Col14"
         Me.txtCard2Col14.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col14.TabIndex = 14
+        Me.txtCard2Col14.Text = "30"
         '
         'txtCard2Col9
         '
@@ -806,6 +857,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col9.Name = "txtCard2Col9"
         Me.txtCard2Col9.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col9.TabIndex = 9
+        Me.txtCard2Col9.Text = "25"
         '
         'Label31
         '
@@ -894,6 +946,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col2.Name = "txtCard2Col2"
         Me.txtCard2Col2.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col2.TabIndex = 2
+        Me.txtCard2Col2.Text = "18"
         '
         'txtCard2Col3
         '
@@ -902,6 +955,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col3.Name = "txtCard2Col3"
         Me.txtCard2Col3.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col3.TabIndex = 3
+        Me.txtCard2Col3.Text = "19"
         '
         'txtCard2Col4
         '
@@ -910,6 +964,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col4.Name = "txtCard2Col4"
         Me.txtCard2Col4.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col4.TabIndex = 4
+        Me.txtCard2Col4.Text = "20"
         '
         'txtCard2Col5
         '
@@ -918,6 +973,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col5.Name = "txtCard2Col5"
         Me.txtCard2Col5.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col5.TabIndex = 5
+        Me.txtCard2Col5.Text = "21"
         '
         'txtCard2Col7
         '
@@ -926,6 +982,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col7.Name = "txtCard2Col7"
         Me.txtCard2Col7.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col7.TabIndex = 7
+        Me.txtCard2Col7.Text = "23"
         '
         'txtCard2Col8
         '
@@ -934,6 +991,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col8.Name = "txtCard2Col8"
         Me.txtCard2Col8.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col8.TabIndex = 8
+        Me.txtCard2Col8.Text = "24"
         '
         'txtCard2Col6
         '
@@ -942,6 +1000,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col6.Name = "txtCard2Col6"
         Me.txtCard2Col6.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col6.TabIndex = 6
+        Me.txtCard2Col6.Text = "22"
         '
         'txtCard2Col1
         '
@@ -950,6 +1009,7 @@ Partial Class frmTestInfo
         Me.txtCard2Col1.Name = "txtCard2Col1"
         Me.txtCard2Col1.Size = New System.Drawing.Size(122, 22)
         Me.txtCard2Col1.TabIndex = 1
+        Me.txtCard2Col1.Text = "17"
         '
         'Label39
         '
@@ -1035,7 +1095,7 @@ Partial Class frmTestInfo
         '
         Me.Label47.AutoSize = True
         Me.Label47.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label47.Location = New System.Drawing.Point(122, 33)
+        Me.Label47.Location = New System.Drawing.Point(67, 34)
         Me.Label47.Name = "Label47"
         Me.Label47.Size = New System.Drawing.Size(109, 16)
         Me.Label47.TabIndex = 43
@@ -1044,13 +1104,14 @@ Partial Class frmTestInfo
         'txtCard2Batch
         '
         Me.txtCard2Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard2Batch.Location = New System.Drawing.Point(241, 30)
+        Me.txtCard2Batch.Location = New System.Drawing.Point(186, 31)
         Me.txtCard2Batch.Name = "txtCard2Batch"
         Me.txtCard2Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard2Batch.TabIndex = 0
         '
         'SlotThreeTab
         '
+        Me.SlotThreeTab.Controls.Add(Me.chkSameCard3)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col10)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col11)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col12)
@@ -1092,6 +1153,16 @@ Partial Class frmTestInfo
         Me.SlotThreeTab.TabIndex = 3
         Me.SlotThreeTab.Text = "Card 3"
         Me.SlotThreeTab.UseVisualStyleBackColor = True
+        '
+        'chkSameCard3
+        '
+        Me.chkSameCard3.AutoSize = True
+        Me.chkSameCard3.Location = New System.Drawing.Point(398, 37)
+        Me.chkSameCard3.Name = "chkSameCard3"
+        Me.chkSameCard3.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard3.TabIndex = 68
+        Me.chkSameCard3.Text = "Same for all cards"
+        Me.chkSameCard3.UseVisualStyleBackColor = True
         '
         'txtCard3Col10
         '
@@ -1385,7 +1456,7 @@ Partial Class frmTestInfo
         '
         Me.Label64.AutoSize = True
         Me.Label64.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label64.Location = New System.Drawing.Point(122, 40)
+        Me.Label64.Location = New System.Drawing.Point(66, 38)
         Me.Label64.Name = "Label64"
         Me.Label64.Size = New System.Drawing.Size(109, 16)
         Me.Label64.TabIndex = 43
@@ -1394,13 +1465,14 @@ Partial Class frmTestInfo
         'txtCard3Batch
         '
         Me.txtCard3Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard3Batch.Location = New System.Drawing.Point(241, 37)
+        Me.txtCard3Batch.Location = New System.Drawing.Point(181, 35)
         Me.txtCard3Batch.Name = "txtCard3Batch"
         Me.txtCard3Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard3Batch.TabIndex = 0
         '
         'SlotFourTab
         '
+        Me.SlotFourTab.Controls.Add(Me.chkSameCard4)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col10)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col11)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col12)
@@ -1442,6 +1514,16 @@ Partial Class frmTestInfo
         Me.SlotFourTab.TabIndex = 4
         Me.SlotFourTab.Text = "Card 4"
         Me.SlotFourTab.UseVisualStyleBackColor = True
+        '
+        'chkSameCard4
+        '
+        Me.chkSameCard4.AutoSize = True
+        Me.chkSameCard4.Location = New System.Drawing.Point(383, 35)
+        Me.chkSameCard4.Name = "chkSameCard4"
+        Me.chkSameCard4.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard4.TabIndex = 68
+        Me.chkSameCard4.Text = "Same for all cards"
+        Me.chkSameCard4.UseVisualStyleBackColor = True
         '
         'txtCard4Col10
         '
@@ -1735,7 +1817,7 @@ Partial Class frmTestInfo
         '
         Me.Label81.AutoSize = True
         Me.Label81.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label81.Location = New System.Drawing.Point(109, 34)
+        Me.Label81.Location = New System.Drawing.Point(56, 36)
         Me.Label81.Name = "Label81"
         Me.Label81.Size = New System.Drawing.Size(109, 16)
         Me.Label81.TabIndex = 43
@@ -1744,13 +1826,14 @@ Partial Class frmTestInfo
         'txtCard4Batch
         '
         Me.txtCard4Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard4Batch.Location = New System.Drawing.Point(228, 31)
+        Me.txtCard4Batch.Location = New System.Drawing.Point(175, 33)
         Me.txtCard4Batch.Name = "txtCard4Batch"
         Me.txtCard4Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard4Batch.TabIndex = 0
         '
         'SlotFiveTab
         '
+        Me.SlotFiveTab.Controls.Add(Me.chkSameCard5)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col10)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col11)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col12)
@@ -1792,6 +1875,16 @@ Partial Class frmTestInfo
         Me.SlotFiveTab.TabIndex = 5
         Me.SlotFiveTab.Text = "Card 5"
         Me.SlotFiveTab.UseVisualStyleBackColor = True
+        '
+        'chkSameCard5
+        '
+        Me.chkSameCard5.AutoSize = True
+        Me.chkSameCard5.Location = New System.Drawing.Point(395, 43)
+        Me.chkSameCard5.Name = "chkSameCard5"
+        Me.chkSameCard5.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard5.TabIndex = 68
+        Me.chkSameCard5.Text = "Same for all cards"
+        Me.chkSameCard5.UseVisualStyleBackColor = True
         '
         'txtCard5Col10
         '
@@ -2085,7 +2178,7 @@ Partial Class frmTestInfo
         '
         Me.Label98.AutoSize = True
         Me.Label98.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label98.Location = New System.Drawing.Point(127, 38)
+        Me.Label98.Location = New System.Drawing.Point(68, 42)
         Me.Label98.Name = "Label98"
         Me.Label98.Size = New System.Drawing.Size(109, 16)
         Me.Label98.TabIndex = 43
@@ -2094,13 +2187,14 @@ Partial Class frmTestInfo
         'txtCard5Batch
         '
         Me.txtCard5Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard5Batch.Location = New System.Drawing.Point(246, 35)
+        Me.txtCard5Batch.Location = New System.Drawing.Point(187, 39)
         Me.txtCard5Batch.Name = "txtCard5Batch"
         Me.txtCard5Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard5Batch.TabIndex = 0
         '
         'SlotSixTab
         '
+        Me.SlotSixTab.Controls.Add(Me.chkSameCard6)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col10)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col11)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col12)
@@ -2142,6 +2236,16 @@ Partial Class frmTestInfo
         Me.SlotSixTab.TabIndex = 6
         Me.SlotSixTab.Text = "Card 6"
         Me.SlotSixTab.UseVisualStyleBackColor = True
+        '
+        'chkSameCard6
+        '
+        Me.chkSameCard6.AutoSize = True
+        Me.chkSameCard6.Location = New System.Drawing.Point(395, 46)
+        Me.chkSameCard6.Name = "chkSameCard6"
+        Me.chkSameCard6.Size = New System.Drawing.Size(110, 17)
+        Me.chkSameCard6.TabIndex = 68
+        Me.chkSameCard6.Text = "Same for all cards"
+        Me.chkSameCard6.UseVisualStyleBackColor = True
         '
         'txtCard6Col10
         '
@@ -2435,7 +2539,7 @@ Partial Class frmTestInfo
         '
         Me.Label115.AutoSize = True
         Me.Label115.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label115.Location = New System.Drawing.Point(126, 41)
+        Me.Label115.Location = New System.Drawing.Point(68, 46)
         Me.Label115.Name = "Label115"
         Me.Label115.Size = New System.Drawing.Size(109, 16)
         Me.Label115.TabIndex = 43
@@ -2444,13 +2548,10 @@ Partial Class frmTestInfo
         'txtCard6Batch
         '
         Me.txtCard6Batch.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCard6Batch.Location = New System.Drawing.Point(245, 38)
+        Me.txtCard6Batch.Location = New System.Drawing.Point(187, 43)
         Me.txtCard6Batch.Name = "txtCard6Batch"
         Me.txtCard6Batch.Size = New System.Drawing.Size(202, 22)
         Me.txtCard6Batch.TabIndex = 0
-        '
-        'SaveFileDialog1
-        '
         '
         'frmTestInfo
         '
@@ -2700,4 +2801,10 @@ Partial Class frmTestInfo
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents txtTestName As System.Windows.Forms.TextBox
     Friend WithEvents txtOperatorInitials As System.Windows.Forms.TextBox
+    Friend WithEvents chkSameCard1 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSameCard2 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSameCard3 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSameCard4 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSameCard5 As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSameCard6 As System.Windows.Forms.CheckBox
 End Class

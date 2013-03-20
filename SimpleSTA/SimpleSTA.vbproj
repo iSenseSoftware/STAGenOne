@@ -92,16 +92,13 @@
     <Compile Include="AuditChannel.vb" />
     <Compile Include="AuditCheck.vb" />
     <Compile Include="AuditReading.vb" />
+    <Compile Include="Card.vb" />
     <Compile Include="Configuration.vb" />
     <Compile Include="frmAuditStatus.Designer.vb">
       <DependentUpon>frmAuditStatus.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmAuditStatus.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmConfig.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmAuditStatus.vb" />
+    <Compile Include="frmConfig.vb" />
     <Compile Include="frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
       <SubType>Form</SubType>
@@ -109,21 +106,15 @@
     <Compile Include="frmPassword.designer.vb">
       <DependentUpon>frmPassword.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmPassword.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmPassword.vb" />
     <Compile Include="frmTestInfo.Designer.vb">
       <DependentUpon>frmTestInfo.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTestInfo.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTestInfo.vb" />
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmMain.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -142,13 +133,14 @@
     <Compile Include="Reading.vb" />
     <Compile Include="Sensor.vb" />
     <Compile Include="SharedModule.vb" />
+    <Compile Include="SourceMeter.vb" />
+    <Compile Include="Switch.vb" />
+    <Compile Include="System.vb" />
     <Compile Include="TestFile.vb" />
     <Compile Include="frmTestForm.Designer.vb">
       <DependentUpon>frmTestForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTestForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="frmTestForm.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmAuditStatus.resx">

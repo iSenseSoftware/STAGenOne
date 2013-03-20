@@ -18,6 +18,7 @@ Public Class Configuration
     Dim strSTAID As String
     Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
     Dim strDumpDirectory As String = appDir & Path.DirectorySeparatorChar & "RawTestData"
+    Dim strSystemFileDirectory As String = appDir & Path.DirectorySeparatorChar & "SystemInfo"
     Dim intSettlingTime As Integer = 20
     Dim dblResistor1NominalResistance As Double = 10 ^ 8    '1 megaohm
     Dim dblResistor2NominalResistance As Double = 10 ^ 7    '10 megaohm

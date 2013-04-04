@@ -36,6 +36,25 @@
                 frmConfig.BringToFront()
             End If
         End If
+        If (System.IO.File.Exists(config.SystemFileDirectory & "\SystemInfo.xml")) Then
+            loadSystemInfo()
+            If (verifySystemInfo()) Then
+                'SystemStatusLabel.Text = "System Status: Configuration Loaded"
+            Else
+                'SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+                frmConfig.Show()
+                frmConfig.BringToFront()
+            End If
+        Else
+            initializeSystemInfo()
+            If (verifySystemInfo()) Then
+                'SystemStatusLabel.Text = "System Status: Configuration Loaded"
+            Else
+                'SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
+                frmConfig.Show()
+                frmConfig.BringToFront()
+            End If
+        End If
 
     End Sub
 End Class

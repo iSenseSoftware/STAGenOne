@@ -7,6 +7,7 @@ Imports Keithley.Ke37XX.Interop
 Public Module SharedModule
     Public Const configFileName As String = "\Config.xml"
     Public config As New Configuration
+    Public testSystemInfo As New TestSystem
     Public currentTestFile As New TestFile
     Public switchDriver As New Ke37XX
     Public appDir As String
@@ -43,7 +44,7 @@ Public Module SharedModule
             config = serializer.Deserialize(reader)
             reader.Close()
         Catch parseException As InvalidOperationException
-            MsgBox("Invalid configuration file.  Delete " & appDir & "\Config.xml and reload.")
+            MsgBox("Invalid configuration file.  Delete " & appDir & configFileName)
             frmMain.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -54,6 +55,30 @@ Public Module SharedModule
             Dim serializer As New XmlSerializer(config.GetType)
             Dim writer As New StreamWriter(appDir & configFileName)
             serializer.Serialize(writer, config)
+            writer.Close()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Public Sub loadSystemInfo()
+        Try
+            Dim serializer As New XmlSerializer(testSystemInfo.GetType)
+            Dim reader As New StreamReader(appDir & "\SystemInfo.xml")
+            testSystemInfo = serializer.Deserialize(reader)
+            reader.Close()
+        Catch parseException As InvalidOperationException
+            MsgBox("Invalid System Information File.  Delete " & config.SystemFileDirectory & "\SystemInfo.xml")
+            frmMain.Close()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Public Sub initializeSystemInfo()
+        Try
+            Dim serializer As New XmlSerializer(testSystemInfo.GetType)
+            System.IO.Directory.CreateDirectory(config.SystemFileDirectory)
+            Dim writer As New StreamWriter(config.SystemFileDirectory & "\SystemInfo.xml")
+            serializer.Serialize(writer, testSystemInfo)
             writer.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -89,6 +114,9 @@ Public Module SharedModule
             verifies = False
         End If
         Return verifies
+    End Function
+    Public Function verifySystemInfo() As Boolean
+        Return True
     End Function
     ' As the name suggests, this is simply a wrapper for the System.DirectIO.WriteString method of the Ke37xx driver.
     Public Sub directIOWrapper(ByVal command As String)
@@ -129,5 +157,26 @@ Public Module SharedModule
     End Sub
     Public Function GetBestDynamicRange(maxCurrent As Double) As CurrentRange
         Return CurrentRange.one_uA
+    End Function
+    Public Function ParseIDNForSerial(ByVal idnString As String) As String
+        Dim splitString As String() = Split(idnString, ",")
+        If (splitString.Length < 4) Then
+            Return ""
+        End If
+        Return splitString(3)
+    End Function
+    Public Function ParseIDNForModel(ByVal idnString As String) As String
+        Dim splitString As String() = Split(idnString, ",")
+        If (splitString.Length < 4) Then
+            Return ""
+        End If
+        Return splitString(0)
+    End Function
+    Public Function ParseIDNForRevision(ByVal idnString As String) As String
+        Dim splitString As String() = Split(idnString, ",")
+        If (splitString.Length < 4) Then
+            Return ""
+        End If
+        Return splitString(2)
     End Function
 End Module

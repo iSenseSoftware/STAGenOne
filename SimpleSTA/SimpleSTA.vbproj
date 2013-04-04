@@ -97,8 +97,12 @@
     <Compile Include="frmAuditStatus.Designer.vb">
       <DependentUpon>frmAuditStatus.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmAuditStatus.vb" />
-    <Compile Include="frmConfig.vb" />
+    <Compile Include="frmAuditStatus.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfig.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmConfig.Designer.vb">
       <DependentUpon>frmConfig.vb</DependentUpon>
       <SubType>Form</SubType>
@@ -106,15 +110,21 @@
     <Compile Include="frmPassword.designer.vb">
       <DependentUpon>frmPassword.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmPassword.vb" />
+    <Compile Include="frmPassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTestInfo.Designer.vb">
       <DependentUpon>frmTestInfo.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTestInfo.vb" />
+    <Compile Include="frmTestInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmMain.vb" />
+    <Compile Include="frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -135,12 +145,14 @@
     <Compile Include="SharedModule.vb" />
     <Compile Include="SourceMeter.vb" />
     <Compile Include="Switch.vb" />
-    <Compile Include="System.vb" />
+    <Compile Include="TestSystem.vb" />
     <Compile Include="TestFile.vb" />
     <Compile Include="frmTestForm.Designer.vb">
       <DependentUpon>frmTestForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmTestForm.vb" />
+    <Compile Include="frmTestForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmAuditStatus.resx">

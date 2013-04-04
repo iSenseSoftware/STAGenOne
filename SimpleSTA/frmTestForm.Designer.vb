@@ -33,6 +33,8 @@ Partial Class frmTestForm
         Me.TestChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.btnApply = New System.Windows.Forms.Button()
         Me.chkScrollEnabled = New System.Windows.Forms.CheckBox()
         Me.chkZoomEnabled = New System.Windows.Forms.CheckBox()
@@ -105,6 +107,8 @@ Partial Class frmTestForm
         'Panel4
         '
         Me.Panel4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Panel4.Controls.Add(Me.Button2)
+        Me.Panel4.Controls.Add(Me.Button1)
         Me.Panel4.Controls.Add(Me.btnApply)
         Me.Panel4.Controls.Add(Me.chkScrollEnabled)
         Me.Panel4.Controls.Add(Me.chkZoomEnabled)
@@ -122,6 +126,18 @@ Partial Class frmTestForm
         Me.Panel4.Controls.Add(Me.Label1)
         resources.ApplyResources(Me.Panel4, "Panel4")
         Me.Panel4.Name = "Panel4"
+        '
+        'Button2
+        '
+        resources.ApplyResources(Me.Button2, "Button2")
+        Me.Button2.Name = "Button2"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        resources.ApplyResources(Me.Button1, "Button1")
+        Me.Button1.Name = "Button1"
+        Me.Button1.UseVisualStyleBackColor = True
         '
         'btnApply
         '
@@ -342,4 +358,6 @@ Partial Class frmTestForm
     Friend WithEvents ElapsedTimer As System.Windows.Forms.Timer
     Friend WithEvents txtTime As System.Windows.Forms.Label
     Friend WithEvents InjectionTimer As System.Windows.Forms.Timer
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents Button2 As System.Windows.Forms.Button
 End Class

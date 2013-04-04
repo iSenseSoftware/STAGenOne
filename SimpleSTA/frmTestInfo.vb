@@ -2,6 +2,7 @@
 
 Public Class frmTestInfo
     Dim boolSameBatch As Boolean = False
+    Dim txtOriginator As TextBox
     Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'loadConfiguration()
@@ -474,15 +475,7 @@ Public Class frmTestInfo
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
-    Private Sub setCheckBoxes(ByVal val As Boolean)
-        chkSameCard1.Checked = val
-        chkSameCard2.Checked = val
-        chkSameCard3.Checked = val
-        chkSameCard4.Checked = val
-        chkSameCard5.Checked = val
-        chkSameCard6.Checked = val
-        boolSameBatch = val
-    End Sub
+
     Private Sub setTextForAll(ByVal val As String)
         txtCard1Batch.Text = val
         txtCard2Batch.Text = val
@@ -490,92 +483,58 @@ Public Class frmTestInfo
         txtCard4Batch.Text = val
         txtCard5Batch.Text = val
         txtCard6Batch.Text = val
+        txtOriginator = Nothing
     End Sub
 
     Private Sub chkSameCard1_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard1.CheckedChanged
         '' If enabled, set the boolSameBatch = true and copy the contents of the associated text box to all text boxes
         If (chkSameCard1.Checked) Then
-            setCheckBoxes(True)
             setTextForAll(txtCard1Batch.Text)
+            boolSameBatch = True
         Else
-            setCheckBoxes(False)
+            boolSameBatch = False
         End If
     End Sub
-    Private Sub chkSameCard2_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard2.CheckedChanged
-        If (chkSameCard2.Checked) Then
-            setCheckBoxes(True)
-            setTextForAll(txtCard2Batch.Text)
-        Else
-            setCheckBoxes(False)
-        End If
-    End Sub
-    Private Sub chkSameCard3_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard3.CheckedChanged
-        If (chkSameCard3.Checked) Then
-            setCheckBoxes(True)
-            setTextForAll(txtCard3Batch.Text)
-        Else
-            setCheckBoxes(False)
-        End If
-    End Sub
-    Private Sub chkSameCard4_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard4.CheckedChanged
-        If (chkSameCard4.Checked) Then
-            setCheckBoxes(True)
-            setTextForAll(txtCard4Batch.Text)
-        Else
-            setCheckBoxes(False)
-        End If
-    End Sub
-    Private Sub chkSameCard5_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard5.CheckedChanged
-        If (chkSameCard5.Checked) Then
-            setCheckBoxes(True)
-            setTextForAll(txtCard5Batch.Text)
-        Else
-            setCheckBoxes(False)
-        End If
-    End Sub
-    Private Sub chkSameCard6_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard6.CheckedChanged
-        If (chkSameCard6.Checked) Then
-            setCheckBoxes(True)
-            setTextForAll(txtCard6Batch.Text)
-        Else
-            setCheckBoxes(False)
-        End If
-    End Sub
-
     Private Sub txtCard1Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard1Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
             setTextForAll(txtCard1Batch.Text)
         End If
     End Sub
     Private Sub txtCard2Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard2Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
-            setTextForAll(txtCard1Batch.Text)
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
+            setTextForAll(txtCard2Batch.Text)
         End If
     End Sub
     Private Sub txtCard3Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard3Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
-            setTextForAll(txtCard1Batch.Text)
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
+            setTextForAll(txtCard3Batch.Text)
         End If
     End Sub
     Private Sub txtCard4Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard4Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
-            setTextForAll(txtCard1Batch.Text)
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
+            setTextForAll(txtCard4Batch.Text)
         End If
     End Sub
     Private Sub txtCard5Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard5Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
-            setTextForAll(txtCard1Batch.Text)
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
+            setTextForAll(txtCard5Batch.Text)
         End If
     End Sub
     Private Sub txtCard6Batch_TextChanged(sender As Object, e As EventArgs) Handles txtCard6Batch.TextChanged
         '' Check if boolSameBatch and if so copy the text to all other text boxes for batch
-        If (boolSameBatch) Then
-            setTextForAll(txtCard1Batch.Text)
+        If (boolSameBatch And txtOriginator Is Nothing) Then
+            txtOriginator = sender
+            setTextForAll(txtCard6Batch.Text)
         End If
     End Sub
 End Class

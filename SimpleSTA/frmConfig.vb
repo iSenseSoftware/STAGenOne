@@ -87,6 +87,7 @@ Public Class frmConfig
             txtRow4Resistor.Text = config.Resistor2Resistance / 10 ^ 6
             txtRow5Resistor.Text = config.Resistor3Resistance / 10 ^ 6
             txtTolerance.Text = config.AuditTolerance * 100
+            txtSystemInfoFile.Text = config.SystemFileDirectory
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -112,6 +113,7 @@ Public Class frmConfig
                 config.Resistor2Resistance = CDbl(txtRow4Resistor.Text) * 10 ^ 6
                 config.Resistor3Resistance = CDbl(txtRow5Resistor.Text) * 10 ^ 6
                 config.AuditTolerance = CDbl(txtTolerance.Text) / 100
+                config.SystemFileDirectory = txtSystemInfoFile.Text
                 serializer.Serialize(writer, config)
                 writer.Close()
             Else
@@ -188,5 +190,20 @@ Public Class frmConfig
         txtRow4Resistor.Enabled = True
         txtRow5Resistor.Enabled = True
         txtTolerance.Enabled = True
+        txtSystemInfoFile.Enabled = True
+    End Sub
+
+    Private Sub btnSelectInfoFile_Click(sender As Object, e As EventArgs) Handles btnSelectInfoFile.Click
+        Try
+            FolderBrowserDialog1.Description = "Select System Info data default directory"
+            FolderBrowserDialog1.ShowNewFolderButton = True
+            Dim dlgResult As DialogResult = FolderBrowserDialog1.ShowDialog()
+
+            If dlgResult = Windows.Forms.DialogResult.OK Then
+                txtSystemInfoFile.Text = FolderBrowserDialog1.SelectedPath
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 End Class

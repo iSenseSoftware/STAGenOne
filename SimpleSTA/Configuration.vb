@@ -24,6 +24,14 @@ Public Class Configuration
     Dim dblResistor2NominalResistance As Double = 10 ^ 7    '10 megaohm
     Dim dblResistor3NominalResistance As Double = 10 ^ 6    '100 megaohm
     Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
+    Public Property SystemFileDirectory As String
+        Get
+            Return strSystemFileDirectory
+        End Get
+        Set(value As String)
+            strSystemFileDirectory = value
+        End Set
+    End Property
     Public Property AuditTolerance As Double
         Get
             Return dblAuditCheckTolerance

@@ -68,7 +68,6 @@ Partial Class frmTestInfo
         Me.Label14 = New System.Windows.Forms.Label()
         Me.txtCard1Batch = New System.Windows.Forms.TextBox()
         Me.SlotTwoTab = New System.Windows.Forms.TabPage()
-        Me.chkSameCard2 = New System.Windows.Forms.CheckBox()
         Me.txtCard2Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard2Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard2Col12 = New System.Windows.Forms.TextBox()
@@ -104,7 +103,6 @@ Partial Class frmTestInfo
         Me.Label47 = New System.Windows.Forms.Label()
         Me.txtCard2Batch = New System.Windows.Forms.TextBox()
         Me.SlotThreeTab = New System.Windows.Forms.TabPage()
-        Me.chkSameCard3 = New System.Windows.Forms.CheckBox()
         Me.txtCard3Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard3Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard3Col12 = New System.Windows.Forms.TextBox()
@@ -140,7 +138,6 @@ Partial Class frmTestInfo
         Me.Label64 = New System.Windows.Forms.Label()
         Me.txtCard3Batch = New System.Windows.Forms.TextBox()
         Me.SlotFourTab = New System.Windows.Forms.TabPage()
-        Me.chkSameCard4 = New System.Windows.Forms.CheckBox()
         Me.txtCard4Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard4Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard4Col12 = New System.Windows.Forms.TextBox()
@@ -176,7 +173,6 @@ Partial Class frmTestInfo
         Me.Label81 = New System.Windows.Forms.Label()
         Me.txtCard4Batch = New System.Windows.Forms.TextBox()
         Me.SlotFiveTab = New System.Windows.Forms.TabPage()
-        Me.chkSameCard5 = New System.Windows.Forms.CheckBox()
         Me.txtCard5Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard5Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard5Col12 = New System.Windows.Forms.TextBox()
@@ -212,7 +208,6 @@ Partial Class frmTestInfo
         Me.Label98 = New System.Windows.Forms.Label()
         Me.txtCard5Batch = New System.Windows.Forms.TextBox()
         Me.SlotSixTab = New System.Windows.Forms.TabPage()
-        Me.chkSameCard6 = New System.Windows.Forms.CheckBox()
         Me.txtCard6Col10 = New System.Windows.Forms.TextBox()
         Me.txtCard6Col11 = New System.Windows.Forms.TextBox()
         Me.txtCard6Col12 = New System.Windows.Forms.TextBox()
@@ -734,7 +729,6 @@ Partial Class frmTestInfo
         '
         'SlotTwoTab
         '
-        Me.SlotTwoTab.Controls.Add(Me.chkSameCard2)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col10)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col11)
         Me.SlotTwoTab.Controls.Add(Me.txtCard2Col12)
@@ -776,16 +770,6 @@ Partial Class frmTestInfo
         Me.SlotTwoTab.TabIndex = 2
         Me.SlotTwoTab.Text = "Card 2"
         Me.SlotTwoTab.UseVisualStyleBackColor = True
-        '
-        'chkSameCard2
-        '
-        Me.chkSameCard2.AutoSize = True
-        Me.chkSameCard2.Location = New System.Drawing.Point(394, 36)
-        Me.chkSameCard2.Name = "chkSameCard2"
-        Me.chkSameCard2.Size = New System.Drawing.Size(110, 17)
-        Me.chkSameCard2.TabIndex = 68
-        Me.chkSameCard2.Text = "Same for all cards"
-        Me.chkSameCard2.UseVisualStyleBackColor = True
         '
         'txtCard2Col10
         '
@@ -1111,7 +1095,6 @@ Partial Class frmTestInfo
         '
         'SlotThreeTab
         '
-        Me.SlotThreeTab.Controls.Add(Me.chkSameCard3)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col10)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col11)
         Me.SlotThreeTab.Controls.Add(Me.txtCard3Col12)
@@ -1153,16 +1136,6 @@ Partial Class frmTestInfo
         Me.SlotThreeTab.TabIndex = 3
         Me.SlotThreeTab.Text = "Card 3"
         Me.SlotThreeTab.UseVisualStyleBackColor = True
-        '
-        'chkSameCard3
-        '
-        Me.chkSameCard3.AutoSize = True
-        Me.chkSameCard3.Location = New System.Drawing.Point(398, 37)
-        Me.chkSameCard3.Name = "chkSameCard3"
-        Me.chkSameCard3.Size = New System.Drawing.Size(110, 17)
-        Me.chkSameCard3.TabIndex = 68
-        Me.chkSameCard3.Text = "Same for all cards"
-        Me.chkSameCard3.UseVisualStyleBackColor = True
         '
         'txtCard3Col10
         '
@@ -1472,7 +1445,6 @@ Partial Class frmTestInfo
         '
         'SlotFourTab
         '
-        Me.SlotFourTab.Controls.Add(Me.chkSameCard4)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col10)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col11)
         Me.SlotFourTab.Controls.Add(Me.txtCard4Col12)
@@ -1514,16 +1486,6 @@ Partial Class frmTestInfo
         Me.SlotFourTab.TabIndex = 4
         Me.SlotFourTab.Text = "Card 4"
         Me.SlotFourTab.UseVisualStyleBackColor = True
-        '
-        'chkSameCard4
-        '
-        Me.chkSameCard4.AutoSize = True
-        Me.chkSameCard4.Location = New System.Drawing.Point(383, 35)
-        Me.chkSameCard4.Name = "chkSameCard4"
-        Me.chkSameCard4.Size = New System.Drawing.Size(110, 17)
-        Me.chkSameCard4.TabIndex = 68
-        Me.chkSameCard4.Text = "Same for all cards"
-        Me.chkSameCard4.UseVisualStyleBackColor = True
         '
         'txtCard4Col10
         '
@@ -1833,7 +1795,6 @@ Partial Class frmTestInfo
         '
         'SlotFiveTab
         '
-        Me.SlotFiveTab.Controls.Add(Me.chkSameCard5)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col10)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col11)
         Me.SlotFiveTab.Controls.Add(Me.txtCard5Col12)
@@ -1875,16 +1836,6 @@ Partial Class frmTestInfo
         Me.SlotFiveTab.TabIndex = 5
         Me.SlotFiveTab.Text = "Card 5"
         Me.SlotFiveTab.UseVisualStyleBackColor = True
-        '
-        'chkSameCard5
-        '
-        Me.chkSameCard5.AutoSize = True
-        Me.chkSameCard5.Location = New System.Drawing.Point(395, 43)
-        Me.chkSameCard5.Name = "chkSameCard5"
-        Me.chkSameCard5.Size = New System.Drawing.Size(110, 17)
-        Me.chkSameCard5.TabIndex = 68
-        Me.chkSameCard5.Text = "Same for all cards"
-        Me.chkSameCard5.UseVisualStyleBackColor = True
         '
         'txtCard5Col10
         '
@@ -2194,7 +2145,6 @@ Partial Class frmTestInfo
         '
         'SlotSixTab
         '
-        Me.SlotSixTab.Controls.Add(Me.chkSameCard6)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col10)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col11)
         Me.SlotSixTab.Controls.Add(Me.txtCard6Col12)
@@ -2236,16 +2186,6 @@ Partial Class frmTestInfo
         Me.SlotSixTab.TabIndex = 6
         Me.SlotSixTab.Text = "Card 6"
         Me.SlotSixTab.UseVisualStyleBackColor = True
-        '
-        'chkSameCard6
-        '
-        Me.chkSameCard6.AutoSize = True
-        Me.chkSameCard6.Location = New System.Drawing.Point(395, 46)
-        Me.chkSameCard6.Name = "chkSameCard6"
-        Me.chkSameCard6.Size = New System.Drawing.Size(110, 17)
-        Me.chkSameCard6.TabIndex = 68
-        Me.chkSameCard6.Text = "Same for all cards"
-        Me.chkSameCard6.UseVisualStyleBackColor = True
         '
         'txtCard6Col10
         '
@@ -2802,9 +2742,4 @@ Partial Class frmTestInfo
     Friend WithEvents txtTestName As System.Windows.Forms.TextBox
     Friend WithEvents txtOperatorInitials As System.Windows.Forms.TextBox
     Friend WithEvents chkSameCard1 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSameCard2 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSameCard3 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSameCard4 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSameCard5 As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSameCard6 As System.Windows.Forms.CheckBox
 End Class

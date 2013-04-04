@@ -157,12 +157,38 @@ Public Class frmTestForm
                 If (switchDriver.Initialized) Then
                     directIOWrapper("print(localnode.serialno)")
                     Dim serialNo As String
+                    Dim idnString As String
                     serialNo = switchDriver.System.DirectIO.ReadString()
                     currentTestFile.SwitchSerial = serialNo
                     switchDriver.System.DirectIO.FlushRead()
                     directIOWrapper("print(node[2].serialno)")
                     serialNo = switchDriver.System.DirectIO.ReadString()
                     currentTestFile.SourceMeterSerial = serialNo
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[1].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardOneSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[2].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardTwoSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[3].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardThreeSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[4].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardFourSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[5].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardFiveSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
+                    directIOWrapper("print(slot[6].idn)")
+                    idnString = switchDriver.System.DirectIO.ReadString()
+                    currentTestFile.MatrixCardSixSerial = ParseIDNForSerial(idnString)
+                    switchDriver.System.DirectIO.FlushRead()
                     prepareForm()
                 Else
                     Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
@@ -327,7 +353,7 @@ Public Class frmTestForm
             Else
                 ' Note that the  \ division operator is used instead of  / to force rounding to the nearest integer.  This
                 ' helps improve readability of the graph
-                TestChart.Series(currentID).Points.AddXY(currentTime \ 1000, currentCurrent)
+                TestChart.Series(currentID).Points.AddXY(currentTime \ 1000, Math.Round(currentCurrent, 2))
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -412,6 +438,12 @@ Public Class frmTestForm
                 With TestChart.ChartAreas(0)
                     .AxisX.ScaleView.Zoomable = True
                     .AxisY.ScaleView.Zoomable = True
+                    .AxisX.ScaleView.MinSizeType = DateTimeIntervalType.Number
+                    .AxisX.ScaleView.MinSize = 24
+                    .AxisY.ScaleView.MinSizeType = DateTimeIntervalType.Number
+                    .AxisY.ScaleView.MinSize = 0.5
+                    .AxisY.RoundAxisValues()
+                    .AxisX.RoundAxisValues()
                     .CursorY.IsUserSelectionEnabled = True
                     .CursorX.IsUserSelectionEnabled = True
                 End With
@@ -517,6 +549,7 @@ Public Class frmTestForm
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
         txtTime.Text = "Total Time: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+        currentTestFile.TestLength = totalTime.Elapsed.TotalSeconds
     End Sub
     Private Sub InjectionTimer_Tick(sender As Object, e As EventArgs) Handles InjectionTimer.Tick
         txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
@@ -623,4 +656,119 @@ Public Class frmTestForm
     End Sub
 
     
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        Try
+            Dim theTime As Date
+            Dim current As Double
+            Dim volts As Double
+            Dim i As Long
+            Dim refTime As Date
+
+            volts = 0.65
+            currentTestFile.TestStart = DateTime.Now()
+            theTime = currentTestFile.TestStart
+            refTime = theTime
+            For i = 0 To 374
+                theTime = DateAdd(DateInterval.Second, 8, theTime)
+            Next
+            currentTestFile.addInjection(theTime)
+            For i = 0 To 59
+                theTime = DateAdd(DateInterval.Second, 8, theTime)
+            Next
+            currentTestFile.addInjection(theTime)
+            For i = 0 To 59
+                theTime = DateAdd(DateInterval.Second, 8, theTime)
+            Next
+            currentTestFile.addInjection(theTime)
+            For i = 0 To 59
+                theTime = DateAdd(DateInterval.Second, 8, theTime)
+            Next
+            currentTestFile.addInjection(theTime)
+
+            ' Run the test loop until the boolTestStop variable returns false (the user clicks Abort)
+            For z = 0 To currentTestFile.Sensors.Length - 1
+                current = 0.000000001
+                theTime = refTime
+                For i = 0 To 374
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+                '    currentTestFile.addInjection(theTime)
+                current = 0.0000000022
+                For i = 0 To 59
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+                '   currentTestFile.addInjection(theTime)
+                current = 0.000000005
+                For i = 0 To 59
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+                '  currentTestFile.addInjection(theTime)
+                current = 0.00000001
+                For i = 0 To 59
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+                ' currentTestFile.addInjection(theTime)
+                current = 0.000000016
+                For i = 0 To 59
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+            Next
+            currentTestFile.writeToFile()
+        Catch ex As COMException
+            MsgBox(ex.ErrorCode & " " & ex.ToString)
+            Dim errMessage As String = ""
+            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
+            MsgBox(errMessage)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Try
+            Dim theTime As Date
+            Dim current As Double
+            Dim volts As Double
+            Dim i As Long
+            Dim refTime As Date
+
+            volts = 0.65
+            currentTestFile.TestStart = DateTime.Now()
+            theTime = currentTestFile.TestStart
+            refTime = theTime
+            For i = 0 To 75
+                theTime = DateAdd(DateInterval.Second, 8, theTime)
+            Next
+            currentTestFile.addInjection(theTime)
+
+            ' Run the test loop until the boolTestStop variable returns false (the user clicks Abort)
+            For z = 0 To currentTestFile.Sensors.Length - 1
+                current = 0.000000001
+                theTime = refTime
+                For i = 0 To 75
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+                '    currentTestFile.addInjection(theTime)
+                current = 0.0000000033
+                For i = 0 To 59
+                    currentTestFile.Sensors(z).addReading(theTime, current, volts)
+                    theTime = DateAdd(DateInterval.Second, 8, theTime)
+                Next
+            Next
+            currentTestFile.writeToFile()
+        Catch ex As COMException
+            MsgBox(ex.ErrorCode & " " & ex.ToString)
+            Dim errMessage As String = ""
+            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
+            MsgBox(errMessage)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+
 End Class

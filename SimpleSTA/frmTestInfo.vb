@@ -6,25 +6,7 @@ Public Class frmTestInfo
     Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
             'loadConfiguration()
-            If (verifyConfiguration()) Then
-                frmMain.SystemStatusLabel.Text = "System Status: Configuration Loaded"
-                Dim options As String
-                ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
-                options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
-                switchDriver.Initialize(config.Address, False, False, options)
-                If (switchDriver.Initialized()) Then
-                    MsgBox("System Drivers loaded.  I/O with test system established.")
-                    frmMain.SystemStatusLabel.Text = "System Status: Standby; I/O established."
-                Else
-                    MsgBox("Unable to establish connection to test system.  Verify connections and configuration settings and try again.")
-                    Me.Close()
-                End If
-            Else
-                frmMain.SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
-                Me.Close()
-                frmConfig.Show()
-                frmConfig.BringToFront()
-            End If
+            
             ' Set form control visibility based upon the card configuration 
             Select Case config.CardConfig
                 Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS

@@ -155,40 +155,7 @@ Public Class frmTestForm
 
                 'switchDriver.TspLink.Reset()
                 If (switchDriver.Initialized) Then
-                    directIOWrapper("print(localnode.serialno)")
-                    Dim serialNo As String
-                    Dim idnString As String
-                    serialNo = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.SwitchSerial = serialNo
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(node[2].serialno)")
-                    serialNo = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.SourceMeterSerial = serialNo
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[1].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardOneSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[2].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardTwoSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[3].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardThreeSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[4].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardFourSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[5].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardFiveSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
-                    directIOWrapper("print(slot[6].idn)")
-                    idnString = switchDriver.System.DirectIO.ReadString()
-                    currentTestFile.MatrixCardSixSerial = ParseIDNForSerial(idnString)
-                    switchDriver.System.DirectIO.FlushRead()
+
                     prepareForm()
                 Else
                     Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
@@ -326,8 +293,14 @@ Public Class frmTestForm
                     currentCurrent = current * 10 ^ 9
                     ' Report progress so the chart can be updated
                     BackgroundWorker1.ReportProgress(0)
+                    ' Update system info file with switch count
+                    testSystemInfo.addSwitchEvent(currentTestFile.Sensors(z).Slot, 4)
                 Next
                 BackgroundWorker1.ReportProgress(10)
+                If (timer.ElapsedMilliseconds > interval * 1000) Then
+                    Throw New Exception("Could not finish measurements within injection interval specified")
+                    boolIsTestRunning = False
+                End If
                 Do Until timer.ElapsedMilliseconds >= interval * 1000
                     ' do nothing.  This is to ensure that the interval elapses before another round of measurements
                 Loop
@@ -350,6 +323,7 @@ Public Class frmTestForm
             If (e.ProgressPercentage = 10) Then
                 TestChart.Update()
                 currentTestFile.writeToFile()
+                testSystemInfo.writeToFile()
             Else
                 ' Note that the  \ division operator is used instead of  / to force rounding to the nearest integer.  This
                 ' helps improve readability of the graph
@@ -557,6 +531,12 @@ Public Class frmTestForm
     Private Sub RunAuditCheck()
         Try
             ' Start with all intersections open
+            If Not switchDriver.Initialized Then
+                Dim options As String
+                ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
+                options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
+                switchDriver.Initialize(config.Address, False, False, options)
+            End If
             switchDriver.Channel.OpenAll()
             switchDriver.TspLink.Reset()
             ' set both SMU channels to DC volts
@@ -616,6 +596,7 @@ Public Class frmTestForm
                 Dim aReading As New AuditReading
                 aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor1Resistance, row))
 
+
                 'Take readings from second resistor
                 row = 4
                 directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
@@ -643,6 +624,8 @@ Public Class frmTestForm
                 volts = CDbl(switchDriver.System.DirectIO.ReadString())
                 switchDriver.System.DirectIO.FlushRead()
                 aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor3Resistance, row))
+                ' Add switches to total
+                testSystemInfo.addSwitchEvent(aChannel.Card, 3)
             Next
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException

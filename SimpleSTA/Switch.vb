@@ -1,5 +1,5 @@
 ﻿Public Class Switch
-    Dim aryCards(0) As Card
+    Dim aryCards() As Card
     Dim strSerial As String
     Dim strModel As String
     Dim strRevision As String
@@ -76,4 +76,13 @@
             GenericExceptionHandler(ex)
         End Try
     End Sub
+    Public Function GetCardBySerial(strSerial As String) As Card
+        If aryCards Is Nothing Then Return Nothing
+        For Each aCard In aryCards
+            If aCard.SerialNumber = strSerial Then
+                Return aCard
+            End If
+        Next
+        Return Nothing
+    End Function
 End Class

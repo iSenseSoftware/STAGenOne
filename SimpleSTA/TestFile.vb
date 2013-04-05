@@ -25,7 +25,25 @@ Public Class TestFile
     Dim strCardFourID As String 'The serial number for the slot 4 matrix card
     Dim strCardFiveID As String 'The serial number for the slot 5 matrix card
     Dim strCardSixID As String 'The serial number for the slot 6 matrix card
+    Dim swtSwitch As Switch
+    Dim srcSource As SourceMeter
     Dim acAuditCheck As AuditCheck
+    Public Property SystemSwitch As Switch
+        Get
+            Return swtSwitch
+        End Get
+        Set(value As Switch)
+            swtSwitch = value
+        End Set
+    End Property
+    Public Property SystemSource As SourceMeter
+        Get
+            Return srcSource
+        End Get
+        Set(value As SourceMeter)
+            srcSource = value
+        End Set
+    End Property
     Public Property AuditCheck As AuditCheck
         Get
             Return acAuditCheck

@@ -1,11 +1,28 @@
 ﻿Public Class Card
     Dim strSerial As String
     Dim strModel As String
+    Dim strRevision As String
     Dim dtFirstTest As DateTime
     Dim dtLastTest As DateTime
     Dim lngTotalSwitches As Long
     Dim boolActive As Boolean
-
+    Dim intSlot As Integer
+    Public Property Slot As Integer
+        Get
+            Return intSlot
+        End Get
+        Set(value As Integer)
+            intSlot = value
+        End Set
+    End Property
+    Public Property Revision As String
+        Get
+            Return strRevision
+        End Get
+        Set(value As String)
+            strRevision = value
+        End Set
+    End Property
     Public Property SerialNumber As String
         Get
             Return strSerial

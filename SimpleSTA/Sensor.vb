@@ -89,7 +89,7 @@
     ' The sensorFactory returns an instance of this object with the inputted properties set.  
     ' This cannot be done in the constructor because we will be serializing this object to xml
     ' for the test file and the Serializer requires a parameterless constructor
-    Public Shared Function sensorFactory(ByVal slot As Integer, ByVal column As Integer, ByVal batch As String, ByVal fixtureSlot As String)
+    Public Shared Function sensorFactory(ByVal slot As Integer, ByVal column As Integer, ByVal batch As String, ByVal fixtureSlot As String) As Sensor
         Try
             Dim returnSensor As New Sensor
             returnSensor.Slot = slot
@@ -100,6 +100,7 @@
             Return returnSensor
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            Return Nothing
         End Try
     End Function
 End Class

@@ -32,15 +32,20 @@
         End Try
     End Sub
     Public Sub Validate()
-        Dim validates As Boolean = True
-        For Each aChannel In aryAuditChannels
-            For Each aReading In aChannel.AuditReadings
-                If (Math.Abs(((aReading.Voltage / aReading.NominalResistance) - aReading.Current) / (aReading.Voltage / aReading.NominalResistance)) > config.AuditTolerance) Then
-                    validates = False
-                End If
+        Try
+            Dim validates As Boolean = True
+            For Each aChannel In aryAuditChannels
+                For Each aReading In aChannel.AuditReadings
+                    If (Math.Abs(((aReading.Voltage / aReading.NominalResistance) - aReading.Current) / (aReading.Voltage / aReading.NominalResistance)) > config.AuditTolerance) Then
+                        validates = False
+                    End If
+                Next
             Next
-        Next
-        boolPass = validates
+            boolPass = validates
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+        
     End Sub
     Public Sub New()
 

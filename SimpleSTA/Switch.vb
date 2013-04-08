@@ -77,12 +77,17 @@
         End Try
     End Sub
     Public Function GetCardBySerial(strSerial As String) As Card
-        If aryCards Is Nothing Then Return Nothing
-        For Each aCard In aryCards
-            If aCard.SerialNumber = strSerial Then
-                Return aCard
-            End If
-        Next
-        Return Nothing
+        Try
+            If aryCards Is Nothing Then Return Nothing
+            For Each aCard In aryCards
+                If aCard.SerialNumber = strSerial Then
+                    Return aCard
+                End If
+            Next
+            Return Nothing
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return Nothing
+        End Try
     End Function
 End Class

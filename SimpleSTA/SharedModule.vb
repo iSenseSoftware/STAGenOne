@@ -1,6 +1,8 @@
 ﻿Imports System.IO
 Imports System.Xml.Serialization
 Imports Keithley.Ke37XX.Interop
+Imports System.Runtime.InteropServices
+Imports Ivi.Driver.Interop
 
 ' The SharedModule is, as the name suggests, a collection of shared utlity functions, enumerated variables
 ' and global variables for use in all objects and forms
@@ -88,35 +90,40 @@ Public Module SharedModule
         End Try
     End Sub
     Public Function verifyConfiguration() As Boolean
-        Dim verifies As Boolean = True
-        If (config.Bias = Nothing) Then
-            verifies = False
-        End If
-        If (config.RecordInterval = Nothing) Then
-            verifies = False
-        End If
-        If (config.Range = Nothing) Then
-            verifies = False
-        End If
-        If (config.Filter = Nothing) Then
-            verifies = False
-        End If
-        If (config.Samples = Nothing) Then
-            verifies = False
-        End If
-        If (config.NPLC = Nothing) Then
-            verifies = False
-        End If
-        If (config.Address = Nothing Or config.Address = "") Then
-            verifies = False
-        End If
-        If (config.STAID = Nothing Or config.STAID = "") Then
-            verifies = False
-        End If
-        If (config.CardConfig = Nothing) Then
-            verifies = False
-        End If
-        Return verifies
+        Try
+            Dim verifies As Boolean = True
+            If (config.Bias = Nothing) Then
+                verifies = False
+            End If
+            If (config.RecordInterval = Nothing) Then
+                verifies = False
+            End If
+            If (config.Range = Nothing) Then
+                verifies = False
+            End If
+            If (config.Filter = Nothing) Then
+                verifies = False
+            End If
+            If (config.Samples = Nothing) Then
+                verifies = False
+            End If
+            If (config.NPLC = Nothing) Then
+                verifies = False
+            End If
+            If (config.Address = Nothing Or config.Address = "") Then
+                verifies = False
+            End If
+            If (config.STAID = Nothing Or config.STAID = "") Then
+                verifies = False
+            End If
+            If (config.CardConfig = Nothing) Then
+                verifies = False
+            End If
+            Return verifies
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return False
+        End Try
     End Function
     Public Function verifySystemInfo() As Boolean
         Return True
@@ -155,306 +162,340 @@ Public Module SharedModule
         End Try
     End Function
     Public Sub GenericExceptionHandler(ByVal theException As Exception)
-        MsgBox(theException.Message & Environment.NewLine & theException.ToString)
-        MsgBox(theException.GetType.ToString())
+        MsgBox(theException.GetType.ToString() & Environment.NewLine & theException.Message & Environment.NewLine & theException.ToString)
+    End Sub
+    Public Sub ComExceptionHandler(ByRef theException As COMException)
+        If theException.ErrorCode = IviDriver_ErrorCodes.E_IVI_INSTRUMENT_STATUS Then
+            ' ErrorQuery should give us more information
+            Dim errCode As Integer = 0
+            Dim errMsg As String = ""
+            switchDriver.Utility.ErrorQuery(errCode, errMsg)
+            ' Print the error
+            MsgBox("Instrument Error: " & errCode & Environment.NewLine & errMsg)
+        Else
+            ' Print the exception
+            If (theException.Message.Contains("Unknown resource")) Then
+                MsgBox("Could not establish communication with the System Switch")
+            Else
+                MsgBox(theException.Message)
+            End If
+        End If
     End Sub
     Public Function GetBestDynamicRange(maxCurrent As Double) As CurrentRange
         Return CurrentRange.one_uA
     End Function
     Public Function ParseIDNForSerial(ByVal idnString As String) As String
-        Dim splitString As String() = Split(idnString, ",")
-        If (splitString.Length < 4) Then
+        Try
+            Dim splitString As String() = Split(idnString, ",")
+            If (splitString.Length < 4) Then
+                Return ""
+            End If
+            Return splitString(3)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
             Return ""
-        End If
-        Return splitString(3)
+        End Try
     End Function
     Public Function ParseIDNForModel(ByVal idnString As String) As String
-        Dim splitString As String() = Split(idnString, ",")
-        If (splitString.Length < 4) Then
+        Try
+            Dim splitString As String() = Split(idnString, ",")
+            If (splitString.Length < 4) Then
+                Return ""
+            End If
+            Return splitString(0)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
             Return ""
-        End If
-        Return splitString(0)
+        End Try
     End Function
     Public Function ParseIDNForRevision(ByVal idnString As String) As String
-        Dim splitString As String() = Split(idnString, ",")
-        If (splitString.Length < 4) Then
+        Try
+            Dim splitString As String() = Split(idnString, ",")
+            If (splitString.Length < 4) Then
+                Return ""
+            End If
+            Return splitString(2)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
             Return ""
-        End If
-        Return splitString(2)
+        End Try
     End Function
     Public Sub PopulateSystemInfo()
-        directIOWrapper("print(localnode.serialno)")
-        Dim serialNo As String
-        Dim idnString As String
-        serialNo = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.SwitchSerial = serialNo
-        switchDriver.System.DirectIO.FlushRead()
-        If Not testSystemInfo.GetSwitchBySerial(serialNo) Is Nothing Then
-            currentSwitch = testSystemInfo.GetSwitchBySerial(serialNo)
-            currentSwitch.Active = True
-        Else
-            currentSwitch = New Switch
-            currentSwitch.SerialNumber = serialNo
-            currentSwitch.Active = True
-            currentSwitch.FirstTest = Now()
-            directIOWrapper("print(localnode.model)")
-            currentSwitch.ModelNumber = switchDriver.System.DirectIO.ReadString()
+        Try
+            directIOWrapper("print(localnode.serialno)")
+            Dim serialNo As String
+            Dim idnString As String
+            serialNo = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.SwitchSerial = serialNo
             switchDriver.System.DirectIO.FlushRead()
-            directIOWrapper("print(localnode.revision)")
-            currentSwitch.Revision = switchDriver.System.DirectIO.ReadString()
-            switchDriver.System.DirectIO.FlushRead()
-            testSystemInfo.AddSwitch(currentSwitch)
-        End If
-        directIOWrapper("print(node[2].serialno)")
-        serialNo = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.SourceMeterSerial = serialNo
-        switchDriver.System.DirectIO.FlushRead()
-        If Not testSystemInfo.GetSourceBySerial(serialNo) Is Nothing Then
-            currentSource = testSystemInfo.GetSourceBySerial(serialNo)
-            currentSource.Active = True
-        Else
-            currentSource = New SourceMeter
-            currentSource.SerialNumber = serialNo
-            currentSource.Active = True
-            currentSource.FirstTest = Now()
-            directIOWrapper("print(node[2].model)")
-            currentSource.ModelNumber = switchDriver.System.DirectIO.ReadString()
-            switchDriver.System.DirectIO.FlushRead()
-            directIOWrapper("print(node[2].revision)")
-            currentSource.Revision = switchDriver.System.DirectIO.ReadString()
-            switchDriver.System.DirectIO.FlushRead()
-            testSystemInfo.AddSource(currentSource)
-        End If
-        directIOWrapper("print(slot[1].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardOneSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not idnString.Contains("Empty Slot") Then
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial)
-                    currentCards(0).Active = True
-                    currentCards(0).Slot = 1
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial)
-                    currentCards(upper + 1).Active = True
-                    currentCards(upper + 1).Slot = 1
-                End If
+            If Not testSystemInfo.GetSwitchBySerial(serialNo) Is Nothing Then
+                currentSwitch = testSystemInfo.GetSwitchBySerial(serialNo)
+                currentSwitch.Active = True
             Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardOneSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 1
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
+                currentSwitch = New Switch
+                currentSwitch.SerialNumber = serialNo
+                currentSwitch.Active = True
+                currentSwitch.FirstTest = Now()
+                directIOWrapper("print(localnode.model)")
+                currentSwitch.ModelNumber = switchDriver.System.DirectIO.ReadString()
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("print(localnode.revision)")
+                currentSwitch.Revision = switchDriver.System.DirectIO.ReadString()
+                switchDriver.System.DirectIO.FlushRead()
+                testSystemInfo.AddSwitch(currentSwitch)
+            End If
+            directIOWrapper("print(node[2].serialno)")
+            serialNo = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.SourceMeterSerial = serialNo
+            switchDriver.System.DirectIO.FlushRead()
+            If Not testSystemInfo.GetSourceBySerial(serialNo) Is Nothing Then
+                currentSource = testSystemInfo.GetSourceBySerial(serialNo)
+                currentSource.Active = True
+            Else
+                currentSource = New SourceMeter
+                currentSource.SerialNumber = serialNo
+                currentSource.Active = True
+                currentSource.FirstTest = Now()
+                directIOWrapper("print(node[2].model)")
+                currentSource.ModelNumber = switchDriver.System.DirectIO.ReadString()
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("print(node[2].revision)")
+                currentSource.Revision = switchDriver.System.DirectIO.ReadString()
+                switchDriver.System.DirectIO.FlushRead()
+                testSystemInfo.AddSource(currentSource)
+            End If
+            directIOWrapper("print(slot[1].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardOneSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not idnString.Contains("Empty Slot") Then
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial)
+                        currentCards(0).Active = True
+                        currentCards(0).Slot = 1
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardOneSerial)
+                        currentCards(upper + 1).Active = True
+                        currentCards(upper + 1).Slot = 1
+                    End If
                 Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardOneSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 1
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
                 End If
             End If
-        End If
-        directIOWrapper("print(slot[2].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardTwoSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not idnString.Contains("Empty Slot") Then
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial)
-                    currentCards(0).Active = True
+            directIOWrapper("print(slot[2].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardTwoSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not idnString.Contains("Empty Slot") Then
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial)
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial)
+                        currentCards(upper + 1).Active = True
+                    End If
                 Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardTwoSerial)
-                    currentCards(upper + 1).Active = True
-                End If
-            Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardTwoSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 2
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardTwoSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 2
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
                 End If
             End If
-        End If
-        directIOWrapper("print(slot[3].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardThreeSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not (idnString.Contains("Empty Slot")) Then
+            directIOWrapper("print(slot[3].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardThreeSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not (idnString.Contains("Empty Slot")) Then
 
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial)
-                    currentCards(0).Active = True
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial)
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial)
+                        currentCards(upper + 1).Active = True
+                    End If
                 Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardThreeSerial)
-                    currentCards(upper + 1).Active = True
-                End If
-            Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardThreeSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 3
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
-                End If
-            End If
-        End If
-        directIOWrapper("print(slot[4].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardFourSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not idnString.Contains("Empty Slot") Then
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial)
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial)
-                    currentCards(upper + 1).Active = True
-                End If
-            Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardFourSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 4
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardThreeSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 3
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
                 End If
             End If
-        End If
-        directIOWrapper("print(slot[5].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardFiveSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not idnString.Contains("Empty Slot") Then
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial)
-                    currentCards(0).Active = True
+            directIOWrapper("print(slot[4].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardFourSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not idnString.Contains("Empty Slot") Then
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial)
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFourSerial)
+                        currentCards(upper + 1).Active = True
+                    End If
                 Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial)
-                    currentCards(upper + 1).Active = True
-                End If
-            Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardFiveSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 5
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
-                End If
-            End If
-        End If
-        directIOWrapper("print(slot[6].idn)")
-        idnString = switchDriver.System.DirectIO.ReadString()
-        currentTestFile.MatrixCardSixSerial = ParseIDNForSerial(idnString)
-        switchDriver.System.DirectIO.FlushRead()
-        If Not idnString.Contains("Empty Slot") Then
-            If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial) Is Nothing Then
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial)
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial)
-                    currentCards(upper + 1).Active = True
-                End If
-            Else
-                Dim newCard As New Card
-                newCard.SerialNumber = currentTestFile.MatrixCardSixSerial
-                newCard.ModelNumber = ParseIDNForModel(idnString)
-                newCard.Revision = ParseIDNForRevision(idnString)
-                newCard.FirstTest = Now()
-                newCard.Slot = 6
-                If currentCards Is Nothing Then
-                    ReDim currentCards(0)
-                    currentCards(0) = newCard
-                    currentCards(0).Active = True
-                Else
-                    Dim upper As Long = currentCards.GetUpperBound(0)
-                    ReDim Preserve currentCards(upper + 1)
-                    currentCards(upper + 1) = newCard
-                    currentCards(upper + 1).Active = True
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardFourSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 4
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
                 End If
             End If
-        End If
-        ' Set all cards not just found to inactive
-        currentSwitch.Cards = currentCards
-        Dim boolCardFound As Boolean
-        For Each exCard In currentSwitch.Cards
-            boolCardFound = False
-            For Each inCard In currentCards
-                If inCard.SerialNumber = exCard.SerialNumber Then
-                    boolCardFound = True
+            directIOWrapper("print(slot[5].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardFiveSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not idnString.Contains("Empty Slot") Then
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial)
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardFiveSerial)
+                        currentCards(upper + 1).Active = True
+                    End If
+                Else
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardFiveSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 5
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
+                End If
+            End If
+            directIOWrapper("print(slot[6].idn)")
+            idnString = switchDriver.System.DirectIO.ReadString()
+            currentTestFile.MatrixCardSixSerial = ParseIDNForSerial(idnString)
+            switchDriver.System.DirectIO.FlushRead()
+            If Not idnString.Contains("Empty Slot") Then
+                If Not currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial) Is Nothing Then
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial)
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = currentSwitch.GetCardBySerial(currentTestFile.MatrixCardSixSerial)
+                        currentCards(upper + 1).Active = True
+                    End If
+                Else
+                    Dim newCard As New Card
+                    newCard.SerialNumber = currentTestFile.MatrixCardSixSerial
+                    newCard.ModelNumber = ParseIDNForModel(idnString)
+                    newCard.Revision = ParseIDNForRevision(idnString)
+                    newCard.FirstTest = Now()
+                    newCard.Slot = 6
+                    If currentCards Is Nothing Then
+                        ReDim currentCards(0)
+                        currentCards(0) = newCard
+                        currentCards(0).Active = True
+                    Else
+                        Dim upper As Long = currentCards.GetUpperBound(0)
+                        ReDim Preserve currentCards(upper + 1)
+                        currentCards(upper + 1) = newCard
+                        currentCards(upper + 1).Active = True
+                    End If
+                End If
+            End If
+            ' Set all cards not just found to inactive
+            currentSwitch.Cards = currentCards
+            Dim boolCardFound As Boolean
+            For Each exCard In currentSwitch.Cards
+                boolCardFound = False
+                For Each inCard In currentCards
+                    If inCard.SerialNumber = exCard.SerialNumber Then
+                        boolCardFound = True
+                    End If
+                Next
+                If Not boolCardFound Then
+                    exCard.Active = False
                 End If
             Next
-            If Not boolCardFound Then
-                exCard.Active = False
-            End If
-        Next
-        currentTestFile.SystemSwitch = currentSwitch
-        currentTestFile.SystemSource = currentSource
-        testSystemInfo.writeToFile()
-
+            currentTestFile.SystemSwitch = currentSwitch
+            currentTestFile.SystemSource = currentSource
+            testSystemInfo.writeToFile()
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
 End Module

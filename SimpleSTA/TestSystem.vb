@@ -49,22 +49,32 @@ Public Class TestSystem
         End Try
     End Sub
     Public Function GetSourceBySerial(ByVal strSerial As String) As SourceMeter
-        If arySources Is Nothing Then Return Nothing
-        For Each aSource In arySources
-            If aSource.SerialNumber = strSerial Then
-                Return aSource
-            End If
-        Next
-        Return Nothing
+        Try
+            If arySources Is Nothing Then Return Nothing
+            For Each aSource In arySources
+                If aSource.SerialNumber = strSerial Then
+                    Return aSource
+                End If
+            Next
+            Return Nothing
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return Nothing
+        End Try
     End Function
     Public Function GetSwitchBySerial(ByVal strSerial As String) As Switch
-        If arySwitches Is Nothing Then Return Nothing
-        For Each aSwitch In arySwitches
-            If aSwitch.SerialNumber = strSerial Then
-                Return aSwitch
-            End If
-        Next
-        Return Nothing
+        Try
+            If arySwitches Is Nothing Then Return Nothing
+            For Each aSwitch In arySwitches
+                If aSwitch.SerialNumber = strSerial Then
+                    Return aSwitch
+                End If
+            Next
+            Return Nothing
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return Nothing
+        End Try
     End Function
     Public Sub writeToFile()
         ' Serializes the instance to file, using the file path defined by strDumpFile
@@ -74,8 +84,7 @@ Public Class TestSystem
             serializer.Serialize(writer, Me)
             writer.Close()
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-            MsgBox("Unable to dump test data to file")
+            GenericExceptionHandler(ex)
         End Try
     End Sub
     Public Sub addSwitchEvent(intSlot As Integer, Optional intSwitchCount As Integer = 1)
@@ -97,7 +106,7 @@ Public Class TestSystem
                 Throw New Exception("Duplicate active Cards found in SystemInfo file")
             End If
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
+            GenericExceptionHandler(ex)
         End Try
     End Sub
 

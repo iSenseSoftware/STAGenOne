@@ -169,10 +169,7 @@ Public Class frmTestForm
                 Me.Close()
             End If
         Catch ex As COMException
-            MsgBox(ex.ErrorCode & " " & ex.ToString)
-            Dim errMessage As String = ""
-            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
-            MsgBox(errMessage)
+            ComExceptionHandler(ex)
             Me.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -309,10 +306,7 @@ Public Class frmTestForm
             totalTime.Stop()
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException
-            MsgBox(ex.ErrorCode & " " & ex.ToString)
-            Dim errMessage As String = ""
-            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
-            MsgBox(errMessage)
+            ComExceptionHandler(ex)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -522,11 +516,20 @@ Public Class frmTestForm
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
-        txtTime.Text = "Total Time: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
-        currentTestFile.TestLength = totalTime.Elapsed.TotalSeconds
+        Try
+            txtTime.Text = "Total Time: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
+            currentTestFile.TestLength = totalTime.Elapsed.TotalSeconds
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Private Sub InjectionTimer_Tick(sender As Object, e As EventArgs) Handles InjectionTimer.Tick
-        txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
+        Try
+            txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+
     End Sub
     Private Sub RunAuditCheck()
         Try
@@ -629,10 +632,7 @@ Public Class frmTestForm
             Next
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException
-            MsgBox(ex.ErrorCode & " " & ex.ToString)
-            Dim errMessage As String = ""
-            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
-            MsgBox(errMessage)
+            ComExceptionHandler(ex)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -703,10 +703,7 @@ Public Class frmTestForm
             Next
             currentTestFile.writeToFile()
         Catch ex As COMException
-            MsgBox(ex.ErrorCode & " " & ex.ToString)
-            Dim errMessage As String = ""
-            switchDriver.Utility.ErrorQuery(ex.ErrorCode, errMessage)
-            MsgBox(errMessage)
+            ComExceptionHandler(ex)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

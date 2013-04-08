@@ -44,7 +44,7 @@
             outReading.Row = Row
             Return outReading
         Catch ex As Exception
-
+            GenericExceptionHandler(ex)
         End Try
     End Function
     Public Sub New()

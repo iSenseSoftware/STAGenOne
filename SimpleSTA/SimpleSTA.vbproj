@@ -94,12 +94,6 @@
     <Compile Include="AuditReading.vb" />
     <Compile Include="Card.vb" />
     <Compile Include="Configuration.vb" />
-    <Compile Include="frmAuditStatus.Designer.vb">
-      <DependentUpon>frmAuditStatus.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmAuditStatus.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -155,9 +149,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAuditStatus.resx">
-      <DependentUpon>frmAuditStatus.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </EmbeddedResource>

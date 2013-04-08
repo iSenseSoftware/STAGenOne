@@ -212,8 +212,7 @@ Public Class TestFile
             reader.Close()
             Return output
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-            MsgBox("Unable to load test data from file")
+            GenericExceptionHandler(ex)
             Return Nothing
         End Try
     End Function
@@ -226,30 +225,36 @@ Public Class TestFile
             serializer.Serialize(writer, Me)
             writer.Close()
         Catch ex As Exception
-            MsgBox("An exception occurred:" & Environment.NewLine & ex.Message & Environment.NewLine & ex.ToString)
-            MsgBox("Unable to dump test data to file")
+            GenericExceptionHandler(ex)
         End Try
     End Sub
     Public Sub addSensor(ByVal newSensor As Sensor)
-        If arySensors Is Nothing Then
-            ReDim arySensors(0)
-            arySensors(0) = newSensor
-        Else
-            Dim upper As Long = arySensors.GetUpperBound(0)
-            ReDim Preserve arySensors(upper + 1)
-            arySensors(upper + 1) = newSensor
-        End If
-
+        Try
+            If arySensors Is Nothing Then
+                ReDim arySensors(0)
+                arySensors(0) = newSensor
+            Else
+                Dim upper As Long = arySensors.GetUpperBound(0)
+                ReDim Preserve arySensors(upper + 1)
+                arySensors(upper + 1) = newSensor
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Public Sub addInjection(ByVal timestamp As DateTime)
-        If aryInjections Is Nothing Then
-            ReDim aryInjections(0)
-            aryInjections(0) = timestamp
-        Else
-            Dim upper As Long = aryInjections.GetUpperBound(0)
-            ReDim Preserve aryInjections(upper + 1)
-            aryInjections(upper + 1) = timestamp
-        End If
+        Try
+            If aryInjections Is Nothing Then
+                ReDim aryInjections(0)
+                aryInjections(0) = timestamp
+            Else
+                Dim upper As Long = aryInjections.GetUpperBound(0)
+                ReDim Preserve aryInjections(upper + 1)
+                aryInjections(upper + 1) = timestamp
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
     End Sub
     Public Sub New()
 

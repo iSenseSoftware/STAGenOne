@@ -47,7 +47,7 @@
             outChannel.Column = column
             Return outChannel
         Catch ex As Exception
-
+            GenericExceptionHandler(ex)
         End Try
     End Function
     Public Sub New()

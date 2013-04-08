@@ -29,7 +29,7 @@
     ' The readingFactory returns an instance of this object with the inputted properties set.  
     ' This cannot be done in the constructor because we will be serializing this object to xml
     ' for the test file and the Serializer requires a parameterless constructor
-    Public Shared Function readingFactory(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double)
+    Public Shared Function readingFactory(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double) As Reading
         Try
             Dim returnReading As New Reading
             returnReading.Potential = potential
@@ -38,6 +38,7 @@
             Return returnReading
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            Return Nothing
         End Try
     End Function
 End Class

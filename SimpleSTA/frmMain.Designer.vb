@@ -55,13 +55,13 @@ Partial Class frmMain
         'NewTestToolStripMenuItem
         '
         Me.NewTestToolStripMenuItem.Name = "NewTestToolStripMenuItem"
-        Me.NewTestToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.NewTestToolStripMenuItem.Size = New System.Drawing.Size(131, 22)
         Me.NewTestToolStripMenuItem.Text = "New Test..."
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(131, 22)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'SettingsToolStripMenuItem
@@ -87,7 +87,7 @@ Partial Class frmMain
         'AboutToolStripMenuItem
         '
         Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(115, 22)
         Me.AboutToolStripMenuItem.Text = "About..."
         '
         'StatusStrip1
@@ -114,7 +114,7 @@ Partial Class frmMain
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "frmMain"
-        Me.Text = "CGM Sensor Release Tester"
+        Me.Text = "GlucoMatrix"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)

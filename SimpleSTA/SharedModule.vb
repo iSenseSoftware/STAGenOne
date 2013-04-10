@@ -244,6 +244,7 @@ Public Module SharedModule
                 switchDriver.System.DirectIO.FlushRead()
                 testSystemInfo.AddSwitch(currentSwitch)
             End If
+            switchDriver.System.DirectIO.FlushRead()
             directIOWrapper("print(node[2].serialno)")
             serialNo = switchDriver.System.DirectIO.ReadString()
             currentTestFile.SourceMeterSerial = serialNo

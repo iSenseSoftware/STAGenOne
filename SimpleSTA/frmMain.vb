@@ -29,9 +29,11 @@
                 End If
             Else
                 initializeConfiguration()
+                MsgBox("initializing configuration")
                 If (verifyConfiguration()) Then
                     SystemStatusLabel.Text = "System Status: Configuration Loaded"
                 Else
+                    MsgBox("Sorry, I suck")
                     SystemStatusLabel.Text = "System Status: Configuration could not be verified.  Update configuration."
                     frmConfig.Show()
                     frmConfig.BringToFront()

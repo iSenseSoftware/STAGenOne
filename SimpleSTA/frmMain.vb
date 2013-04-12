@@ -45,6 +45,9 @@
                 switchDriver.Initialize(config.Address, False, False, options)
                 If (switchDriver.Initialized()) Then
                     Me.SystemStatusLabel.Text = "System Status: Standby; I/O established."
+                    switchDriver.TspLink.Reset()
+                    directIOWrapper("node[2].display.clear()")
+                    directIOWrapper("node[2].display.settext('System I/O OK')")
                 Else
                     MsgBox("Unable to establish connection to test system.  Verify connections and configuration settings and try again.")
                     Me.Close()

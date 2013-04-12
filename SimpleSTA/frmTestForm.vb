@@ -65,13 +65,14 @@ Public Class frmTestForm
             txtOperator.Text = "Operator: " & currentTestFile.OperatorID
             ' Configure the test chart
             With TestChart.ChartAreas(0)
-                .AxisY.Interval = 0
-                Dim aGrid As New Grid
-                aGrid.Interval = 0.5
-                .AxisY.MajorGrid = aGrid
-                Dim anotherGrid As New Grid
-                anotherGrid.Interval = 0.1
-                .AxisY.MinorGrid = anotherGrid
+                .AxisY.Interval = 0.25
+                'Dim aGrid As New Grid
+                'aGrid.Interval = 0.5
+                '.AxisY.MajorGrid = aGrid
+                'Dim anotherGrid As New Grid
+                'anotherGrid.Interval = 0.1
+                '.AxisY.MinorGrid = anotherGrid
+                .AxisX.Interval = 8
                 .CursorX.AutoScroll = False
                 .CursorY.AutoScroll = False
                 .CursorX.IsUserEnabled = True
@@ -80,6 +81,8 @@ Public Class frmTestForm
                 .CursorY.Interval = 0
                 .AxisX.ScaleView.MinSize = 0
                 .AxisY.ScaleView.MinSize = 0
+                .AxisY.Minimum = 0
+                .AxisX.Minimum = 0
                 .AxisX.Title = "Elapsed Time (s)"
                 .AxisY.Title = "Current (nA)"
                 ' Setting IsMarginVisible to false increases the accuracy of deep zooming.  If this is true then zooms are padded
@@ -147,6 +150,8 @@ Public Class frmTestForm
             currentTestFile.AuditCheck.Validate()
             If (currentTestFile.AuditCheck.Pass) Then
                 MsgBox("Self check successful!")
+                directIOWrapper("node[2].display.clear()")
+                directIOWrapper("node[2].display.settext('Audit Pass')")
                 boolIsTestRunning = False
                 btnStartTest.Show()
                 btnNoteInjection.Show()
@@ -322,12 +327,12 @@ Public Class frmTestForm
                 ' Note that the  \ division operator is used instead of  / to force rounding to the nearest integer.  This
                 ' helps improve readability of the graph
                 TestChart.Series(currentID).Points.AddXY(currentTime \ 1000, Math.Round(currentCurrent, 2))
+                Debug.Print(currentTime \ 1000)
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub btnNoteInjection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNoteInjection.Click
         ' Add the current time to the test file injections array
         Try
@@ -347,6 +352,19 @@ Public Class frmTestForm
         End Try
     End Sub
 
+    Private Sub TestChart_AxisViewChanged(sender As Object, e As ViewEventArgs) Handles TestChart.AxisViewChanged
+        Dim dblMin As Double
+        dblMin = TestChart.ChartAreas(0).AxisX.ScaleView.Position
+        If dblMin < 0 Then
+            TestChart.ChartAreas(0).AxisX.ScaleView.Position = 0
+        Else
+            TestChart.ChartAreas(0).AxisX.ScaleView.Position = dblMin \ 1
+        End If
+        dblMin = TestChart.ChartAreas(0).AxisY.ScaleView.Position
+        If dblMin < 0 Then
+            TestChart.ChartAreas(0).AxisY.ScaleView.Position = 0
+        End If
+    End Sub
 
     ' This method requires the series names to be the same as their legend entries
     Private Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
@@ -387,9 +405,9 @@ Public Class frmTestForm
         Try
             TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
             TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
-            TestChart.ChartAreas(0).AxisX.Maximum = 0
+            'TestChart.ChartAreas(0).AxisX.Maximum = 0
             TestChart.ChartAreas(0).AxisX.Minimum = 0
-            TestChart.ChartAreas(0).AxisY.Maximum = 0
+            'TestChart.ChartAreas(0).AxisY.Maximum = 0
             TestChart.ChartAreas(0).AxisY.Minimum = 0
             txtXMax.Text = ""
             txtYMax.Text = ""
@@ -412,6 +430,7 @@ Public Class frmTestForm
                     .AxisY.ScaleView.MinSize = 0.5
                     .AxisY.RoundAxisValues()
                     .AxisX.RoundAxisValues()
+                    .AxisX.Interval = 1.0
                     .CursorY.IsUserSelectionEnabled = True
                     .CursorX.IsUserSelectionEnabled = True
                 End With
@@ -422,6 +441,7 @@ Public Class frmTestForm
                     .AxisY.ScaleView.Zoomable = False
                     .CursorY.IsUserSelectionEnabled = False
                     .CursorX.IsUserSelectionEnabled = False
+                    .AxisX.Interval = 8.0
                 End With
             End If
         Catch ex As Exception
@@ -542,6 +562,8 @@ Public Class frmTestForm
             End If
             switchDriver.Channel.OpenAll()
             switchDriver.TspLink.Reset()
+            directIOWrapper("node[2].display.clear()")
+            directIOWrapper("node[2].display.settext('Running Self Check')")
             ' set both SMU channels to DC volts
             ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
             directIOWrapper("node[2].smub.source.func = 1")

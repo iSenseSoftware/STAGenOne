@@ -36,6 +36,7 @@
             Dim validates As Boolean = True
             For Each aChannel In aryAuditChannels
                 For Each aReading In aChannel.AuditReadings
+                    Debug.Print(100 / 0)
                     If (Math.Abs(((aReading.Voltage / aReading.NominalResistance) - aReading.Current) / (aReading.Voltage / aReading.NominalResistance)) > config.AuditTolerance) Then
                         validates = False
                     End If

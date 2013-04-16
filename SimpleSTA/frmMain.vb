@@ -47,6 +47,7 @@
                 switchDriver.Initialize(config.Address, False, False, options)
                 If (switchDriver.Initialized()) Then
                     Me.SystemStatusLabel.Text = "System Status: Standby; I/O established."
+                    'directIOWrapper("tsplink.reset()")
                     switchDriver.TspLink.Reset()
                     directIOWrapper("node[2].display.clear()")
                     directIOWrapper("node[2].display.settext('System I/O OK')")
@@ -84,7 +85,7 @@
             End If
         Catch ex As Runtime.InteropServices.COMException
             ComExceptionHandler(ex)
-
+            ' switchDriver.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

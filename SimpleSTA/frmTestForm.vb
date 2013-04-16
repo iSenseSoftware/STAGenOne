@@ -561,6 +561,7 @@ Public Class frmTestForm
                 switchDriver.Initialize(config.Address, False, False, options)
             End If
             switchDriver.Channel.OpenAll()
+            'directIOWrapper("node[1].tsplink.reset()")
             switchDriver.TspLink.Reset()
             directIOWrapper("node[2].display.clear()")
             directIOWrapper("node[2].display.settext('Running Self Check')")
@@ -655,6 +656,7 @@ Public Class frmTestForm
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException
             ComExceptionHandler(ex)
+            'switchDriver.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

@@ -119,7 +119,12 @@ Public Module SharedModule
             If (config.CardConfig = Nothing) Then
                 verifies = False
             End If
+            If (config.Resistor1Resistance <= 0 Or config.Resistor2Resistance <= 0 Or config.Resistor3Resistance <= 0) Then
+                verifies = False
+            End If
             Return verifies
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Return False
@@ -222,9 +227,11 @@ Public Module SharedModule
     End Function
     Public Sub PopulateSystemInfo()
         Try
-            directIOWrapper("print(localnode.serialno)")
+
             Dim serialNo As String
             Dim idnString As String
+            switchDriver.System.DirectIO.FlushRead()
+            directIOWrapper("print(localnode.serialno)")
             serialNo = switchDriver.System.DirectIO.ReadString()
             currentTestFile.SwitchSerial = serialNo
             switchDriver.System.DirectIO.FlushRead()
@@ -265,6 +272,7 @@ Public Module SharedModule
                 switchDriver.System.DirectIO.FlushRead()
                 testSystemInfo.AddSource(currentSource)
             End If
+            switchDriver.System.DirectIO.FlushRead()
             directIOWrapper("print(slot[1].idn)")
             idnString = switchDriver.System.DirectIO.ReadString()
             currentTestFile.MatrixCardOneSerial = ParseIDNForSerial(idnString)
@@ -495,6 +503,8 @@ Public Module SharedModule
             currentTestFile.SystemSwitch = currentSwitch
             currentTestFile.SystemSource = currentSource
             testSystemInfo.writeToFile()
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

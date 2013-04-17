@@ -428,7 +428,8 @@ Partial Class frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(438, 759)
+        Me.AutoScroll = True
+        Me.ClientSize = New System.Drawing.Size(438, 573)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.btnSelectInfoFile)
         Me.Controls.Add(Me.txtSystemInfoFile)

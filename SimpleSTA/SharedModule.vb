@@ -16,6 +16,7 @@ Public Module SharedModule
     Public currentCards() As Card
     Public switchDriver As New Ke37XX
     Public appDir As String
+    
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
     ' it may be desireable to incorporate user authentication / authorization modules for granular permissions
     Public strAdminPassword As String = "C0balt22"

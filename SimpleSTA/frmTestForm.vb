@@ -23,7 +23,8 @@ Public Class frmTestForm
     Dim currentSlot As Integer
     Dim currentColumn As Integer
     Dim currentID As String
-    Dim boolIsTestRunning As Boolean
+    Dim boolIsTestRunning As Boolean 'Boolean flag - has the user clicked stop
+    Dim boolIsTestStopped As Boolean ' Boolean flag - has the test actually stopped
     Dim boolOpenTest As Boolean = False
     Dim strOpenFileName As String
     Dim boolColorsSet As Boolean = False
@@ -34,7 +35,7 @@ Public Class frmTestForm
         Try
             If (boolIsTestRunning) Then
                 boolIsTestRunning = False
-                btnStartTest.Text = "Test Complete"
+                btnStartTest.Text = "Ending Test"
                 btnStartTest.Enabled = False
                 btnNoteInjection.Enabled = False
             Else
@@ -49,9 +50,15 @@ Public Class frmTestForm
     Private Sub TestForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         Try
             ' Close the instrument connection when exiting the test form
-            If (switchDriver.Initialized) Then
-                switchDriver.Close()
+            If boolIsTestStopped Then
+                If (switchDriver.Initialized) Then
+                    switchDriver.Close()
+                End If
+            Else
+                e.Cancel = True
+                MsgBox("Cannot close test form while test is running.  Stop test and close form.", vbOKOnly)
             End If
+            
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -65,14 +72,14 @@ Public Class frmTestForm
             txtOperator.Text = "Operator: " & currentTestFile.OperatorID
             ' Configure the test chart
             With TestChart.ChartAreas(0)
-                .AxisY.Interval = 0.25
+                '.AxisY.Interval = 0.25
                 'Dim aGrid As New Grid
                 'aGrid.Interval = 0.5
                 '.AxisY.MajorGrid = aGrid
                 'Dim anotherGrid As New Grid
                 'anotherGrid.Interval = 0.1
                 '.AxisY.MinorGrid = anotherGrid
-                .AxisX.Interval = 8
+                '.AxisX.Interval = 8
                 .CursorX.AutoScroll = False
                 .CursorY.AutoScroll = False
                 .CursorX.IsUserEnabled = True
@@ -149,10 +156,12 @@ Public Class frmTestForm
             RunAuditCheck()
             currentTestFile.AuditCheck.Validate()
             If (currentTestFile.AuditCheck.Pass) Then
+                currentTestFile.writeToFile()
                 MsgBox("Self check successful!")
                 directIOWrapper("node[2].display.clear()")
                 directIOWrapper("node[2].display.settext('Audit Pass')")
                 boolIsTestRunning = False
+                boolIsTestStopped = False
                 btnStartTest.Show()
                 btnNoteInjection.Show()
                 ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
@@ -170,6 +179,7 @@ Public Class frmTestForm
                 directIOWrapper("node[2].display.clear()")
                 directIOWrapper("node[2].display.settext('Ready to test')")
             Else
+                currentTestFile.writeToFile()
                 MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
                 Me.Close()
             End If
@@ -189,6 +199,11 @@ Public Class frmTestForm
     '        to distribute the measurement work among several SMU/DMMs
     Private Sub BackgroundWorker1_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles BackgroundWorker1.DoWork
         Try
+            Control.CheckForIllegalCrossThreadCalls = False
+            directIOWrapper("node[2].display.clear()")
+            directIOWrapper("node[1].display.clear()")
+            directIOWrapper("node[2].display.settext('Test Running')")
+            directIOWrapper("node[1].display.settext('Test Running')")
             ' set both SMU channels to DC volts
             ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
             directIOWrapper("node[2].smua.source.func = 1")
@@ -259,6 +274,8 @@ Public Class frmTestForm
 
             Dim interval As Integer = config.RecordInterval
             Dim theTime As Date
+            Dim intMilliseconds As Integer
+            intMilliseconds = interval * 1000
             ElapsedTimer.Start()
             timer.Start()
             totalTime.Start()
@@ -299,15 +316,34 @@ Public Class frmTestForm
                     testSystemInfo.addSwitchEvent(currentTestFile.Sensors(z).Slot, 4)
                 Next
                 BackgroundWorker1.ReportProgress(10)
-                If (timer.ElapsedMilliseconds > interval * 1000) Then
-                    Throw New Exception("Could not finish measurements within injection interval specified")
+                If (timer.ElapsedMilliseconds > intMilliseconds) Then
+                    MsgBox("Could not finish measurements within injection interval specified")
                     boolIsTestRunning = False
+                    boolIsTestStopped = True
                 End If
-                Do Until timer.ElapsedMilliseconds >= interval * 1000
+                Dim iLast As Integer
+                Do Until timer.ElapsedMilliseconds >= intMilliseconds
                     ' do nothing.  This is to ensure that the interval elapses before another round of measurements
+
+                    If Not boolIsTestRunning Then
+                        If iLast = 0 And (intMilliseconds - timer.ElapsedMilliseconds) / 1000 = 0 Then
+                            btnStartTest.Text = "Test Complete"
+                        Else
+                            If Not ((intMilliseconds - timer.ElapsedMilliseconds) / 1000 = iLast) Then
+                                iLast = (intMilliseconds - timer.ElapsedMilliseconds) / 1000
+                                btnStartTest.Text = "Ending In " & iLast
+                            End If
+                        End If
+                    End If
                 Loop
                 timer.Restart()
             Loop
+            btnStartTest.Text = "Test Complete"
+            directIOWrapper("node[2].display.clear()")
+            directIOWrapper("node[1].display.clear()")
+            directIOWrapper("node[2].display.settext('Standby')")
+            directIOWrapper("node[1].display.settext('Standby')")
+            boolIsTestStopped = True
             totalTime.Stop()
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException
@@ -320,11 +356,17 @@ Public Class frmTestForm
     Private Sub BackgroundWorker1_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles BackgroundWorker1.ProgressChanged
         Try
             If (e.ProgressPercentage = 10) Then
+                If Not (TestChart.ChartAreas(0).AxisY.ScaleView.IsZoomed Or TestChart.ChartAreas(0).AxisX.ScaleView.IsZoomed) Then
+                    TestChart.ChartAreas(0).AxisX.Interval = TestChart.ChartAreas(0).AxisX.Maximum \ 10
+                    TestChart.ChartAreas(0).AxisY.Interval = Math.Round(TestChart.ChartAreas(0).AxisY.Maximum / 10, 1)
+                Else
+                    ' do nothing
+                End If
                 TestChart.Update()
                 currentTestFile.writeToFile()
                 testSystemInfo.writeToFile()
             Else
-                ' Note that the  \ division operator is used instead of  / to force rounding to the nearest integer.  This
+                ' Note that the  \ division operator is used instead of  / to force rounding down to an integer.  This
                 ' helps improve readability of the graph
                 TestChart.Series(currentID).Points.AddXY(currentTime \ 1000, Math.Round(currentCurrent, 2))
                 Debug.Print(currentTime \ 1000)
@@ -351,7 +393,6 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub TestChart_AxisViewChanged(sender As Object, e As ViewEventArgs) Handles TestChart.AxisViewChanged
         Dim dblMin As Double
         dblMin = TestChart.ChartAreas(0).AxisX.ScaleView.Position
@@ -364,8 +405,10 @@ Public Class frmTestForm
         If dblMin < 0 Then
             TestChart.ChartAreas(0).AxisY.ScaleView.Position = 0
         End If
+        TestChart.ChartAreas(0).AxisY.ScaleView.Position = Math.Round(TestChart.ChartAreas(0).AxisY.ScaleView.Position, 1)
+        TestChart.ChartAreas(0).AxisX.Interval = TestChart.ChartAreas(0).AxisX.ScaleView.Size \ 10
+        TestChart.ChartAreas(0).AxisY.Interval = Math.Round(TestChart.ChartAreas(0).AxisY.ScaleView.Size / 10, 1)
     End Sub
-
     ' This method requires the series names to be the same as their legend entries
     Private Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
         ' Call hit test method
@@ -400,15 +443,21 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomReset.Click
         Try
             TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
             TestChart.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
-            'TestChart.ChartAreas(0).AxisX.Maximum = 0
+            TestChart.ChartAreas(0).AxisX.Maximum = Double.NaN
             TestChart.ChartAreas(0).AxisX.Minimum = 0
-            'TestChart.ChartAreas(0).AxisY.Maximum = 0
+            TestChart.ChartAreas(0).AxisY.Maximum = Double.NaN
             TestChart.ChartAreas(0).AxisY.Minimum = 0
+            'If Not (TestChart.ChartAreas(0).AxisY.ScaleView.IsZoomed Or TestChart.ChartAreas(0).AxisX.ScaleView.IsZoomed) Then
+            ' TestChart.ChartAreas(0).AxisX.Interval = TestChart.ChartAreas(0).AxisX.Maximum \ 10
+            ' TestChart.ChartAreas(0).AxisY.Interval = Math.Round(TestChart.ChartAreas(0).AxisY.Maximum / 10, 1)
+            ' Else
+            ' TestChart.ChartAreas(0).AxisX.Interval = TestChart.ChartAreas(0).AxisX.ScaleView.Size \ 10
+            ' TestChart.ChartAreas(0).AxisY.Interval = Math.Round(TestChart.ChartAreas(0).AxisY.ScaleView.Size / 10, 1)
+            ' End If
             txtXMax.Text = ""
             txtYMax.Text = ""
             txtXMin.Text = ""
@@ -417,7 +466,6 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub chkZoomEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkZoomEnabled.CheckedChanged
         Try
             If (chkZoomEnabled.Checked) Then
@@ -425,12 +473,14 @@ Public Class frmTestForm
                     .AxisX.ScaleView.Zoomable = True
                     .AxisY.ScaleView.Zoomable = True
                     .AxisX.ScaleView.MinSizeType = DateTimeIntervalType.Number
-                    .AxisX.ScaleView.MinSize = 24
+                    .AxisX.ScaleView.MinSize = config.RecordInterval * 3
                     .AxisY.ScaleView.MinSizeType = DateTimeIntervalType.Number
                     .AxisY.ScaleView.MinSize = 0.5
                     .AxisY.RoundAxisValues()
                     .AxisX.RoundAxisValues()
-                    .AxisX.Interval = 1.0
+                    '.AxisX.Interval = 1.0
+                    '.AxisX.Interval = .AxisX.ScaleView.Size \ 10
+                    '.AxisY.Interval = Math.Round(.AxisY.ScaleView.Size / 10, 2)
                     .CursorY.IsUserSelectionEnabled = True
                     .CursorX.IsUserSelectionEnabled = True
                 End With
@@ -439,9 +489,10 @@ Public Class frmTestForm
                 With TestChart.ChartAreas(0)
                     .AxisX.ScaleView.Zoomable = False
                     .AxisY.ScaleView.Zoomable = False
+                    '.AxisX.Interval = .AxisX.ScaleView.Size \ 10
+                    '.AxisY.Interval = Math.Round(.AxisY.ScaleView.Size / 10, 2)
                     .CursorY.IsUserSelectionEnabled = False
                     .CursorX.IsUserSelectionEnabled = False
-                    .AxisX.Interval = 8.0
                 End With
             End If
         Catch ex As Exception
@@ -449,7 +500,6 @@ Public Class frmTestForm
         End Try
 
     End Sub
-
     Private Sub chkScrollEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrollEnabled.CheckedChanged
         Try
             If (chkZoomEnabled.Checked) Then
@@ -468,7 +518,6 @@ Public Class frmTestForm
         End Try
 
     End Sub
-
     Private Sub btnZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomOut.Click
         Try
             TestChart.ChartAreas(0).AxisX.ScaleView.ZoomReset()
@@ -477,7 +526,6 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
         Try
             If Not (txtXMax.Text = "") Then
@@ -520,6 +568,11 @@ Public Class frmTestForm
                 aSeries.Enabled = True
                 aSeries.IsVisibleInLegend = True
             Next
+            For Each ctrl In HideShowSensors.Controls
+                If ctrl.GetType.ToString = "System.Windows.Forms.CheckBox" Then
+                    ctrl.Checked = True
+                End If
+            Next
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -530,11 +583,15 @@ Public Class frmTestForm
                 aSeries.Enabled = False
                 aSeries.IsVisibleInLegend = False
             Next
+            For Each ctrl In HideShowSensors.Controls
+                If ctrl.GetType.ToString = "System.Windows.Forms.CheckBox" Then
+                    ctrl.Checked = False
+                End If
+            Next
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
         Try
             txtTime.Text = "Total Time: " & strPad(totalTime.Elapsed.Hours, 2) & ":" & strPad(totalTime.Elapsed.Minutes, 2) & ":" & strPad(totalTime.Elapsed.Seconds, 2)
@@ -545,11 +602,12 @@ Public Class frmTestForm
     End Sub
     Private Sub InjectionTimer_Tick(sender As Object, e As EventArgs) Handles InjectionTimer.Tick
         Try
-            txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
+            If Not boolIsTestStopped Then
+                txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
+            End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
-
     End Sub
     Private Sub RunAuditCheck()
         Try
@@ -661,8 +719,6 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
-    
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Try
             Dim theTime As Date

@@ -53,12 +53,18 @@ Public Class frmTestForm
             If boolIsTestStopped Then
                 If (switchDriver.Initialized) Then
                     switchDriver.Close()
+                    switchDriver = Nothing
+                    boolIOEstablished = False
+                    boolSystemInfoLoaded = False
+                    boolConfigLoaded = False
+                    boolTestFileLoaded = False
                 End If
             Else
                 e.Cancel = True
                 MsgBox("Cannot close test form while test is running.  Stop test and close form.", vbOKOnly)
             End If
-            
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -72,14 +78,6 @@ Public Class frmTestForm
             txtOperator.Text = "Operator: " & currentTestFile.OperatorID
             ' Configure the test chart
             With TestChart.ChartAreas(0)
-                '.AxisY.Interval = 0.25
-                'Dim aGrid As New Grid
-                'aGrid.Interval = 0.5
-                '.AxisY.MajorGrid = aGrid
-                'Dim anotherGrid As New Grid
-                'anotherGrid.Interval = 0.1
-                '.AxisY.MinorGrid = anotherGrid
-                '.AxisX.Interval = 8
                 .CursorX.AutoScroll = False
                 .CursorY.AutoScroll = False
                 .CursorX.IsUserEnabled = True
@@ -151,38 +149,22 @@ Public Class frmTestForm
     End Sub
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            MsgBox("Preparing to perform system self check.  Make sure all fixtures are open before proceeding", vbOKOnly)
-            currentTestFile.AuditCheck = New AuditCheck
-            RunAuditCheck()
-            currentTestFile.AuditCheck.Validate()
-            If (currentTestFile.AuditCheck.Pass) Then
-                currentTestFile.writeToFile()
-                MsgBox("Self check successful!")
-                directIOWrapper("node[2].display.clear()")
-                directIOWrapper("node[2].display.settext('Audit Pass')")
-                boolIsTestRunning = False
-                boolIsTestStopped = False
-                btnStartTest.Show()
-                btnNoteInjection.Show()
-                ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
-                BackgroundWorker1.WorkerReportsProgress = True
+            boolIsTestRunning = False
+            boolIsTestStopped = False
+            btnStartTest.Show()
+            btnNoteInjection.Show()
+            ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
+            BackgroundWorker1.WorkerReportsProgress = True
+            'If (initializeDriver()) Then
+            prepareForm()
+            'Else
+            'Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
+            'End If
 
-                'switchDriver.TspLink.Reset()
-                If (switchDriver.Initialized) Then
+            ' Clear the source meter display and update the user
+            directIOWrapper("node[2].display.clear()")
+            directIOWrapper("node[2].display.settext('Ready to test')")
 
-                    prepareForm()
-                Else
-                    Throw New Exception("Unable to initialize driver.  Verify configuration settings are correct")
-                End If
-
-                ' Clear the source meter display and update the user
-                directIOWrapper("node[2].display.clear()")
-                directIOWrapper("node[2].display.settext('Ready to test')")
-            Else
-                currentTestFile.writeToFile()
-                MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
-                Me.Close()
-            End If
         Catch ex As COMException
             ComExceptionHandler(ex)
             Me.Close()
@@ -208,15 +190,19 @@ Public Class frmTestForm
             ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
             directIOWrapper("node[2].smua.source.func = 1")
             directIOWrapper("node[2].smub.source.func = 1")
+            Delay(10)
             ' Set the bias for both channels based on the value in config
             directIOWrapper("node[2].smua.source.levelv = " & config.Bias)
             directIOWrapper("node[2].smub.source.levelv = " & config.Bias)
+            Delay(10)
             ' Range is hard-coded to 1.  Does this need to be a config setting in the future?
             directIOWrapper("node[2].smua.source.rangev = 1")
             directIOWrapper("node[2].smub.source.rangev = 1")
+            Delay(10)
             ' disable autorange for both output channels
             directIOWrapper("node[2].smua.source.autorangei = 0")
             directIOWrapper("node[2].smub.source.autorangei = 0")
+            Delay(10)
             Select Case config.Range
                 Case CurrentRange.one_uA
                     directIOWrapper("node[2].smua.source.rangei = .001")
@@ -229,9 +215,10 @@ Public Class frmTestForm
                     directIOWrapper("node[2].smub.source.rangei = .1")
             End Select
             ' Turn both channels on
+            Delay(10)
             directIOWrapper("node[2].smua.source.output = 1")
             directIOWrapper("node[2].smub.source.output = 1")
-
+            Delay(10)
             ' Set connection rule to "make before break"
             ' @TODO: This is the setting from the old software.  Should this be changed?
             directIOWrapper("node[1].channel.connectrule = 2")
@@ -252,23 +239,29 @@ Public Class frmTestForm
                 channelString = channelString & "," & x & "911," & x & "912"
             Next
             ''End If
-            directIOWrapper("node[2].display.reset()")
+            Delay(10)
+            directIOWrapper("node[2].display.clear()")
             ' close all relays in row 1
             directIOWrapper("node[1].channel.exclusiveclose('" & channelString & "')")
             Debug.Print("Initial Close: " & channelString)
             ' Configure the DMM
+            Delay(10)
             directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
             directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
+            Delay(10)
             directIOWrapper("node[2].smua.measure.filter.count = " & config.Samples)
             directIOWrapper("node[2].smub.measure.filter.count = " & config.Samples)
+            Delay(10)
             directIOWrapper("node[2].smua.measure.filter.enable = 1")
             directIOWrapper("node[2].smub.measure.filter.enable = 1")
+            Delay(10)
             directIOWrapper("node[2].smua.measure.nplc = " & config.NPLC)
             directIOWrapper("node[2].smub.measure.nplc = " & config.NPLC)
+            Delay(10)
             ' Clear the non-volatile measurement buffers
             directIOWrapper("node[2].smub.nvbuffer1.clear()")
             directIOWrapper("node[2].smub.nvbuffer2.clear()")
-
+            Delay(10)
             ' timer is reset after each loop, totalTime is used for the x-axis of the test chart
             Dim timer As New Stopwatch
 
@@ -617,116 +610,6 @@ Public Class frmTestForm
             If Not boolIsTestStopped Then
                 txtTimeSinceInjection.Text = "Time Since Injection: " & strPad(injectionTime.Elapsed.Hours, 2) & ":" & strPad(injectionTime.Elapsed.Minutes, 2) & ":" & strPad(injectionTime.Elapsed.Seconds, 2)
             End If
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-    Private Sub RunAuditCheck()
-        Try
-            ' Start with all intersections open
-            If Not switchDriver.Initialized Then
-                Dim options As String
-                ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
-                options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
-                switchDriver.Initialize(config.Address, False, False, options)
-            End If
-            switchDriver.Channel.OpenAll()
-            'directIOWrapper("node[1].tsplink.reset()")
-            switchDriver.TspLink.Reset()
-            directIOWrapper("node[2].display.clear()")
-            directIOWrapper("node[2].display.settext('Running Self Check')")
-            ' set both SMU channels to DC volts
-            ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
-            directIOWrapper("node[2].smub.source.func = 1")
-            ' Set the bias for both channels based on the value in config
-            directIOWrapper("node[2].smub.source.levelv = " & config.Bias)
-            ' Range is hard-coded to 1.  Does this need to be a config setting in the future?
-            directIOWrapper("node[2].smub.source.rangev = 1")
-            ' disable autorange for both output channels
-            directIOWrapper("node[2].smub.source.autorangei = 0")
-            Dim i As Integer = 1
-            Dim z As Integer = 1
-            Dim aChannel As New AuditChannel
-            For i = 1 To config.CardConfig
-                For z = 1 To 16
-                    currentTestFile.AuditCheck.AddChannel(aChannel.ChannelFactory(i, z))
-                Next
-            Next
-
-            directIOWrapper("node[2].smub.source.output = 1")
-
-            ' Set connection rule to "make before break"
-            ' @TODO: This is the setting from the old software.  Should this be changed?
-            directIOWrapper("node[1].channel.connectrule = 2")
-            directIOWrapper("node[2].display.reset()")
-            ' Configure the DMM
-            directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
-            directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
-            directIOWrapper("node[2].smua.measure.filter.count = " & config.Samples)
-            directIOWrapper("node[2].smub.measure.filter.count = " & config.Samples)
-            directIOWrapper("node[2].smua.measure.filter.enable = 1")
-            directIOWrapper("node[2].smub.measure.filter.enable = 1")
-            directIOWrapper("node[2].smua.measure.nplc = " & config.NPLC)
-            directIOWrapper("node[2].smub.measure.nplc = " & config.NPLC)
-            ' Clear the non-volatile measurement buffers
-            directIOWrapper("node[2].smub.nvbuffer1.clear()")
-            directIOWrapper("node[2].smub.nvbuffer2.clear()")
-            directIOWrapper("node[2].smub.source.rangei = .00001")
-
-            For Each aChannel In currentTestFile.AuditCheck.AuditChannels
-                'Take readings from first resistor
-                Dim row As Integer = 3
-                switchDriver.System.DirectIO.FlushRead()
-                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
-                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
-                Delay(config.SettlingTime)
-                Delay(config.SettlingTime)
-                Delay(config.SettlingTime)
-                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
-                Dim current As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
-                Dim volts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                Dim aReading As New AuditReading
-                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor1Resistance, row))
-
-
-                'Take readings from second resistor
-                row = 4
-                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
-                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
-                Delay(config.SettlingTime)
-                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
-                current = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
-                volts = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor2Resistance, row))
-
-                'Take readings from third resistor
-                row = 5
-                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
-                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
-                Delay(config.SettlingTime)
-                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
-                current = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
-                volts = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor3Resistance, row))
-                ' Add switches to total
-                testSystemInfo.addSwitchEvent(aChannel.Card, 3)
-            Next
-            directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
-        Catch ex As COMException
-            ComExceptionHandler(ex)
-            'switchDriver.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

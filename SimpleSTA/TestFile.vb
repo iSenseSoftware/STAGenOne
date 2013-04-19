@@ -9,6 +9,7 @@ Public Class TestFile
     Dim cfgConfig As Configuration ' The configuration used for the test
     Dim databaseId As Long  ' This is used to store the primary key id of the database record for the test
     Dim arySensors() As Sensor ' A collection of Sensor objects which contain sensor info and test readings
+    Dim aryFullCircuitReadings() As Reading ' This array contains all readings made at the end of each measurement cycle across all sensor channels.
     Dim strDumpFile As String
     Dim strOperator As String ' The operator's initials / name
     Dim aryInjections() As DateTime ' An array containing timestamps for each time the "Note Injection" button is pressed
@@ -201,6 +202,14 @@ Public Class TestFile
             strCardSixID = value
         End Set
     End Property
+    Public Property FullCircuitReadings As Reading()
+        Get
+            Return aryFullCircuitReadings
+        End Get
+        Set(value As Reading())
+            aryFullCircuitReadings = value
+        End Set
+    End Property
     Public Shared Function testFileFactory(ByVal strFilePath As String) As TestFile
         ' The testFileFactory function is used to return an instance of the TestFile object
         ' deserialized from the file at the given location (strFilePath)
@@ -251,6 +260,22 @@ Public Class TestFile
                 Dim upper As Long = aryInjections.GetUpperBound(0)
                 ReDim Preserve aryInjections(upper + 1)
                 aryInjections(upper + 1) = timestamp
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Public Sub addFullCircuitReading(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double)
+        Try
+            Dim aReading As Reading
+            aReading = Reading.readingFactory(time, current, potential)
+            If aryFullCircuitReadings Is Nothing Then
+                ReDim aryFullCircuitReadings(0)
+                aryFullCircuitReadings(0) = aReading
+            Else
+                Dim upper As Long = aryFullCircuitReadings.GetUpperBound(0)
+                ReDim Preserve aryFullCircuitReadings(upper + 1)
+                aryFullCircuitReadings(upper + 1) = aReading
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)

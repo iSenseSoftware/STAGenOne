@@ -300,6 +300,7 @@ Public Class frmTestForm
 
                     directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
                     Dim volts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                    switchDriver.System.DirectIO.FlushRead()
                     ' 5. Return relays to their previous state
                     directIOWrapper("node[1].channel.open('" & currentTestFile.Sensors(z).Slot & "2" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
                     directIOWrapper("node[1].channel.close('" & currentTestFile.Sensors(z).Slot & "1" & strPad(CStr(currentTestFile.Sensors(z).Column), 2) & "')")
@@ -315,6 +316,17 @@ Public Class frmTestForm
                     ' Update system info file with switch count
                     testSystemInfo.addSwitchEvent(currentTestFile.Sensors(z).Slot, 4)
                 Next
+                ' Record the voltage and current across all sensors
+                Delay(config.SettlingTime)
+                Dim allTheTime As DateTime = DateTime.Now()
+                directIOWrapper("node[2].smua.measure.iv(node[2].smua.nvbuffer1, node[2].smua.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smua.nvbuffer1.n, node[2].smua.nvbuffer1)")
+                Dim allCurrent As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)")
+                Dim allVolts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                currentTestFile.addFullCircuitReading(allTheTime, allCurrent, allVolts)
                 BackgroundWorker1.ReportProgress(10)
                 If (timer.ElapsedMilliseconds > intMilliseconds) Then
                     MsgBox("Could not finish measurements within injection interval specified")

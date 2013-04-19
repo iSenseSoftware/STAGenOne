@@ -33,16 +33,31 @@ Public Class frmTestInfo
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub btnCreateTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateTest.Click
         Try
             If (File.Exists(config.DumpDirectory & Path.DirectorySeparatorChar & txtTestName.Text & ".xml")) Then
                 MsgBox("A file with that name already exists.  Choose a new name.")
                 txtTestName.SelectAll()
             Else
+                currentTestFile = Nothing
+                currentTestFile = New TestFile
                 updateTestFile()
-                frmTestForm.Show()
-                Me.Close()
+                MsgBox("Preparing to perform system self check.  Make sure all fixtures are open before proceeding", vbOKOnly)
+                currentTestFile.AuditCheck = New AuditCheck
+                RunAuditCheck()
+                currentTestFile.AuditCheck.Validate()
+                If (currentTestFile.AuditCheck.Pass) Then
+                    currentTestFile.writeToFile()
+                    directIOWrapper("node[2].display.clear()")
+                    directIOWrapper("node[2].display.settext('Ready to test')")
+                    frmTestForm.Show()
+                    Me.Close()
+                Else
+                    currentTestFile.writeToFile()
+                    currentTestFile = Nothing
+                    MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
+                    Me.Close()
+                End If
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -52,6 +67,7 @@ Public Class frmTestInfo
     Private Sub updateTestFile()
         Try
             'config.DumpDir = txtTestFile.Text
+            currentTestFile = New TestFile
             currentTestFile.Config = config
             currentTestFile.OperatorID = Me.txtOperatorInitials.Text
             currentTestFile.Name = Me.txtTestName.Text
@@ -452,7 +468,6 @@ Public Class frmTestInfo
             Return False
         End Try
     End Function
-
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Try
             Me.Close()
@@ -460,7 +475,6 @@ Public Class frmTestInfo
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub setTextForAll(ByVal val As String)
         Try
             txtCard1Batch.Text = val
@@ -474,7 +488,6 @@ Public Class frmTestInfo
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
     Private Sub chkSameCard1_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameCard1.CheckedChanged
         '' If enabled, set the boolSameBatch = true and copy the contents of the associated text box to all text boxes
         Try
@@ -555,4 +568,5 @@ Public Class frmTestInfo
             GenericExceptionHandler(ex)
         End Try
     End Sub
+    
 End Class

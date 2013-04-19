@@ -16,7 +16,11 @@ Public Module SharedModule
     Public currentCards() As Card
     Public switchDriver As New Ke37XX
     Public appDir As String
-    
+    Public boolSystemInfoLoaded As Boolean = False
+    Public boolConfigLoaded As Boolean = False
+    Public boolIOEstablished As Boolean = False
+    Public boolTestFileLoaded As Boolean = False
+    Public boolSeriesLoaded As Boolean = False
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
     ' it may be desireable to incorporate user authentication / authorization modules for granular permissions
     Public strAdminPassword As String = "C0balt22"
@@ -51,9 +55,11 @@ Public Module SharedModule
             reader.Close()
         Catch parseException As InvalidOperationException
             MsgBox("Invalid configuration file.  Delete " & appDir & configFileName)
+            boolConfigLoaded = False
             frmMain.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            boolConfigLoaded = False
         End Try
     End Sub
     Public Sub initializeConfiguration()
@@ -74,9 +80,11 @@ Public Module SharedModule
             reader.Close()
         Catch parseException As InvalidOperationException
             MsgBox("Invalid System Information File.  Delete " & config.SystemFileDirectory & "\SystemInfo.xml")
+            boolSystemInfoLoaded = False
             frmMain.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            boolSystemInfoLoaded = False
         End Try
     End Sub
     Public Sub initializeSystemInfo()
@@ -88,6 +96,7 @@ Public Module SharedModule
             writer.Close()
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            boolSystemInfoLoaded = False
         End Try
     End Sub
     Public Function verifyConfiguration() As Boolean
@@ -126,6 +135,7 @@ Public Module SharedModule
             Return verifies
         Catch comEx As COMException
             ComExceptionHandler(comEx)
+            Return False
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Return False
@@ -228,9 +238,9 @@ Public Module SharedModule
     End Function
     Public Sub PopulateSystemInfo()
         Try
-
             Dim serialNo As String
             Dim idnString As String
+            
             switchDriver.System.DirectIO.FlushRead()
             directIOWrapper("print(localnode.serialno)")
             serialNo = switchDriver.System.DirectIO.ReadString()
@@ -510,4 +520,149 @@ Public Module SharedModule
             GenericExceptionHandler(ex)
         End Try
     End Sub
+    Public Function checkIOStatus()
+        If (switchDriver.Initialized()) Then
+            boolIOEstablished = True
+            Return True
+        Else
+            Dim options As String
+            ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
+            options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
+            switchDriver.Initialize(config.Address, False, False, options)
+            If (switchDriver.Initialized()) Then
+                boolIOEstablished = True
+                switchDriver.TspLink.Reset()
+                Return True
+            Else
+                boolIOEstablished = False
+                If Not testSystemInfo Is Nothing Then
+                    testSystemInfo = Nothing
+                End If
+                boolSystemInfoLoaded = False
+                Return False
+            End If
+        End If
+    End Function
+    Public Sub RunAuditCheck()
+        Try
+
+            switchDriver.Channel.OpenAll()
+            directIOWrapper("node[2].display.clear()")
+            directIOWrapper("node[2].display.settext('Running Self Check')")
+            ' set both SMU channels to DC volts
+            ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
+            directIOWrapper("node[2].smub.source.func = 1")
+            ' Set the bias for both channels based on the value in config
+            directIOWrapper("node[2].smub.source.levelv = " & config.Bias)
+            ' Range is hard-coded to 1.  Does this need to be a config setting in the future?
+            directIOWrapper("node[2].smub.source.rangev = 1")
+            ' disable autorange for both output channels
+            directIOWrapper("node[2].smub.source.autorangei = 0")
+            Dim i As Integer = 1
+            Dim z As Integer = 1
+            Dim aChannel As New AuditChannel
+            For i = 1 To config.CardConfig
+                For z = 1 To 16
+                    currentTestFile.AuditCheck.AddChannel(aChannel.ChannelFactory(i, z))
+                Next
+            Next
+
+            directIOWrapper("node[2].smub.source.output = 1")
+
+            ' Set connection rule to "make before break"
+            ' @TODO: This is the setting from the old software.  Should this be changed?
+            directIOWrapper("node[1].channel.connectrule = 2")
+            directIOWrapper("node[2].display.clear()")
+            ' Configure the DMM
+            directIOWrapper("node[2].smua.measure.filter.type = " & config.Filter - 1)
+            directIOWrapper("node[2].smub.measure.filter.type = " & config.Filter - 1)
+            directIOWrapper("node[2].smua.measure.filter.count = " & config.Samples)
+            directIOWrapper("node[2].smub.measure.filter.count = " & config.Samples)
+            directIOWrapper("node[2].smua.measure.filter.enable = 1")
+            directIOWrapper("node[2].smub.measure.filter.enable = 1")
+            directIOWrapper("node[2].smua.measure.nplc = " & config.NPLC)
+            directIOWrapper("node[2].smub.measure.nplc = " & config.NPLC)
+            ' Clear the non-volatile measurement buffers
+            directIOWrapper("node[2].smub.nvbuffer1.clear()")
+            directIOWrapper("node[2].smub.nvbuffer2.clear()")
+            directIOWrapper("node[2].smub.source.rangei = .00001")
+
+            For Each aChannel In currentTestFile.AuditCheck.AuditChannels
+                'Take readings from first resistor
+                Dim row As Integer = 3
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "913')")
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                Dim current As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                Dim volts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                Dim aReading As New AuditReading
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor1Resistance, row))
+
+
+                'Take readings from second resistor
+                row = 4
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "914')")
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                current = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                volts = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor2Resistance, row))
+
+                'Take readings from third resistor
+                row = 5
+                directIOWrapper("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
+                Debug.Print("node[1].channel.exclusiveclose('" & aChannel.Card & 2 & strPad(aChannel.Column, 2) & "," & aChannel.Card & row & strPad(aChannel.Column, 2) & "," & aChannel.Card & "912," & aChannel.Card & "915')")
+                Delay(config.SettlingTime)
+                directIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
+                current = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                directIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
+                volts = CDbl(switchDriver.System.DirectIO.ReadString())
+                switchDriver.System.DirectIO.FlushRead()
+                aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor3Resistance, row))
+                ' Add switches to total
+                testSystemInfo.addSwitchEvent(aChannel.Card, 3)
+            Next
+            directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+        Catch ex As COMException
+            ComExceptionHandler(ex)
+            Exit Sub
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Public Function initializeDriver() As Boolean
+        Try
+            switchDriver = Nothing
+            switchDriver = New Ke37XX
+            Dim options As String
+            ' An option string must be explicitly declared or the driver throws a COMException.
+            options = "QueryInstStatus=true, RangeCheck=false, Cache=false, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
+            switchDriver.Initialize(config.Address, False, True, options)
+            If (switchDriver.Initialized()) Then
+                switchDriver.TspLink.Reset()
+                Return True
+            Else
+                Return False
+            End If
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
+            Return False
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return False
+        End Try
+    End Function
 End Module

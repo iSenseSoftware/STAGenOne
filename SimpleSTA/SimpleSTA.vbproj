@@ -187,6 +187,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestForm.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

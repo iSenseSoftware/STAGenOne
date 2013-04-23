@@ -31,9 +31,10 @@ Partial Class frmMain
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.SystemStatusLabel = New System.Windows.Forms.ToolStripStatusLabel()
+        Me.chkIOStatus = New System.Windows.Forms.CheckBox()
+        Me.chkConfigStatus = New System.Windows.Forms.CheckBox()
+        Me.chkSysInfoStatus = New System.Windows.Forms.CheckBox()
         Me.MenuStrip1.SuspendLayout()
-        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'MenuStrip1
@@ -92,24 +93,53 @@ Partial Class frmMain
         '
         'StatusStrip1
         '
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SystemStatusLabel})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 540)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(784, 22)
         Me.StatusStrip1.TabIndex = 1
         Me.StatusStrip1.Text = "StatusStrip1"
         '
-        'SystemStatusLabel
+        'chkIOStatus
         '
-        Me.SystemStatusLabel.Name = "SystemStatusLabel"
-        Me.SystemStatusLabel.Size = New System.Drawing.Size(139, 17)
-        Me.SystemStatusLabel.Text = "System Status: Uninitialized"
+        Me.chkIOStatus.AutoSize = True
+        Me.chkIOStatus.Enabled = False
+        Me.chkIOStatus.Location = New System.Drawing.Point(12, 544)
+        Me.chkIOStatus.Name = "chkIOStatus"
+        Me.chkIOStatus.Size = New System.Drawing.Size(99, 17)
+        Me.chkIOStatus.TabIndex = 5
+        Me.chkIOStatus.Text = "I/O Established"
+        Me.chkIOStatus.UseVisualStyleBackColor = True
+        '
+        'chkConfigStatus
+        '
+        Me.chkConfigStatus.AutoSize = True
+        Me.chkConfigStatus.Enabled = False
+        Me.chkConfigStatus.Location = New System.Drawing.Point(117, 545)
+        Me.chkConfigStatus.Name = "chkConfigStatus"
+        Me.chkConfigStatus.Size = New System.Drawing.Size(127, 17)
+        Me.chkConfigStatus.TabIndex = 6
+        Me.chkConfigStatus.Text = "Configuration Loaded"
+        Me.chkConfigStatus.UseVisualStyleBackColor = True
+        '
+        'chkSysInfoStatus
+        '
+        Me.chkSysInfoStatus.AutoSize = True
+        Me.chkSysInfoStatus.Enabled = False
+        Me.chkSysInfoStatus.Location = New System.Drawing.Point(250, 545)
+        Me.chkSysInfoStatus.Name = "chkSysInfoStatus"
+        Me.chkSysInfoStatus.Size = New System.Drawing.Size(120, 17)
+        Me.chkSysInfoStatus.TabIndex = 7
+        Me.chkSysInfoStatus.Text = "System Info Loaded"
+        Me.chkSysInfoStatus.UseVisualStyleBackColor = True
         '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(784, 562)
+        Me.Controls.Add(Me.chkSysInfoStatus)
+        Me.Controls.Add(Me.chkConfigStatus)
+        Me.Controls.Add(Me.chkIOStatus)
         Me.Controls.Add(Me.StatusStrip1)
         Me.Controls.Add(Me.MenuStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
@@ -117,8 +147,6 @@ Partial Class frmMain
         Me.Text = "GlucoMatrix"
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        Me.StatusStrip1.ResumeLayout(False)
-        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -132,5 +160,7 @@ Partial Class frmMain
     Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
-    Friend WithEvents SystemStatusLabel As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents chkIOStatus As System.Windows.Forms.CheckBox
+    Friend WithEvents chkConfigStatus As System.Windows.Forms.CheckBox
+    Friend WithEvents chkSysInfoStatus As System.Windows.Forms.CheckBox
 End Class

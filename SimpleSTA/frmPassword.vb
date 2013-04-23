@@ -22,6 +22,8 @@
         Try
             If (e.KeyChar = ChrW(Keys.Return)) Then
                 If (frmConfig.validatePassword(txtPassword.Text)) Then
+                    frmConfig.EnableControls()
+                    frmConfig.btnSave.Text = "Save"
                     Me.Close()
                 Else
                     MsgBox("Incorrect password")

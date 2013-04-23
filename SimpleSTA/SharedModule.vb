@@ -7,25 +7,34 @@ Imports Ivi.Driver.Interop
 ' The SharedModule is, as the name suggests, a collection of shared utlity functions, enumerated variables
 ' and global variables for use in all objects and forms
 Public Module SharedModule
-    Public Const configFileName As String = "\Config.xml"
-    Public config As New Configuration
-    Public testSystemInfo As New TestSystem
-    Public currentSwitch As Switch
-    Public currentSource As SourceMeter
-    Public currentTestFile As New TestFile
-    Public currentCards() As Card
+    '------------------------------
+    ' Define constants and global variables
+    '------------------------------
+    Public Const configFileName As String = "Config.xml"
+
+    Public appDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
+    Public config As New Configuration ' Global instance of the Configuration object that stores config information for the current session
+    Public testSystemInfo As New TestSystem ' Global instance of the TestSystem object which tracks system ID info (serials, models) and switch counts per card
+    Public currentSwitch As Switch ' Global instance of the Switch object which represents the System Switch in the measurement hardware
+    Public currentSource As SourceMeter ' Global instance of the SourceMeter object which represents the Source Meter in the measurement hardware
+    Public currentTestFile As New TestFile ' Global instance of the TestFile object stores output data and writes itself to file
+    Public currentCards() As Card ' Global array instance of Card objects which represents the Cards in the attached switch
+    ' Keithley IVI-COM Driver for communicating with 3700 series system switches.  
+    ' This instance is referenced by all functions which communicate with the measurement hardware
     Public switchDriver As New Ke37XX
-    Public appDir As String
-    Public boolSystemInfoLoaded As Boolean = False
-    Public boolConfigLoaded As Boolean = False
-    Public boolIOEstablished As Boolean = False
-    Public boolTestFileLoaded As Boolean = False
-    Public boolSeriesLoaded As Boolean = False
+
+    ' These boolean values are used to maintain program state info
+    Public boolSystemInfoLoaded As Boolean = False ' Has the system info file been loaded successfully?
+    Public boolConfigLoaded As Boolean = False ' Has a valid configuration been loaded?
+    Public boolIOEstablished As Boolean = False ' Has the switchDriver been successfully initialized
+    Public boolTestFileLoaded As Boolean = False ' Has the currentTestFile object been populated?
+    Public boolSeriesLoaded As Boolean = False ' Are there any series present in the Test Chart?
+
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
-    ' it may be desireable to incorporate user authentication / authorization modules for granular permissions
+    ' it may be desireable to incorporate database-driven user authentication / authorization for granular permissions
     Public strAdminPassword As String = "C0balt22"
-    ' Declare Enums for configuration settings
-    ' Because of a quirk of VB, a value of 0 for an enumerated variable is equivalent to Nothing, making validation difficult
+
+    ' @ NOTE: Because of a quirk of VB, a value of 0 for an enumerated variable is equivalent to Nothing, making validation difficult
     ' When the CurrentRange and FilterType enums are used for direct input to the test system switch we must subtract 1
     Public Enum CurrentRange
         one_uA = 1
@@ -45,27 +54,28 @@ Public Module SharedModule
         FIVE_CARD_EIGHTY_SENSORS = 5
         SIX_CARD_NINETY_SIX_SENSORS = 6
     End Enum
-    ' Load configuration from file and set the values in the global Configuration object config
-    ' @TODO: Make the file location optional rather than hard-coded and store between program sessions
-    Public Sub loadConfiguration()
+    ' Deserialize Configuration object from xml file
+    ' Returns nothing on failure
+    Public Function loadConfiguration(ByVal strFilePath As String) As Configuration
         Try
-            Dim serializer As New XmlSerializer(config.GetType)
-            Dim reader As New StreamReader(appDir & configFileName)
-            config = serializer.Deserialize(reader)
+            Dim reader As New StreamReader(strFilePath)
+            Dim aConfig As New Configuration
+            Dim serializer As New XmlSerializer(aConfig.GetType)
+            aConfig = serializer.Deserialize(reader)
             reader.Close()
+            Return aConfig
         Catch parseException As InvalidOperationException
-            MsgBox("Invalid configuration file.  Delete " & appDir & configFileName)
-            boolConfigLoaded = False
-            frmMain.Close()
+            MsgBox("Invalid configuration file.  Delete " & strFilePath & " and reload.")
+            Return Nothing
         Catch ex As Exception
             GenericExceptionHandler(ex)
-            boolConfigLoaded = False
+            Return Nothing
         End Try
-    End Sub
+    End Function
     Public Sub initializeConfiguration()
         Try
             Dim serializer As New XmlSerializer(config.GetType)
-            Dim writer As New StreamWriter(appDir & configFileName)
+            Dim writer As New StreamWriter(appDir & "\" & configFileName)
             serializer.Serialize(writer, config)
             writer.Close()
         Catch ex As Exception
@@ -99,37 +109,41 @@ Public Module SharedModule
             boolSystemInfoLoaded = False
         End Try
     End Sub
-    Public Function verifyConfiguration() As Boolean
+    Public Function verifyConfiguration(ByRef theConfig As Configuration) As Boolean
         Try
+            If theConfig Is Nothing Then
+                Return False
+            End If
+
             Dim verifies As Boolean = True
-            If (config.Bias = Nothing) Then
+            If (theConfig.Bias = Nothing) Then
                 verifies = False
             End If
-            If (config.RecordInterval = Nothing) Then
+            If (theConfig.RecordInterval = Nothing) Then
                 verifies = False
             End If
-            If (config.Range = Nothing) Then
+            If (theConfig.Range = Nothing) Then
                 verifies = False
             End If
-            If (config.Filter = Nothing) Then
+            If (theConfig.Filter = Nothing) Then
                 verifies = False
             End If
-            If (config.Samples = Nothing) Then
+            If (theConfig.Samples = Nothing) Then
                 verifies = False
             End If
-            If (config.NPLC = Nothing) Then
+            If (theConfig.NPLC = Nothing) Then
                 verifies = False
             End If
-            If (config.Address = Nothing Or config.Address = "") Then
+            If (theConfig.Address = Nothing Or theConfig.Address = "") Then
                 verifies = False
             End If
-            If (config.STAID = Nothing Or config.STAID = "") Then
+            If (theConfig.STAID = Nothing Or theConfig.STAID = "") Then
                 verifies = False
             End If
-            If (config.CardConfig = Nothing) Then
+            If (theConfig.CardConfig = Nothing) Then
                 verifies = False
             End If
-            If (config.Resistor1Resistance <= 0 Or config.Resistor2Resistance <= 0 Or config.Resistor3Resistance <= 0) Then
+            If (theConfig.Resistor1Resistance <= 0 Or theConfig.Resistor2Resistance <= 0 Or theConfig.Resistor3Resistance <= 0) Then
                 verifies = False
             End If
             Return verifies
@@ -177,9 +191,12 @@ Public Module SharedModule
             GenericExceptionHandler(ex)
         End Try
     End Function
+    ' Generates a generic error message for the given exception
     Public Sub GenericExceptionHandler(ByVal theException As Exception)
         MsgBox(theException.GetType.ToString() & Environment.NewLine & theException.Message & Environment.NewLine & theException.ToString)
     End Sub
+    ' COM Exceptions are thrown by COM-based drivers, in this case the Ke37xx driver.
+    ' This function queries the instrument for details about the error and generates and error message
     Public Sub ComExceptionHandler(ByRef theException As COMException)
         If theException.ErrorCode = IviDriver_ErrorCodes.E_IVI_INSTRUMENT_STATUS Then
             ' ErrorQuery should give us more information
@@ -197,9 +214,8 @@ Public Module SharedModule
             End If
         End If
     End Sub
-    Public Function GetBestDynamicRange(maxCurrent As Double) As CurrentRange
-        Return CurrentRange.one_uA
-    End Function
+    ' The ParseIDNxxx functions parse an input string returned from the Keithley instrument command slot[x].idn
+    ' to extract the indicated value
     Public Function ParseIDNForSerial(ByVal idnString As String) As String
         Try
             Dim splitString As String() = Split(idnString, ",")
@@ -236,11 +252,11 @@ Public Module SharedModule
             Return ""
         End Try
     End Function
-    Public Sub PopulateSystemInfo()
+    Public Function PopulateSystemInfo() As Boolean
         Try
             Dim serialNo As String
             Dim idnString As String
-            
+
             switchDriver.System.DirectIO.FlushRead()
             directIOWrapper("print(localnode.serialno)")
             serialNo = switchDriver.System.DirectIO.ReadString()
@@ -514,36 +530,18 @@ Public Module SharedModule
             currentTestFile.SystemSwitch = currentSwitch
             currentTestFile.SystemSource = currentSource
             testSystemInfo.writeToFile()
+            Return True
         Catch comEx As COMException
             ComExceptionHandler(comEx)
+            testSystemInfo = Nothing
+            Return False
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            testSystemInfo = Nothing
+            Return False
         End Try
-    End Sub
-    Public Function checkIOStatus()
-        If (switchDriver.Initialized()) Then
-            boolIOEstablished = True
-            Return True
-        Else
-            Dim options As String
-            ' An option string must be explicitly declared or the driver throws a COMException.  This may be fixed by firmware upgrades
-            options = "QueryInstStatus=true, RangeCheck=true, Cache=true, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
-            switchDriver.Initialize(config.Address, False, False, options)
-            If (switchDriver.Initialized()) Then
-                boolIOEstablished = True
-                switchDriver.TspLink.Reset()
-                Return True
-            Else
-                boolIOEstablished = False
-                If Not testSystemInfo Is Nothing Then
-                    testSystemInfo = Nothing
-                End If
-                boolSystemInfoLoaded = False
-                Return False
-            End If
-        End If
     End Function
-    Public Sub RunAuditCheck()
+    Public Function RunAuditCheck() As Boolean
         Try
 
             switchDriver.Channel.OpenAll()
@@ -636,13 +634,15 @@ Public Module SharedModule
                 testSystemInfo.addSwitchEvent(aChannel.Card, 3)
             Next
             directIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+            Return True
         Catch ex As COMException
             ComExceptionHandler(ex)
-            Exit Sub
+            Return False
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            Return False
         End Try
-    End Sub
+    End Function
     Public Function initializeDriver() As Boolean
         Try
             switchDriver = Nothing
@@ -653,8 +653,10 @@ Public Module SharedModule
             switchDriver.Initialize(config.Address, False, True, options)
             If (switchDriver.Initialized()) Then
                 switchDriver.TspLink.Reset()
+                frmMain.chkIOStatus.Checked = True
                 Return True
             Else
+                frmMain.chkIOStatus.Checked = False
                 Return False
             End If
         Catch comEx As COMException

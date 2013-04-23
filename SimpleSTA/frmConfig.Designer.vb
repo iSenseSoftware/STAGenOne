@@ -398,11 +398,11 @@ Partial Class frmConfig
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(54, 459)
+        Me.Label17.Location = New System.Drawing.Point(22, 462)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(135, 16)
+        Me.Label17.Size = New System.Drawing.Size(167, 16)
         Me.Label17.TabIndex = 37
-        Me.Label17.Text = "Test System Info File:"
+        Me.Label17.Text = "Test System Info Directory:"
         '
         'btnSelectInfoFile
         '

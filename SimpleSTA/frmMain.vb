@@ -6,55 +6,69 @@
                 frmTestInfo.BringToFront()
             Else
                 'If Not boolConfigLoaded Then
-                If (System.IO.File.Exists(appDir & configFileName)) Then
-                    loadConfiguration()
-                    If (verifyConfiguration()) Then
+                If (System.IO.File.Exists(appDir & "\" & configFileName)) Then
+                    Call loadConfiguration(appDir & "\" & configFileName)
+                    If (verifyConfiguration(config)) Then
                         boolConfigLoaded = True
+                        Me.chkConfigStatus.Checked = True
                         If (initializeDriver()) Then
                             boolIOEstablished = True
+                            Me.chkIOStatus.Checked = True
                         Else
-                            MsgBox("System I/O could not be established.  Verify config settings")
-                            Exit Sub
+                            boolIOEstablished = False
+                            Me.chkIOStatus.Checked = False
                         End If
                     Else
                         boolConfigLoaded = False
+                        Me.chkConfigStatus.Checked = False
                         MsgBox("Configuration invalid or could not be found.  Verify configuration file")
                     End If
                 Else
                     initializeConfiguration()
-                    If (verifyConfiguration()) Then
+                    If (verifyConfiguration(config)) Then
+                        Me.chkConfigStatus.Checked = True
                         boolConfigLoaded = True
                     Else
+                        Me.chkConfigStatus.Checked = False
                         boolConfigLoaded = False
                         MsgBox("Configuration invalid or could not be found.  Verify configuration file")
                     End If
                 End If
                 'End If
                 'If Not boolSystemInfoLoaded Then
-                If (System.IO.File.Exists(config.SystemFileDirectory & "\SystemInfo.xml") And boolIOEstablished) Then
-                    loadSystemInfo()
-                    PopulateSystemInfo()
-                    If (verifySystemInfo()) Then
-                        boolSystemInfoLoaded = True
+                If (boolIOEstablished) Then
+                    If (System.IO.File.Exists(config.SystemFileDirectory & "\SystemInfo.xml")) Then
+                        loadSystemInfo()
+                        PopulateSystemInfo()
+                        If (verifySystemInfo()) Then
+                            Me.chkSysInfoStatus.Checked = True
+                            boolSystemInfoLoaded = True
+                        Else
+                            Me.chkSysInfoStatus.Checked = False
+                            boolSystemInfoLoaded = False
+                            MsgBox("System Info invalid or could not be found.  Verify System Info file")
+                        End If
                     Else
-                        boolSystemInfoLoaded = False
-                        MsgBox("System Info invalid or could not be found.  Verify System Info file")
+                        initializeSystemInfo()
+                        PopulateSystemInfo()
+                        If (verifySystemInfo()) Then
+                            Me.chkSysInfoStatus.Checked = True
+                            boolSystemInfoLoaded = True
+                        Else
+                            Me.chkSysInfoStatus.Checked = False
+                            boolSystemInfoLoaded = False
+                            MsgBox("System Info invalid or could not be found.  Verify System Info file")
+                        End If
+                    End If
+                    'End If
+                    If boolIOEstablished And boolSystemInfoLoaded And boolConfigLoaded Then
+                        frmTestInfo.Show()
+                        frmTestInfo.BringToFront()
                     End If
                 Else
-                    initializeSystemInfo()
-                    PopulateSystemInfo()
-                    If (verifySystemInfo()) Then
-                        boolSystemInfoLoaded = True
-                    Else
-                        boolSystemInfoLoaded = False
-                        MsgBox("System Info invalid or could not be found.  Verify System Info file")
-                    End If
+                    Me.chkIOStatus.Checked = False
                 End If
-                'End If
-                If boolIOEstablished And boolSystemInfoLoaded And boolConfigLoaded Then
-                    frmTestInfo.Show()
-                    frmTestInfo.BringToFront()
-                End If
+
             End If
 
         Catch ex As Exception
@@ -65,47 +79,6 @@
         Try
             frmConfig.Show()
             frmConfig.BringToFront()
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-    Private Sub frmMain_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
-        Try
-            appDir = My.Application.Info.DirectoryPath
-            'If (System.IO.File.Exists(appDir & configFileName)) Then
-            ' loadConfiguration()
-            ' If (verifyConfiguration()) Then
-            ' boolConfigLoaded = True
-            ' Else
-            ' boolConfigLoaded = False
-            ' End If
-            ' Else
-            ' initializeConfiguration()
-            ' If (verifyConfiguration()) Then
-            ' boolConfigLoaded = True
-            ' Else
-            ' boolConfigLoaded = False
-            ' End If
-            ' End If
-            ' If (System.IO.File.Exists(config.SystemFileDirectory & "\SystemInfo.xml") And checkIOStatus()) Then
-            ' loadSystemInfo()
-            ' PopulateSystemInfo()
-            ' If (verifySystemInfo()) Then
-            ' boolSystemInfoLoaded = True
-            ' Else
-            ' boolSystemInfoLoaded = False
-            ' End If
-            ' Else
-            ' initializeSystemInfo()
-            ' PopulateSystemInfo()
-            ' If (verifySystemInfo()) Then
-            ' boolSystemInfoLoaded = True
-            ' Else
-            ' boolSystemInfoLoaded = False
-            ' End If
-            ' End If
-        Catch ex As Runtime.InteropServices.COMException
-            ComExceptionHandler(ex)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

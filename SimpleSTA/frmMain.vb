@@ -1,5 +1,5 @@
 ﻿Public Class frmMain
-    Private Sub NewTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles NewTestToolStripMenuItem.Click
+    Private Sub NewTestToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             If (boolIOEstablished And boolSystemInfoLoaded And boolConfigLoaded) Then
                 frmTestInfo.Show()
@@ -37,10 +37,10 @@
                 'End If
                 'If Not boolSystemInfoLoaded Then
                 If (boolIOEstablished) Then
-                    If (System.IO.File.Exists(config.SystemFileDirectory & "\SystemInfo.xml")) Then
-                        loadSystemInfo()
+                    If (System.IO.File.Exists(config.SystemFileDirectory & "\" & systemInfoFileName)) Then
+                        loadSystemInfo(config.SystemFileDirectory & "\" & systemInfoFileName)
                         PopulateSystemInfo()
-                        If (verifySystemInfo()) Then
+                        If (verifySystemInfo(testSystemInfo)) Then
                             Me.chkSysInfoStatus.Checked = True
                             boolSystemInfoLoaded = True
                         Else
@@ -51,7 +51,7 @@
                     Else
                         initializeSystemInfo()
                         PopulateSystemInfo()
-                        If (verifySystemInfo()) Then
+                        If (verifySystemInfo(testSystemInfo)) Then
                             Me.chkSysInfoStatus.Checked = True
                             boolSystemInfoLoaded = True
                         Else
@@ -75,6 +75,7 @@
             GenericExceptionHandler(ex)
         End Try
     End Sub
+
     Private Sub EditConfigurationToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditConfigurationToolStripMenuItem.Click
         Try
             frmConfig.Show()
@@ -82,5 +83,9 @@
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
+    End Sub
+
+    Private Sub NewTestToolStripMenuItem_Click1(sender As Object, e As EventArgs) Handles NewTestToolStripMenuItem.Click
+        frmTestInfo.Show()
     End Sub
 End Class

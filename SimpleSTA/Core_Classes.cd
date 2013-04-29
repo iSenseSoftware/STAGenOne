@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SimpleSTA.AuditChannel">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAIAAAACADBAAAAAAAAAEACAAAAAAAAAAA=</HashCode>
+      <FileName>AuditChannel.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AuditReadings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SimpleSTA.AuditCheck">
+    <Position X="10" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAASAAAAAAAEAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>AuditCheck.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="AuditChannels" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SimpleSTA.AuditReading">
+    <Position X="16" Y="1.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AEAAAAAqAgAAAAAAgACAAACAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>AuditReading.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.Card">
+    <Position X="2" Y="10.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAQUUAAIgAAAAAABAAEBAAAAEEAAAAhAAAAAAAAAgA=</HashCode>
+      <FileName>Card.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.Configuration">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AkAgAAAABQAADAAAAoABAQASAhBYCCImAMAQAAAAAAA=</HashCode>
+      <FileName>Configuration.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.Reading">
+    <Position X="7.5" Y="11" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAKAAACAAAAAAAAAAAAAAAAAAAFAAQA=</HashCode>
+      <FileName>Reading.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.Sensor">
+    <Position X="9" Y="5.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ARAAAAAAAAAIgAgkAQBMAAAAQAAAAAACAABAIEAAAgA=</HashCode>
+      <FileName>Sensor.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Readings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SimpleSTA.SourceMeter">
+    <Position X="4.5" Y="10.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAQUUAAIgAAAAAABAAAAAAAAEEAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>SourceMeter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.Switch">
+    <Position X="5.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>CAAQcUAAIgAAAAAABAAAAAAIAEEAAAAgAAAAEAAAAAA=</HashCode>
+      <FileName>Switch.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SimpleSTA.TestFile">
+    <Position X="6" Y="4.25" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="SystemSwitch" Type="SimpleSTA.Switch">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.38" Y="0.258" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="SystemSource" Type="SimpleSTA.SourceMeter">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="0.376" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="Config" Type="SimpleSTA.Configuration">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.1" Y="0.32" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQIOcIAEwEEpAAEBgRAkAQQABAIQIBKBAUARCCAMqA=</HashCode>
+      <FileName>TestFile.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="SystemSwitch" />
+      <Property Name="SystemSource" />
+      <Property Name="AuditCheck" />
+      <Property Name="Config" />
+      <Property Name="Sensors" />
+      <Property Name="FullCircuitReadings" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="SimpleSTA.TestSystem">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="Sources" Type="SimpleSTA.SourceMeter" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="3.75" Y="2.296" />
+        <Point X="4.875" Y="2.296" />
+        <Point X="4.875" Y="10.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.317" Y="0.445" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAAAAEAAAAAAFAAAAIAAAAAAAAAUAAAQAAAABAgAAAA=</HashCode>
+      <FileName>TestSystem.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Switches" />
+      <Property Name="Sources" />
+    </ShowAsAssociation>
+  </Class>
+  <Module Name="SimpleSTA.SharedModule">
+    <Position X="3" Y="4" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="SimpleSTA.SharedModule.CurrentRange" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SharedModule.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="SimpleSTA.SharedModule.FilterType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SharedModule.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="SimpleSTA.SharedModule.CardConfiguration" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>SharedModule.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <AssociationLine Name="currentSwitch" Type="SimpleSTA.Switch">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.777" Y="-0.388" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="currentSource" Type="SimpleSTA.SourceMeter" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4.5" Y="8.619" />
+        <Point X="4.792" Y="8.619" Type="JumpStart" />
+        <Point X="4.958" Y="8.619" Type="JumpEnd" />
+        <Point X="5.938" Y="8.619" />
+        <Point X="5.938" Y="10.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.463" Y="0.414" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="currentCards" Type="SimpleSTA.Card">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.494" Y="0.3" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IBACCAAAIgAKoABAQgAgAgAQQEgItQQAAQIAAhACQAA=</HashCode>
+      <FileName>SharedModule.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="config" />
+      <Field Name="testSystemInfo" />
+      <Field Name="currentSwitch" />
+      <Field Name="currentSource" />
+      <Field Name="currentTestFile" />
+      <Field Name="currentCards" />
+    </ShowAsAssociation>
+  </Module>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

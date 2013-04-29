@@ -99,6 +99,52 @@ Public Class frmConfig
             ' Attempt to load the configuration from file and set form values
             '-----------------
             ' Check to see if the configuration file is present at the expected location
+            If (loadOrRefreshConfiguration()) Then
+                populateConfigurationForm()
+            Else
+                MsgBox("Unable to initialize configuration.")
+                populateConfigurationForm()
+                Exit Sub
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Me.Close()
+        End Try
+    End Sub
+    Private Sub frmConfig_Loader(ByVal sender As Object, ByVal e As System.EventArgs)
+        Try
+            'Populate CurrentRange combo box
+            Dim rangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
+            rangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
+            cmbRange.DataSource = rangeList
+            cmbRange.ValueMember = "Key"
+            cmbRange.DisplayMember = "Value"
+            ' Populate CardConfiguration combo box
+            Dim cardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
+            cardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
+            cmbCardConfig.DataSource = cardConfigList
+            cmbCardConfig.ValueMember = "Key"
+            cmbCardConfig.DisplayMember = "Value"
+            ' Populate FilterType combo box
+            Dim filterTypeList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Average"))
+            filterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Average"))
+            cmbFilterType.DataSource = filterTypeList
+            cmbFilterType.ValueMember = "Key"
+            cmbFilterType.DisplayMember = "Value"
+
+            '-----------------
+            ' Attempt to load the configuration from file and set form values
+            '-----------------
+            ' Check to see if the configuration file is present at the expected location
             If (System.IO.File.Exists(appDir & "\" & configFileName)) Then
                 config = loadConfiguration(appDir & "\" & configFileName)
 
@@ -125,7 +171,26 @@ Public Class frmConfig
                         End If
                     End If
                 Else
-                    ' What do we do when the config cannot be loaded from file?
+                    ' Alert user and attempt to load configuration from default values
+                    MsgBox(appDir & "\" & configFileName & " could not be loaded.  Attempting to load configuration from defaults...")
+                    ' Update program state:
+                    ' Clear existing config data and update status flag and icon
+                    config = Nothing
+                    boolConfigLoaded = False
+                    frmMain.chkConfigStatus.Checked = False
+                    config = New Configuration
+                    ' If defaults are set for all values, write the config to file
+                    ' and populate the config form with its values
+                    If (verifyConfiguration(config)) Then
+                        If config.WriteToFile(appDir & "\" & configFileName) Then
+                            ' Do nothing
+                        Else
+                            ' Warn the user that the configuration could not be written to file
+                            MsgBox("Could not write configuration to file.  Verify your user account has read/write access to " & appDir & "\" & configFileName)
+                        End If
+                    Else
+                        ' Do nothing.  The user will have to create a valid config to save.
+                    End If
                 End If
             Else
                 ' Alert user and attempt to load configuration from default values

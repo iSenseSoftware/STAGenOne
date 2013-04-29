@@ -11,6 +11,7 @@ Public Module SharedModule
     ' Define constants and global variables
     '------------------------------
     Public Const configFileName As String = "Config.xml"
+    Public Const systemInfoFileName As String = "SystemInfo.xml"
 
     Public appDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
     Public config As New Configuration ' Global instance of the Configuration object that stores config information for the current session
@@ -82,33 +83,64 @@ Public Module SharedModule
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub loadSystemInfo()
+    ' This function attempts to load a TestSystem object from file and update it with current system info
+    ' If no file is found, the user will be alerted and a new file generated
+    Public Function loadSystemInfo(ByRef strFilePath As String) As TestSystem
         Try
-            Dim serializer As New XmlSerializer(testSystemInfo.GetType)
-            Dim reader As New StreamReader(config.SystemFileDirectory & "\SystemInfo.xml")
-            testSystemInfo = serializer.Deserialize(reader)
-            reader.Close()
+            If (boolConfigLoaded And Not config Is Nothing) Then
+                If (boolIOEstablished And switchDriver.Initialized()) Then
+                    Dim theSystem As New TestSystem
+                    If (System.IO.File.Exists(config.SystemFileDirectory & "\" & systemInfoFileName)) Then
+                        Dim serializer As New XmlSerializer(theSystem.GetType)
+                        Dim reader As New StreamReader(config.SystemFileDirectory & "\" & systemInfoFileName)
+                        testSystemInfo = serializer.Deserialize(reader)
+                        reader.Close()
+                    Else
+                        MsgBox("System info file not found.  Generating new file from defaults.")
+                    End If
+                    If updateTestSystemInfo(theSystem) Then
+                        If theSystem.writeToFile() Then
+                            Return theSystem
+                        Else
+                            MsgBox("Could not write system info to file.  Make sure the System Info directory is accessible.")
+                            Return Nothing
+                        End If
+                    Else
+                        MsgBox("Could not update test system info with current system information")
+                        Return Nothing
+                    End If
+                Else
+                    MsgBox("System I/O has not been established")
+                    Return Nothing
+                End If
+            Else
+                MsgBox("Configuration info has not been loaded")
+                Return Nothing
+            End If
         Catch parseException As InvalidOperationException
-            MsgBox("Invalid System Information File.  Delete " & config.SystemFileDirectory & "\SystemInfo.xml")
-            boolSystemInfoLoaded = False
-            frmMain.Close()
+            MsgBox("Invalid System Information File.  Delete " & config.SystemFileDirectory & "\" & systemInfoFileName)
+            Return Nothing
         Catch ex As Exception
             GenericExceptionHandler(ex)
-            boolSystemInfoLoaded = False
+            Return Nothing
         End Try
-    End Sub
-    Public Sub initializeSystemInfo()
+    End Function
+    Public Function updateTestSystemInfo(ByRef theInfo As TestSystem) As Boolean
+        '
+    End Function
+    Public Function initializeSystemInfo() As Boolean
         Try
             Dim serializer As New XmlSerializer(testSystemInfo.GetType)
             System.IO.Directory.CreateDirectory(config.SystemFileDirectory)
             Dim writer As New StreamWriter(config.SystemFileDirectory & "\SystemInfo.xml")
             serializer.Serialize(writer, testSystemInfo)
             writer.Close()
+            Return True
         Catch ex As Exception
             GenericExceptionHandler(ex)
-            boolSystemInfoLoaded = False
+            Return False
         End Try
-    End Sub
+    End Function
     Public Function verifyConfiguration(ByRef theConfig As Configuration) As Boolean
         Try
             If theConfig Is Nothing Then
@@ -155,7 +187,7 @@ Public Module SharedModule
             Return False
         End Try
     End Function
-    Public Function verifySystemInfo() As Boolean
+    Public Function verifySystemInfo(ByRef theInfo As TestSystem) As Boolean
         Return True
     End Function
     ' As the name suggests, this is simply a wrapper for the System.DirectIO.WriteString method of the Ke37xx driver.
@@ -564,7 +596,6 @@ Public Module SharedModule
                     currentTestFile.AuditCheck.AddChannel(aChannel.ChannelFactory(i, z))
                 Next
             Next
-
             directIOWrapper("node[2].smub.source.output = 1")
 
             ' Set connection rule to "make before break"
@@ -601,7 +632,6 @@ Public Module SharedModule
                 switchDriver.System.DirectIO.FlushRead()
                 Dim aReading As New AuditReading
                 aChannel.AddReading(aReading.ReadingFactory(volts, current, config.Resistor1Resistance, row))
-
 
                 'Take readings from second resistor
                 row = 4
@@ -665,6 +695,138 @@ Public Module SharedModule
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Return False
+        End Try
+    End Function
+    ' This function attempts to either load or refresh the configuration from file.
+    Public Function loadOrRefreshConfiguration() As Boolean
+        Try
+            If Not File.Exists(appDir & Path.DirectorySeparatorChar & configFileName) Then
+                frmMain.chkConfigStatus.Checked = False
+                Return False
+            Else
+                ' Create one
+            End If
+            Dim reader As New StreamReader(appDir & Path.DirectorySeparatorChar & configFileName)
+            Dim serializer As New XmlSerializer(config.GetType)
+            config = serializer.Deserialize(reader)
+            reader.Close()
+            If (verifyConfiguration(config)) Then
+                If (config.WriteToFile(appDir & Path.DirectorySeparatorChar & configFileName)) Then
+                    frmMain.chkConfigStatus.Checked = True
+                    Return True
+                Else
+                    frmMain.chkConfigStatus.Checked = False
+                    Return False
+                End If
+            Else
+                frmMain.chkConfigStatus.Checked = False
+                Return False
+            End If
+        Catch parseException As InvalidOperationException
+            MsgBox("Invalid configuration file.  Delete " & appDir & Path.DirectorySeparatorChar & configFileName & " and reload.")
+            frmMain.chkConfigStatus.Checked = False
+            Return False
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            frmMain.chkConfigStatus.Checked = False
+            Return False
+        End Try
+    End Function
+    Public Function establishIO() As Boolean
+        Try
+            If (frmMain.chkConfigStatus.Checked) Then
+                If (switchDriver.Initialized) Then
+                    frmMain.chkIOStatus.Checked = True
+                    Return True
+                Else
+                    Dim options As String
+                    ' An option string must be explicitly declared or the driver throws a COMException.
+                    options = "QueryInstStatus=true, RangeCheck=false, Cache=false, Simulate=false, RecordCoercions=false, InterchangeCheck=false"
+                    switchDriver.Initialize(config.Address, False, True, options)
+                    If (switchDriver.Initialized) Then
+                        switchDriver.TspLink.Reset()
+                        frmMain.chkIOStatus.Checked = True
+                        Return True
+                    Else
+                        frmMain.chkIOStatus.Checked = False
+                        Return False
+                    End If
+                End If  
+            Else
+                frmMain.chkIOStatus.Checked = False
+                Return False
+            End If
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
+            frmMain.chkIOStatus.Checked = False
+            Return False
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            frmMain.chkIOStatus.Checked = False
+            Return False
+        End Try
+    End Function
+    Public Function loadAndUpdateSystemInfo() As Boolean
+        Dim boolOut As Boolean = False
+        Dim reader As StreamReader
+        Try
+            If (frmMain.chkConfigStatus.Checked) Then
+                If (switchDriver.Initialized) Then
+                    If (File.Exists(config.SystemFileDirectory & "/" & systemInfoFileName)) Then
+                        reader = New StreamReader(config.SystemFileDirectory & "/" & systemInfoFileName)
+                        Dim serializer As New XmlSerializer(testSystemInfo.GetType)
+                        testSystemInfo = serializer.Deserialize(reader)
+                        reader.Close()
+                        If (verifySystemInfo(testSystemInfo)) Then
+                            If (PopulateSystemInfo()) Then
+                                If (testSystemInfo.writeToFile()) Then
+                                    boolOut = True
+                                Else
+                                    ' do nothing
+                                End If
+                            Else
+                                'do nothing
+                            End If
+                        Else
+                            ' do nothing
+                        End If
+                    Else
+                        ' Generate a new one
+                        If initializeSystemInfo() Then
+                            If (verifySystemInfo(testSystemInfo)) Then
+                                If (PopulateSystemInfo()) Then
+                                    If (testSystemInfo.writeToFile()) Then
+                                        boolOut = True
+                                    Else
+                                        ' do nothing
+                                    End If
+                                Else
+                                    ' do nothing
+                                End If
+                            Else
+                                ' do nothing
+                            End If
+                        Else
+                            ' do nothing
+                        End If
+                    End If
+                Else
+                    ' do nothing
+                End If
+            Else
+                ' do nothing
+            End If
+            Return boolOut
+        Catch comEx As COMException
+            ComExceptionHandler(comEx)
+            frmMain.chkIOStatus.Checked = False
+            Return False
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            frmMain.chkSysInfoStatus.Checked = False
+            Return False
+        Finally
+            frmMain.chkSysInfoStatus.Checked = boolOut
         End Try
     End Function
 End Module

@@ -5,7 +5,82 @@ Public Class frmTestInfo
     Dim txtOriginator As TextBox
     Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Try
-            'loadConfiguration()
+            ' Attempt to load configuration
+            If (loadOrRefreshConfiguration()) Then
+                If (establishIO()) Then
+                    If (loadAndUpdateSystemInfo()) Then
+                        ' do nothing, hooray!
+                    Else
+                        MsgBox("Unable to read or update test system info file")
+                        Me.Close()
+                    End If
+                Else
+                    MsgBox("Unable to establish I/O with the system switch")
+                    Me.Close()
+                End If
+            Else
+                MsgBox("Unable to load configuration.")
+                Me.Close()
+            End If
+            ' Set form control visibility based upon the card configuration 
+            Select Case config.CardConfig
+                Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS
+                    Me.Tabs.TabPages.Remove(SlotTwoTab)
+                    Me.Tabs.TabPages.Remove(SlotThreeTab)
+                    Me.Tabs.TabPages.Remove(SlotFourTab)
+                    Me.Tabs.TabPages.Remove(SlotFiveTab)
+                    Me.Tabs.TabPages.Remove(SlotSixTab)
+                Case CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
+                    Me.Tabs.TabPages.Remove(SlotThreeTab)
+                    Me.Tabs.TabPages.Remove(SlotFourTab)
+                    Me.Tabs.TabPages.Remove(SlotFiveTab)
+                    Me.Tabs.TabPages.Remove(SlotSixTab)
+                Case CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS
+                    Me.Tabs.TabPages.Remove(SlotFourTab)
+                    Me.Tabs.TabPages.Remove(SlotFiveTab)
+                    Me.Tabs.TabPages.Remove(SlotSixTab)
+                Case CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS
+                    Me.Tabs.TabPages.Remove(SlotFiveTab)
+                    Me.Tabs.TabPages.Remove(SlotSixTab)
+                Case CardConfiguration.FIVE_CARD_EIGHTY_SENSORS
+                    Me.Tabs.TabPages.Remove(SlotSixTab)
+            End Select
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    Private Sub frmTestInfo_Loader(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Try
+            ' Attempt to load configuration
+            If (boolConfigLoaded And Not config Is Nothing) Then
+                frmMain.chkConfigStatus.Checked = True
+            Else
+                boolConfigLoaded = False
+                frmMain.chkConfigStatus.Checked = False
+                ' Load configuration
+                config = loadConfiguration(appDir & "\" & configFileName)
+                If config Is Nothing Then
+                    MsgBox(appDir & "\" & configFileName & " could not be loaded.  Attempting to load configuration from defaults...")
+                    Exit Sub
+                Else
+                    ' Do nothing
+                    boolConfigLoaded = True
+                    frmMain.chkConfigStatus.Checked = True
+                End If
+            End If
+            If (boolIOEstablished And switchDriver.Initialized) Then
+                frmMain.chkSysInfoStatus.Checked = True
+            Else
+                testSystemInfo = loadSystemInfo(appDir & "\" & systemInfoFileName)
+                If testSystemInfo Is Nothing Then
+
+                Else
+                    boolSystemInfoLoaded = True
+                    frmMain.chkSysInfoStatus.Checked = True
+                End If
+            End If
+
+
             ' Set form control visibility based upon the card configuration 
             Select Case config.CardConfig
                 Case CardConfiguration.ONE_CARD_SIXTEEN_SENSORS

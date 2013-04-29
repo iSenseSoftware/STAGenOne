@@ -7,7 +7,6 @@ Public Class TestFile
     ' of all sensors tested as well as basic information about the test (date, operatory, device serials, etc)
 
     Dim cfgConfig As Configuration ' The configuration used for the test
-    Dim databaseId As Long  ' This is used to store the primary key id of the database record for the test
     Dim arySensors() As Sensor ' A collection of Sensor objects which contain sensor info and test readings
     Dim aryFullCircuitReadings() As Reading ' This array contains all readings made at the end of each measurement cycle across all sensor channels.
     Dim strDumpFile As String
@@ -19,7 +18,7 @@ Public Class TestFile
     Dim dtTestStart As DateTime 'Time stamp for the start of the test
     Dim strTestEnd As String 'Time stamp for the end of the test
     Dim strSourceMeterID As String 'The serial number for the source meter
-    Dim strSwtichID As String 'The serial number for the switch
+    Dim strSwitchID As String 'The serial number for the switch
     Dim strCardOneID As String 'The serial number for the slot 1 matrix card
     Dim strCardTwoID As String 'The serial number for the slot 2 matrix card
     Dim strCardThreeID As String 'The serial number for the slot 3 matrix card
@@ -52,11 +51,6 @@ Public Class TestFile
         Set(value As AuditCheck)
             acAuditCheck = value
         End Set
-    End Property
-    Public ReadOnly Property ID As Long
-        Get
-            Return databaseId
-        End Get
     End Property
     Public Property DumpFile As String
         Get
@@ -148,10 +142,10 @@ Public Class TestFile
     End Property
     Public Property SwitchSerial As String
         Get
-            Return strSwtichID
+            Return strSwitchID
         End Get
         Set(ByVal value As String)
-            strSwtichID = value
+            strSwitchID = value
         End Set
     End Property
     Public Property MatrixCardOneSerial As String

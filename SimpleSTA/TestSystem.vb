@@ -76,17 +76,19 @@ Public Class TestSystem
             Return Nothing
         End Try
     End Function
-    Public Sub writeToFile()
+    Public Function writeToFile() As Boolean
         ' Serializes the instance to file, using the file path defined by strDumpFile
         Try
             Dim serializer As New XmlSerializer(Me.GetType)
-            Dim writer As New StreamWriter(config.SystemFileDirectory & "\SystemInfo.xml")
+            Dim writer As New StreamWriter(config.SystemFileDirectory & "\" & systemInfoFileName)
             serializer.Serialize(writer, Me)
             writer.Close()
+            Return True
         Catch ex As Exception
             GenericExceptionHandler(ex)
+            Return False
         End Try
-    End Sub
+    End Function
     Public Sub addSwitchEvent(intSlot As Integer, Optional intSwitchCount As Integer = 1)
         Try
             Dim lngOldCounts As Long

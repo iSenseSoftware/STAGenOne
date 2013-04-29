@@ -20,9 +20,9 @@ Public Class Configuration
     Dim strDumpDirectory As String = appDir & Path.DirectorySeparatorChar & "RawTestData"
     Dim strSystemFileDirectory As String = appDir & Path.DirectorySeparatorChar & "SystemInfo"
     Dim intSettlingTime As Integer = 20
-    Dim dblResistor1NominalResistance As Double = 10 ^ 8    '1 megaohm
+    Dim dblResistor1NominalResistance As Double = 10 ^ 8    '100 megaohm
     Dim dblResistor2NominalResistance As Double = 10 ^ 7    '10 megaohm
-    Dim dblResistor3NominalResistance As Double = 10 ^ 6    '100 megaohm
+    Dim dblResistor3NominalResistance As Double = 10 ^ 6    '1 megaohm
     Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
     Public Property SystemFileDirectory As String
         Get

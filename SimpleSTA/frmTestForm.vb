@@ -53,11 +53,7 @@ Public Class frmTestForm
             If boolIsTestStopped Then
                 If (switchDriver.Initialized) Then
                     switchDriver.Close()
-                    switchDriver = Nothing
-                    boolIOEstablished = False
-                    boolSystemInfoLoaded = False
-                    boolConfigLoaded = False
-                    boolTestFileLoaded = False
+                    'switchDriver = Nothing
                 End If
             Else
                 e.Cancel = True

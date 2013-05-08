@@ -28,4 +28,11 @@ Public Class frmMain
         'comm.SendCommand("display.clear()")
     End Sub
 
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Me.Close()
+    End Sub
+
+    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
+        frmAbout.Show()
+    End Sub
 End Class

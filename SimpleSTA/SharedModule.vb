@@ -15,6 +15,9 @@ Public Module SharedModule
     '------------------------------
     Public Const strConfigFileName As String = "Config.xml"
     Public Const strSystemInfoFileName As String = "SystemInfo.xml"
+    Public Const strApplicationName As String = "GlucoMatrix"
+    Public Const strApplicationVersion As String = "1.0"
+    Public Const strApplicationDescription As String = "Software for CGM Sensor release testing"
 
     Public strLogPath As String = "C:\htdocs\log.txt"
 
@@ -77,7 +80,7 @@ Public Module SharedModule
                     switchDriver.Initialize(cfgGlobal.Address, False, False, strOptions)
                     If (switchDriver.Initialized) Then
                         ' reset the TSPLink so we can communicate with the source meter
-                        Delay(20)
+                        Delay(100)
                         switchDriver.TspLink.Reset()
                         'Update UI and return true
                         frmMain.chkIOStatus.Checked = True
@@ -495,8 +498,11 @@ Public Module SharedModule
             Dim intErrCode As Integer = 0
             Dim strErrMsg As String = ""
             switchDriver.Utility.ErrorQuery(intErrCode, strErrMsg)
-            ' Print the error
-            MsgBox("Instrument Error: " & intErrCode & Environment.NewLine & strErrMsg)
+            If (intErrCode = 0 And strErrMsg = "") Then
+                MsgBox("Unknown instrument error occurred")
+            Else
+                MsgBox("Instrument Error: " & intErrCode & Environment.NewLine & strErrMsg)
+            End If
         Else
             ' Print the exception
             If (theException.Message.Contains("Unknown resource")) Then

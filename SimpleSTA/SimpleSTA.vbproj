@@ -108,8 +108,13 @@
     <Compile Include="AuditCheck.vb" />
     <Compile Include="AuditReading.vb" />
     <Compile Include="Card.vb" />
-    <Compile Include="Communicator.vb" />
     <Compile Include="Configuration.vb" />
+    <Compile Include="frmAbout.Designer.vb">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmAbout.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -152,7 +157,6 @@
     </Compile>
     <Compile Include="Reading.vb" />
     <Compile Include="Sensor.vb" />
-    <Compile Include="SerialCommunicator.vb" />
     <Compile Include="SharedModule.vb" />
     <Compile Include="SourceMeter.vb" />
     <Compile Include="Switch.vb" />
@@ -166,6 +170,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </EmbeddedResource>

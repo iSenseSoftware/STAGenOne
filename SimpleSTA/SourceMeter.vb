@@ -1,56 +1,61 @@
-﻿Public Class SourceMeter
+﻿Option Explicit On
+' ------------------------------------------------------------------------------------------------------
+' The SourceMeter class defines an object used for storing indentifying information for a particular
+' source meter used in the test system measurement hardware component of the STA system.  
+' ------------------------------------------------------------------------------------------------------
+Public Class SourceMeter
     Dim strSerial As String
     Dim strModel As String
     Dim strRevision As String
-    Dim boolActive As Boolean
+    Dim boolActive As Boolean ' Is this the source meter currently in use?
     Dim dtFirstTest As DateTime
     Dim dtLastTest As DateTime
     Public Property Revision As String
         Get
             Return strRevision
         End Get
-        Set(value As String)
-            strRevision = value
+        Set(ByVal strValue As String)
+            strRevision = strValue
         End Set
     End Property
     Public Property SerialNumber As String
         Get
             Return strSerial
         End Get
-        Set(value As String)
-            strSerial = value
+        Set(ByVal strValue As String)
+            strSerial = strValue
         End Set
     End Property
     Public Property ModelNumber As String
         Get
             Return strModel
         End Get
-        Set(value As String)
-            strModel = value
+        Set(ByVal strValue As String)
+            strModel = strValue
         End Set
     End Property
     Public Property FirstTest As DateTime
         Get
             Return dtFirstTest
         End Get
-        Set(value As DateTime)
-            dtFirstTest = value
+        Set(ByVal dtValue As DateTime)
+            dtFirstTest = dtValue
         End Set
     End Property
     Public Property LastTest As DateTime
         Get
             Return dtLastTest
         End Get
-        Set(value As DateTime)
-            dtLastTest = value
+        Set(ByVal dtValue As DateTime)
+            dtLastTest = dtValue
         End Set
     End Property
     Public Property Active As Boolean
         Get
             Return boolActive
         End Get
-        Set(value As Boolean)
-            boolActive = value
+        Set(ByVal boolValue As Boolean)
+            boolActive = boolValue
         End Set
     End Property
 End Class

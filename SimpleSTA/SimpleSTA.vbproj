@@ -108,6 +108,7 @@
     <Compile Include="AuditCheck.vb" />
     <Compile Include="AuditReading.vb" />
     <Compile Include="Card.vb" />
+    <Compile Include="Communicator.vb" />
     <Compile Include="Configuration.vb" />
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
@@ -151,6 +152,7 @@
     </Compile>
     <Compile Include="Reading.vb" />
     <Compile Include="Sensor.vb" />
+    <Compile Include="SerialCommunicator.vb" />
     <Compile Include="SharedModule.vb" />
     <Compile Include="SourceMeter.vb" />
     <Compile Include="Switch.vb" />
@@ -204,42 +206,6 @@
     <None Include="SimpleSTA_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="InteropExtensionLib">
-      <Guid>{C3D19104-7A67-4EB0-B459-D5B2E734D430}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IVIAPIInjector">
-      <Guid>{C37676C1-FEFB-4D91-93C4-92E66BD289E9}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IVICONFIGSERVERLib">
-      <Guid>{C6F576F5-7394-458E-B38A-C20C668585E7}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>6</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IviDCPwrLib">
-      <Guid>{47ED5121-A398-11D4-BA58-000064657374}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="IviDmmLib">
       <Guid>{47ED5122-A398-11D4-BA58-000064657374}</Guid>
       <VersionMajor>3</VersionMajor>
@@ -252,24 +218,6 @@
     <COMReference Include="IviDriverLib">
       <Guid>{47ED5120-A398-11D4-BA58-000064657374}</Guid>
       <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IVIEVENTSERVERDLLLib">
-      <Guid>{BB5043E8-BD42-49F7-AF26-D82A59033F03}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IviFgenLib">
-      <Guid>{47ED5123-A398-11D4-BA58-000064657374}</Guid>
-      <VersionMajor>3</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
@@ -294,42 +242,6 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="IviRFSigGenLib">
-      <Guid>{47ED5127-A398-11D4-BA58-000064657374}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IviScopeLib">
-      <Guid>{47ED5124-A398-11D4-BA58-000064657374}</Guid>
-      <VersionMajor>3</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IVISESSIONFACTORYLib">
-      <Guid>{2730EDC0-8DB0-445B-9BD2-B031416475C3}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="IviSpecAnLib">
-      <Guid>{47ED5126-A398-11D4-BA58-000064657374}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="IviSwtchLib">
       <Guid>{47ED5125-A398-11D4-BA58-000064657374}</Guid>
       <VersionMajor>3</VersionMajor>
@@ -339,48 +251,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="KCLHelperLib">
-      <Guid>{F9C54A95-CB4B-437A-BE08-F13D3B87A7AD}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Ke26XXALib">
-      <Guid>{625EDC26-C167-4ADE-B850-69751A4870EB}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="Ke37XXLib">
       <Guid>{898033FB-A1D6-4BCD-888B-3DC3DEB2EB06}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>1</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="KeithleyConfigLib">
-      <Guid>{07818C1B-A5E2-11D4-8C0F-00A0C9050948}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>2</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="KeithleyConfigWiz">
-      <Guid>{F1A34D39-7866-449F-8C93-7182EFD26A3E}</Guid>
-      <VersionMajor>8</VersionMajor>
-      <VersionMinor>2</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>

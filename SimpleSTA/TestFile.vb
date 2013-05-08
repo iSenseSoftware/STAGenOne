@@ -1,11 +1,12 @@
-﻿Imports System
+﻿Option Explicit On
+Imports System
 Imports System.IO
 Imports System.Xml.Serialization
+' -------------------------------------------------------------------------------
+' The TestFile class defines the highest level object created during the course of a test.  It contains an array
+' of all sensors tested as well as basic information about the test (date, operatory, device serials, etc)
+' ------------------------------------------------------------------------------------------------
 Public Class TestFile
-
-    ' The TestFile class defines the highest level object created during the course of a test.  It contains an array
-    ' of all sensors tested as well as basic information about the test (date, operatory, device serials, etc)
-
     Dim cfgConfig As Configuration ' The configuration used for the test
     Dim arySensors() As Sensor ' A collection of Sensor objects which contain sensor info and test readings
     Dim aryFullCircuitReadings() As Reading ' This array contains all readings made at the end of each measurement cycle across all sensor channels.
@@ -16,7 +17,7 @@ Public Class TestFile
     Dim strTestName As String ' The name given to the test at the time of performance
     Dim lngTestLength As Double 'The total length of the test in seconds
     Dim dtTestStart As DateTime 'Time stamp for the start of the test
-    Dim strTestEnd As String 'Time stamp for the end of the test
+    Dim dtTestEnd As DateTime 'Time stamp for the end of the test
     Dim strSourceMeterID As String 'The serial number for the source meter
     Dim strSwitchID As String 'The serial number for the switch
     Dim strCardOneID As String 'The serial number for the slot 1 matrix card
@@ -32,181 +33,184 @@ Public Class TestFile
         Get
             Return swtSwitch
         End Get
-        Set(value As Switch)
-            swtSwitch = value
+        Set(ByVal swtValue As Switch)
+            swtSwitch = swtValue
         End Set
     End Property
     Public Property SystemSource As SourceMeter
         Get
             Return srcSource
         End Get
-        Set(value As SourceMeter)
-            srcSource = value
+        Set(ByVal smValue As SourceMeter)
+            srcSource = smValue
         End Set
     End Property
     Public Property AuditCheck As AuditCheck
         Get
             Return acAuditCheck
         End Get
-        Set(value As AuditCheck)
-            acAuditCheck = value
+        Set(ByVal acValue As AuditCheck)
+            acAuditCheck = acValue
         End Set
     End Property
     Public Property DumpFile As String
         Get
             Return strDumpFile
         End Get
-        Set(ByVal value As String)
-            strDumpFile = value
+        Set(ByVal strValue As String)
+            strDumpFile = strValue
         End Set
     End Property
     Public Property Config As Configuration
         Get
             Return cfgConfig
         End Get
-        Set(ByVal value As Configuration)
-            cfgConfig = value
+        Set(ByVal cfgValue As Configuration)
+            cfgConfig = cfgValue
         End Set
     End Property
     Public Property Sensors As Sensor()
         Get
             Return arySensors
         End Get
-        Set(ByVal value As Sensor())
-            arySensors = value
+        Set(ByVal aryValue As Sensor())
+            arySensors = aryValue
         End Set
     End Property
     Public Property OperatorID As String
         Get
             Return strOperator
         End Get
-        Set(ByVal value As String)
-            strOperator = value
+        Set(ByVal strValue As String)
+            strOperator = strValue
         End Set
     End Property
     Public Property Injections As DateTime()
         Get
             Return aryInjections
         End Get
-        Set(ByVal value As DateTime())
-            aryInjections = value
+        Set(ByVal aryValue As DateTime())
+            aryInjections = aryValue
         End Set
     End Property
     Public Property Comments As String
         Get
             Return strComments
         End Get
-        Set(ByVal value As String)
-            strComments = value
+        Set(ByVal strValue As String)
+            strComments = strValue
         End Set
     End Property
     Public Property Name As String
         Get
             Return strTestName
         End Get
-        Set(ByVal value As String)
-            strTestName = value
+        Set(ByVal strValue As String)
+            strTestName = strValue
         End Set
     End Property
     Public Property TestLength As Long
         Get
             Return lngTestLength
         End Get
-        Set(ByVal value As Long)
-            lngTestLength = value
+        Set(ByVal lngValue As Long)
+            lngTestLength = lngValue
         End Set
     End Property
     Public Property TestStart As DateTime
         Get
             Return dtTestStart
         End Get
-        Set(ByVal value As DateTime)
-            dtTestStart = value
+        Set(ByVal dtValue As DateTime)
+            dtTestStart = dtValue
         End Set
     End Property
-    Public Property TestEnd As String
+    Public Property TestEnd As DateTime
         Get
-            Return strTestEnd
+            Return dtTestEnd
         End Get
-        Set(ByVal value As String)
-            strTestEnd = value
+        Set(ByVal dtValue As DateTime)
+            dtTestEnd = dtValue
         End Set
     End Property
     Public Property SourceMeterSerial As String
         Get
             Return strSourceMeterID
         End Get
-        Set(ByVal value As String)
-            strSourceMeterID = value
+        Set(ByVal strValue As String)
+            strSourceMeterID = strValue
         End Set
     End Property
     Public Property SwitchSerial As String
         Get
             Return strSwitchID
         End Get
-        Set(ByVal value As String)
-            strSwitchID = value
+        Set(ByVal strValue As String)
+            strSwitchID = strValue
         End Set
     End Property
     Public Property MatrixCardOneSerial As String
         Get
             Return strCardOneID
         End Get
-        Set(ByVal value As String)
-            strCardOneID = value
+        Set(ByVal strValue As String)
+            strCardOneID = strValue
         End Set
     End Property
     Public Property MatrixCardTwoSerial As String
         Get
             Return strCardTwoID
         End Get
-        Set(ByVal value As String)
-            strCardTwoID = value
+        Set(ByVal strValue As String)
+            strCardTwoID = strValue
         End Set
     End Property
     Public Property MatrixCardThreeSerial As String
         Get
             Return strCardThreeID
         End Get
-        Set(ByVal value As String)
-            strCardThreeID = value
+        Set(ByVal strValue As String)
+            strCardThreeID = strValue
         End Set
     End Property
     Public Property MatrixCardFourSerial As String
         Get
             Return strCardFourID
         End Get
-        Set(ByVal value As String)
-            strCardFourID = value
+        Set(ByVal strValue As String)
+            strCardFourID = strValue
         End Set
     End Property
     Public Property MatrixCardFiveSerial As String
         Get
             Return strCardFiveID
         End Get
-        Set(ByVal value As String)
-            strCardFiveID = value
+        Set(ByVal strValue As String)
+            strCardFiveID = strValue
         End Set
     End Property
     Public Property MatrixCardSixSerial As String
         Get
             Return strCardSixID
         End Get
-        Set(ByVal value As String)
-            strCardSixID = value
+        Set(ByVal strValue As String)
+            strCardSixID = strValue
         End Set
     End Property
     Public Property FullCircuitReadings As Reading()
         Get
             Return aryFullCircuitReadings
         End Get
-        Set(value As Reading())
-            aryFullCircuitReadings = value
+        Set(ByVal rdgValue As Reading())
+            aryFullCircuitReadings = rdgValue
         End Set
     End Property
-    Public Shared Function testFileFactory(ByVal strFilePath As String) As TestFile
-        ' The testFileFactory function is used to return an instance of the TestFile object
-        ' deserialized from the file at the given location (strFilePath)
+    ' Name: TestFileFactory()
+    ' Parameters:
+    '           strFilePath: The path to the file from which the TestFile object is to be loaded
+    ' Returns: TestFile: A test file object deserialized from the input file
+    ' Description: Attempts to deserialized a TestFile object stored in the input file.  Returns nothing on failure
+    Public Shared Function TestFileFactory(ByVal strFilePath As String) As TestFile
         Try
             Dim output As New TestFile
             Dim serializer As New XmlSerializer(output.GetType)
@@ -219,19 +223,25 @@ Public Class TestFile
             Return Nothing
         End Try
     End Function
-
-    Public Sub writeToFile()
-        ' Serializes the instance to file, using the file path defined by strDumpFile
+    ' Name: WriteToFile()
+    ' Return: Boolean: Indicates success or failure
+    ' Description: Attempts to serialize the current instance to an xml file at the path given as a parameter
+    Public Sub WriteToFile()
         Try
             Dim serializer As New XmlSerializer(Me.GetType)
             Dim writer As New StreamWriter(Me.DumpFile)
             serializer.Serialize(writer, Me)
             writer.Close()
         Catch ex As Exception
-            GenericExceptionHandler(ex)
+            ' Rethrow the exception to the calling function
+            Throw
         End Try
     End Sub
-    Public Sub addSensor(ByVal newSensor As Sensor)
+    ' Name: AddSensor()
+    ' Parameters:
+    '           ssrNewSensor: The Sensor object to be added to this instances Sensors array
+    ' Description: Adds the input Sensor to the Sensors array, redimensioning as necessary
+    Public Sub AddSensor(ByVal newSensor As Sensor)
         Try
             If arySensors Is Nothing Then
                 ReDim arySensors(0)
@@ -242,37 +252,49 @@ Public Class TestFile
                 arySensors(upper + 1) = newSensor
             End If
         Catch ex As Exception
-            GenericExceptionHandler(ex)
+            ' Rethrow the exception to the caller
+            Throw
         End Try
     End Sub
-    Public Sub addInjection(ByVal timestamp As DateTime)
+    ' Name: AddInjection()
+    ' Parameters:
+    '           dtTimestamp: The timestamp to be appended to the Injections array
+    ' Description: Adds the timestamp given as input to the TestFile's Injections array, redimensioning as necessary
+    Public Sub AddInjection(ByVal dtTimestamp As DateTime)
         Try
             If aryInjections Is Nothing Then
                 ReDim aryInjections(0)
-                aryInjections(0) = timestamp
+                aryInjections(0) = dtTimestamp
             Else
-                Dim upper As Long = aryInjections.GetUpperBound(0)
-                ReDim Preserve aryInjections(upper + 1)
-                aryInjections(upper + 1) = timestamp
+                Dim lngUpper As Long = aryInjections.GetUpperBound(0)
+                ReDim Preserve aryInjections(lngUpper + 1)
+                aryInjections(lngUpper + 1) = dtTimestamp
             End If
         Catch ex As Exception
-            GenericExceptionHandler(ex)
+            ' Rethrow exception to the caller
+            Throw
         End Try
     End Sub
-    Public Sub addFullCircuitReading(ByVal time As DateTime, ByVal current As Double, ByVal potential As Double)
+    ' Name: AddFullCircuitReading()
+    ' Parameters:
+    '           dtTime: The timestamp for the reading to be added
+    '           dblCurrent: The measured current for the reading
+    '           dblPotential: The measured potential for the reading
+    Public Sub addFullCircuitReading(ByVal dtTime As DateTime, ByVal dblCurrent As Double, ByVal dblPotential As Double)
         Try
-            Dim aReading As Reading
-            aReading = Reading.readingFactory(time, current, potential)
+            Dim rdgReading As Reading
+            rdgReading = Reading.ReadingFactory(dtTime, dblCurrent, dblPotential)
             If aryFullCircuitReadings Is Nothing Then
                 ReDim aryFullCircuitReadings(0)
-                aryFullCircuitReadings(0) = aReading
+                aryFullCircuitReadings(0) = rdgReading
             Else
-                Dim upper As Long = aryFullCircuitReadings.GetUpperBound(0)
-                ReDim Preserve aryFullCircuitReadings(upper + 1)
-                aryFullCircuitReadings(upper + 1) = aReading
+                Dim lngUpper As Long = aryFullCircuitReadings.GetUpperBound(0)
+                ReDim Preserve aryFullCircuitReadings(lngUpper + 1)
+                aryFullCircuitReadings(lngUpper + 1) = rdgReading
             End If
         Catch ex As Exception
-            GenericExceptionHandler(ex)
+            ' Rethrow the exception to the caller
+            Throw
         End Try
     End Sub
     Public Sub New()

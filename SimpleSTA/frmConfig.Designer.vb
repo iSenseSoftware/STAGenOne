@@ -60,6 +60,8 @@ Partial Class frmConfig
         Me.Label17 = New System.Windows.Forms.Label()
         Me.btnSelectInfoFile = New System.Windows.Forms.Button()
         Me.txtSystemInfoFile = New System.Windows.Forms.TextBox()
+        Me.txtRow6Resistor = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -144,7 +146,7 @@ Partial Class frmConfig
         'btnSave
         '
         Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(89, 715)
+        Me.btnSave.Location = New System.Drawing.Point(89, 753)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(117, 35)
         Me.btnSave.TabIndex = 9
@@ -154,7 +156,7 @@ Partial Class frmConfig
         'btnCancel
         '
         Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(226, 715)
+        Me.btnCancel.Location = New System.Drawing.Point(226, 753)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(117, 35)
         Me.btnCancel.TabIndex = 10
@@ -379,7 +381,7 @@ Partial Class frmConfig
         '
         Me.txtTolerance.Enabled = False
         Me.txtTolerance.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtTolerance.Location = New System.Drawing.Point(260, 666)
+        Me.txtTolerance.Location = New System.Drawing.Point(260, 704)
         Me.txtTolerance.Name = "txtTolerance"
         Me.txtTolerance.Size = New System.Drawing.Size(151, 22)
         Me.txtTolerance.TabIndex = 35
@@ -388,7 +390,7 @@ Partial Class frmConfig
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(102, 669)
+        Me.Label16.Location = New System.Drawing.Point(102, 707)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(152, 16)
         Me.Label16.TabIndex = 34
@@ -424,12 +426,33 @@ Partial Class frmConfig
         Me.txtSystemInfoFile.Size = New System.Drawing.Size(192, 22)
         Me.txtSystemInfoFile.TabIndex = 36
         '
+        'txtRow6Resistor
+        '
+        Me.txtRow6Resistor.Enabled = False
+        Me.txtRow6Resistor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtRow6Resistor.Location = New System.Drawing.Point(260, 665)
+        Me.txtRow6Resistor.Name = "txtRow6Resistor"
+        Me.txtRow6Resistor.Size = New System.Drawing.Size(151, 22)
+        Me.txtRow6Resistor.TabIndex = 40
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(12, 668)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(242, 16)
+        Me.Label18.TabIndex = 39
+        Me.Label18.Text = "Row 6 Nominal Resistor Value (MOhm):"
+        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(438, 573)
+        Me.ClientSize = New System.Drawing.Size(537, 814)
+        Me.Controls.Add(Me.txtRow6Resistor)
+        Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.btnSelectInfoFile)
         Me.Controls.Add(Me.txtSystemInfoFile)
@@ -511,5 +534,7 @@ Partial Class frmConfig
     Friend WithEvents Label17 As System.Windows.Forms.Label
     Friend WithEvents btnSelectInfoFile As System.Windows.Forms.Button
     Friend WithEvents txtSystemInfoFile As System.Windows.Forms.TextBox
+    Friend WithEvents txtRow6Resistor As System.Windows.Forms.TextBox
+    Friend WithEvents Label18 As System.Windows.Forms.Label
 
 End Class

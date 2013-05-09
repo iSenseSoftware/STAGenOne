@@ -81,5 +81,6 @@ Public Class AuditChannel
     End Function
     Public Sub New()
         ' In order for this object to be properly serialized by the XMLSerializer class, the constructor must be empty
+        'Jenny was here!!!!
     End Sub
 End Class

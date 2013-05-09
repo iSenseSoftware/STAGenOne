@@ -106,4 +106,7 @@ Public Class Switch
             Return Nothing
         End Try
     End Function
+    Public Sub New()
+
+    End Sub
 End Class

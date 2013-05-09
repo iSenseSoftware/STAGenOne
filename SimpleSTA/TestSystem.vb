@@ -129,21 +129,27 @@ Public Class TestSystem
     Public Sub AddSwitchEvent(intSlot As Integer, Optional intSwitchCount As Integer = 1)
         Try
             Dim lngOldCounts As Long
-            Dim intCardsFound As Integer ' Counts how many matching cards have been found.  If there are multiple active cards in the same slot we have a problem!
-            Dim cdUpdateCard As Card
-            intCardsFound = 0
-            For Each cdTheCard In aryCurrentCards
-                If cdTheCard.Slot = intSlot And cdTheCard.Active Then
-                    cdUpdateCard = cdTheCard
-                    intCardsFound = intCardsFound + 1
+            'Dim intCardsFound As Integer ' Counts how many matching cards have been found.  If there are multiple active cards in the same slot we have a problem!
+            'Dim cdUpdateCard As Card
+            'intCardsFound = 0
+            For Each cdCard In aryCurrentCards
+                If cdCard.Slot = intSlot And cdCard.Active Then
+                    lngOldCounts = cdCard.TotalSwitches
+                    cdCard.TotalSwitches = lngOldCounts + intSwitchCount
                 End If
             Next
-            If (intCardsFound = 1) Then
-                lngOldCounts = cdUpdateCard.TotalSwitches
-                cdUpdateCard.TotalSwitches = lngOldCounts + intSwitchCount
-            Else
-                Throw New Exception("Duplicate active Cards found in SystemInfo file")
-            End If
+            'For Each cdTheCard In aryCurrentCards
+            ' If cdTheCard.Slot = intSlot And cdTheCard.Active Then
+            ' cdUpdateCard = cdTheCard
+            ' intCardsFound = intCardsFound + 1
+            ' End If
+            ' Next
+            ' If (intCardsFound = 1) Then
+            ' lngOldCounts = cdUpdateCard.TotalSwitches
+            ' cdUpdateCard.TotalSwitches = lngOldCounts + intSwitchCount
+            ' Else
+            ' Throw New Exception("Duplicate active Cards found in SystemInfo file")
+            ' End If
         Catch ex As Exception
             Throw
         End Try

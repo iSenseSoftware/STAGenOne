@@ -57,13 +57,20 @@ Public Class AuditCheck
     Public Sub Validate()
         Try
             Dim boolValidates As Boolean = True
-            'For Each acChannel In aryAuditChannels
-            ' For Each ardReading In acChannel.AuditReadings
-            ' If (Math.Abs(((ardReading.Voltage / ardReading.NominalResistance) - ardReading.Current) / (ardReading.Voltage / ardReading.NominalResistance)) > cfgGlobal.AuditTolerance) Then
-            ' boolValidates = False
-            ' End If
-            ' Next
-            ' Next
+            For Each acChannel In aryAuditChannels
+                For Each ardReading In acChannel.AuditReadings
+                    If ardReading.Open Then
+                        If (Math.Abs(ardReading.Current) > cfgGlobal.AuditZero) Then
+                            boolValidates = False
+                        End If
+                    Else
+                        If (Math.Abs(((ardReading.Voltage / ardReading.NominalResistance) - ardReading.Current) / (ardReading.Voltage / ardReading.NominalResistance)) > cfgGlobal.AuditTolerance) Then
+                            boolValidates = False
+                        End If
+                    End If
+                    
+                Next
+            Next
             boolPass = boolValidates
         Catch ex As Exception
             GenericExceptionHandler(ex)

@@ -23,6 +23,7 @@ Public Class frmTestInfo
             ' Attempt to load configuration
             If (LoadOrRefreshConfiguration()) Then
                 If (EstablishIO()) Then
+                    tfCurrentTestFile = New TestFile
                     If (LoadAndUpdateSystemInfo()) Then
                         ' do nothing, hooray!
                     Else
@@ -112,7 +113,7 @@ Public Class frmTestInfo
     ' Description: Updates the settings and creates the sensor objects in the tfCurrentTestFile global
     Private Sub UpdateTestFile()
         Try
-            tfCurrentTestFile = New TestFile
+            'tfCurrentTestFile = New TestFile
             tfCurrentTestFile.Config = cfgGlobal
             tfCurrentTestFile.OperatorID = Me.txtOperatorInitials.Text
             tfCurrentTestFile.Name = Me.txtTestName.Text

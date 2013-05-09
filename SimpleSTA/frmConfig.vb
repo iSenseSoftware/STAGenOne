@@ -32,6 +32,7 @@ Public Class frmConfig
             txtRow5Resistor.Text = cfgGlobal.ResistorNominalValues(2) \ 10 ^ 6
             txtRow6Resistor.Text = cfgGlobal.ResistorNominalValues(3) \ 10 ^ 6
             txtTolerance.Text = cfgGlobal.AuditTolerance * 100
+            txtAuditZero.Text = cfgGlobal.AuditZero * 10 ^ 9
             txtSystemInfoFile.Text = cfgGlobal.SystemFileDirectory
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -189,6 +190,16 @@ Public Class frmConfig
                     boolValidates = False
                 End If
             End If
+            If (txtAuditZero.Text = "") Then
+                MsgBox("Self Test Zero field cannot be left blank")
+                boolValidates = False
+            End If
+            If Not (IsDouble(txtAuditZero.Text)) Then
+                MsgBox("Self Test Zero must be a positive number")
+                boolValidates = False
+            Else
+                ' nothing
+            End If
             Return boolValidates
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -218,6 +229,7 @@ Public Class frmConfig
         txtRow6Resistor.Enabled = True
         txtTolerance.Enabled = True
         txtSystemInfoFile.Enabled = True
+        txtAuditZero.Enabled = True
     End Sub
     ' Name: ValidatePassword
     ' Returns: True/False
@@ -316,6 +328,7 @@ Public Class frmConfig
                     cfgGlobal.ResistorNominalValues(2) = CDbl(txtRow5Resistor.Text) * 10 ^ 6
                     cfgGlobal.ResistorNominalValues(3) = CDbl(txtRow6Resistor.Text) * 10 ^ 6
                     cfgGlobal.AuditTolerance = CDbl(txtTolerance.Text) / 100
+                    cfgGlobal.AuditZero = CDbl(txtAuditZero.Text) * 10 ^ -9
                     cfgGlobal.SystemFileDirectory = txtSystemInfoFile.Text
                     ' Perform secondary validation on the cfgGlobal object
                     If cfgGlobal.Validate() Then

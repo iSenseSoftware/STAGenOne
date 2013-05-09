@@ -229,6 +229,10 @@ Public Class frmTestForm
                 stpIntervalTimer.Restart()
             Loop
             ' After test is complete, reset state
+            tfCurrentTestFile.TestEnd = DateTime.Now()
+            SetLastTestForSysInfo()
+            tsInfoFile.writeToFile(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)
+            tfCurrentTestFile.WriteToFile()
             btnStartTest.Text = "Test Complete"
             DirectIOWrapper("node[2].display.clear()")
             DirectIOWrapper("node[1].display.clear()")

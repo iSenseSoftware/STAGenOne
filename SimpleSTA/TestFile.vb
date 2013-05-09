@@ -20,16 +20,10 @@ Public Class TestFile
     Dim dtTestEnd As DateTime 'Time stamp for the end of the test
     Dim strSourceMeterID As String 'The serial number for the source meter
     Dim strSwitchID As String 'The serial number for the switch
-    Dim strCardOneID As String 'The serial number for the slot 1 matrix card
-    Dim strCardTwoID As String 'The serial number for the slot 2 matrix card
-    Dim strCardThreeID As String 'The serial number for the slot 3 matrix card
-    Dim strCardFourID As String 'The serial number for the slot 4 matrix card
-    Dim strCardFiveID As String 'The serial number for the slot 5 matrix card
-    Dim strCardSixID As String 'The serial number for the slot 6 matrix card
     Dim swtSwitch As Switch
     Dim srcSource As SourceMeter
     Dim acAuditCheck As AuditCheck
-    Public Property SystemSwitch As Switch
+    Public Property Switch As Switch
         Get
             Return swtSwitch
         End Get
@@ -37,7 +31,7 @@ Public Class TestFile
             swtSwitch = swtValue
         End Set
     End Property
-    Public Property SystemSource As SourceMeter
+    Public Property Source As SourceMeter
         Get
             Return srcSource
         End Get
@@ -147,54 +141,6 @@ Public Class TestFile
         End Get
         Set(ByVal strValue As String)
             strSwitchID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardOneSerial As String
-        Get
-            Return strCardOneID
-        End Get
-        Set(ByVal strValue As String)
-            strCardOneID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardTwoSerial As String
-        Get
-            Return strCardTwoID
-        End Get
-        Set(ByVal strValue As String)
-            strCardTwoID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardThreeSerial As String
-        Get
-            Return strCardThreeID
-        End Get
-        Set(ByVal strValue As String)
-            strCardThreeID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardFourSerial As String
-        Get
-            Return strCardFourID
-        End Get
-        Set(ByVal strValue As String)
-            strCardFourID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardFiveSerial As String
-        Get
-            Return strCardFiveID
-        End Get
-        Set(ByVal strValue As String)
-            strCardFiveID = strValue
-        End Set
-    End Property
-    Public Property MatrixCardSixSerial As String
-        Get
-            Return strCardSixID
-        End Get
-        Set(ByVal strValue As String)
-            strCardSixID = strValue
         End Set
     End Property
     Public Property FullCircuitReadings As Reading()

@@ -8,9 +8,18 @@ Public Class AuditReading
     Dim dblNominalResistance As Double
     Dim dblCurrent As Double
     Dim dblVoltage As Double
+    Dim boolOpenCheck As Boolean
     ' ---------------------------------------------------
     ' Getters and Setters
     ' ---------------------------------------------------
+    Public Property Open As Boolean
+        Get
+            Return boolOpenCheck
+        End Get
+        Set(boolValue As Boolean)
+            boolOpenCheck = boolValue
+        End Set
+    End Property
     Public Property Row As Integer
         Get
             Return intRow
@@ -55,13 +64,14 @@ Public Class AuditReading
     ' Returns: AuditReading object
     ' Description: Because this object requires an empty constructor to serialize to XML, we define a factory function to return
     '           an instance of AuditReading with the input values set for the appropriate properties
-    Public Shared Function ReadingFactory(ByVal dblVoltage As Double, ByVal dblCurrent As Double, ByVal dblNominalResistance As Double, ByVal intRow As Integer) As AuditReading
+    Public Shared Function ReadingFactory(ByVal dblVoltage As Double, ByVal dblCurrent As Double, ByVal dblNominalResistance As Double, ByVal intRow As Integer, Optional boolopen As Boolean = False) As AuditReading
         Try
             Dim ardOutReading As New AuditReading
             ardOutReading.Voltage = dblVoltage
             ardOutReading.Current = dblCurrent
             ardOutReading.NominalResistance = dblNominalResistance
             ardOutReading.Row = intRow
+            ardOutReading.Open = boolopen
             Return ardOutReading
         Catch ex As Exception
             GenericExceptionHandler(ex)

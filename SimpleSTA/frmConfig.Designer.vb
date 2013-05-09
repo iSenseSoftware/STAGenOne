@@ -62,6 +62,8 @@ Partial Class frmConfig
         Me.txtSystemInfoFile = New System.Windows.Forms.TextBox()
         Me.txtRow6Resistor = New System.Windows.Forms.TextBox()
         Me.Label18 = New System.Windows.Forms.Label()
+        Me.txtAuditZero = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -146,7 +148,7 @@ Partial Class frmConfig
         'btnSave
         '
         Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(89, 753)
+        Me.btnSave.Location = New System.Drawing.Point(89, 799)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(117, 35)
         Me.btnSave.TabIndex = 9
@@ -156,7 +158,7 @@ Partial Class frmConfig
         'btnCancel
         '
         Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancel.Location = New System.Drawing.Point(226, 753)
+        Me.btnCancel.Location = New System.Drawing.Point(226, 799)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(117, 35)
         Me.btnCancel.TabIndex = 10
@@ -445,12 +447,33 @@ Partial Class frmConfig
         Me.Label18.TabIndex = 39
         Me.Label18.Text = "Row 6 Nominal Resistor Value (MOhm):"
         '
+        'txtAuditZero
+        '
+        Me.txtAuditZero.Enabled = False
+        Me.txtAuditZero.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtAuditZero.Location = New System.Drawing.Point(260, 743)
+        Me.txtAuditZero.Name = "txtAuditZero"
+        Me.txtAuditZero.Size = New System.Drawing.Size(151, 22)
+        Me.txtAuditZero.TabIndex = 42
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(114, 746)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(132, 16)
+        Me.Label19.TabIndex = 41
+        Me.Label19.Text = "Self Test ""Zero"" (nA):"
+        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(537, 814)
+        Me.ClientSize = New System.Drawing.Size(537, 863)
+        Me.Controls.Add(Me.txtAuditZero)
+        Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.txtRow6Resistor)
         Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.Label17)
@@ -536,5 +559,7 @@ Partial Class frmConfig
     Friend WithEvents txtSystemInfoFile As System.Windows.Forms.TextBox
     Friend WithEvents txtRow6Resistor As System.Windows.Forms.TextBox
     Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents txtAuditZero As System.Windows.Forms.TextBox
+    Friend WithEvents Label19 As System.Windows.Forms.Label
 
 End Class

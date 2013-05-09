@@ -23,6 +23,7 @@ Public Class Configuration
     Dim lngNPLC As Long = 1
     Dim intSettlingTime As Integer = 20 ' Settling time in milliseconds
     Dim aryResistorNominalValues(0 To 3) As Double
+    Dim dblAuditCheckZero As Double = 10 ^ -10 ' "zero" value used for open circuit checks
     Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
     Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
 
@@ -33,6 +34,14 @@ Public Class Configuration
     ' Set default save paths based on installation directory (strAppDir)
     Dim strDumpDirectory As String = strAppDir & Path.DirectorySeparatorChar & "RawTestData"
     Dim strSystemFileDirectory As String = strAppDir & Path.DirectorySeparatorChar & "SystemInfo"
+    Public Property AuditZero As Double
+        Get
+            Return dblAuditCheckZero
+        End Get
+        Set(dblValue As Double)
+            dblAuditCheckZero = dblValue
+        End Set
+    End Property
     Public Property ResistorNominalValues As Double()
         Get
             Return aryResistorNominalValues

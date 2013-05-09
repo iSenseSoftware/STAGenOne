@@ -58,4 +58,7 @@ Public Class SourceMeter
             boolActive = boolValue
         End Set
     End Property
+    Public Sub New()
+
+    End Sub
 End Class

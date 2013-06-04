@@ -1,6 +1,6 @@
 ﻿Option Explicit On
 Imports System.IO
-Imports Keithley.Ke37XX.Interop
+'Imports Keithley.Ke37XX.Interop
 
 ' -----------------------------------------------------------------------------------
 ' frmTestInfo is the form displayed to the user to gather test-specific information
@@ -90,8 +90,8 @@ Public Class frmTestInfo
                     tfCurrentTestFile.AuditCheck.Validate()
                     If (tfCurrentTestFile.AuditCheck.Pass) Then
                         tfCurrentTestFile.WriteToFile()
-                        DirectIOWrapper("node[2].display.clear()")
-                        DirectIOWrapper("node[2].display.settext('Ready to test')")
+                        SwitchIOWrite("node[2].display.clear()")
+                        SwitchIOWrite("node[2].display.settext('Ready to test')")
                         frmTestForm.Show()
                         Me.Close()
                     Else

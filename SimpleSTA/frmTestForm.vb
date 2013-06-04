@@ -2,9 +2,9 @@
 Imports System
 Imports System.IO
 Imports System.Windows.Forms.DataVisualization.Charting
-Imports Keithley.Ke37XX
-Imports Ivi.Driver.Interop
-Imports Keithley.Ke37XX.Interop
+'Imports Keithley.Ke37XX
+'Imports Ivi.Driver.Interop
+'Imports Keithley.Ke37XX.Interop
 Imports System.Runtime.InteropServices
 Imports System.Xml.Serialization
 ' --------------------------------------------------------------------------------------------------
@@ -73,67 +73,67 @@ Public Class frmTestForm
             ' such as duplicate assignment of variable values or attempts to simultaneously access the same resource.
             Control.CheckForIllegalCrossThreadCalls = False
             ' Update the instrument front displays
-            DirectIOWrapper("node[2].display.clear()")
-            DirectIOWrapper("node[1].display.clear()")
-            DirectIOWrapper("node[2].display.settext('Test Running')")
-            DirectIOWrapper("node[1].display.settext('Test Running')")
+            SwitchIOWrite("node[2].display.clear()")
+            SwitchIOWrite("node[1].display.clear()")
+            SwitchIOWrite("node[2].display.settext('Test Running')")
+            SwitchIOWrite("node[1].display.settext('Test Running')")
             ' Set both SMU channels to DC volts
-            DirectIOWrapper("node[2].smua.source.func = 1")
-            DirectIOWrapper("node[2].smub.source.func = 1")
+            SwitchIOWrite("node[2].smua.source.func = 1")
+            SwitchIOWrite("node[2].smub.source.func = 1")
             ' NOTE: I had to add a 10ms delat between source meter setting changes to avoid overflowing the System Switch
             ' input buffer.  It appears that the delay in relaying messages from the switch to the SMU through the TSP-Net link
             ' can cause a backlog.
             Delay(10)
             ' Set the bias for both channels based on the value in config
-            DirectIOWrapper("node[2].smua.source.levelv = " & cfgGlobal.Bias)
-            DirectIOWrapper("node[2].smub.source.levelv = " & cfgGlobal.Bias)
+            SwitchIOWrite("node[2].smua.source.levelv = " & cfgGlobal.Bias)
+            SwitchIOWrite("node[2].smub.source.levelv = " & cfgGlobal.Bias)
             Delay(10)
             ' @TODO: Range is hard-coded to 1.  This should be changed to adapt to the user-entered config setting
             ' as the specified range for the SMU is up to 40v
-            DirectIOWrapper("node[2].smua.source.rangev = 1")
-            DirectIOWrapper("node[2].smub.source.rangev = 1")
+            SwitchIOWrite("node[2].smua.source.rangev = 1")
+            SwitchIOWrite("node[2].smub.source.rangev = 1")
             Delay(10)
             ' disable autorange for both output channels.  This reflects the settings used in the experimental version of the STA
-            DirectIOWrapper("node[2].smua.source.autorangei = 0")
-            DirectIOWrapper("node[2].smub.source.autorangei = 0")
+            SwitchIOWrite("node[2].smua.source.autorangei = 0")
+            SwitchIOWrite("node[2].smub.source.autorangei = 0")
             Delay(10)
             ' Set the dynamic range based on the configuration settings
             Select Case cfgGlobal.Range
                 Case CurrentRange.one_uA
-                    DirectIOWrapper("node[2].smua.source.rangei = .001")
-                    DirectIOWrapper("node[2].smub.source.rangei = .001")
+                    SwitchIOWrite("node[2].smua.source.rangei = .001")
+                    SwitchIOWrite("node[2].smub.source.rangei = .001")
                 Case CurrentRange.ten_uA
-                    DirectIOWrapper("node[2].smua.source.rangei = .01")
-                    DirectIOWrapper("node[2].smub.source.rangei = .01")
+                    SwitchIOWrite("node[2].smua.source.rangei = .01")
+                    SwitchIOWrite("node[2].smub.source.rangei = .01")
                 Case CurrentRange.hundred_uA
-                    DirectIOWrapper("node[2].smua.source.rangei = .1")
-                    DirectIOWrapper("node[2].smub.source.rangei = .1")
+                    SwitchIOWrite("node[2].smua.source.rangei = .1")
+                    SwitchIOWrite("node[2].smub.source.rangei = .1")
             End Select
             ' Turn both channels on
             Delay(10)
-            DirectIOWrapper("node[2].smua.source.output = 1")
-            DirectIOWrapper("node[2].smub.source.output = 1")
+            SwitchIOWrite("node[2].smua.source.output = 1")
+            SwitchIOWrite("node[2].smub.source.output = 1")
             Delay(10)
             ' Configure the DMM
-            DirectIOWrapper("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
-            DirectIOWrapper("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
             Delay(10)
-            DirectIOWrapper("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
-            DirectIOWrapper("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
             Delay(10)
-            DirectIOWrapper("node[2].smua.measure.filter.enable = 1")
-            DirectIOWrapper("node[2].smub.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
             Delay(10)
-            DirectIOWrapper("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
-            DirectIOWrapper("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
+            SwitchIOWrite("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
+            SwitchIOWrite("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
             Delay(10)
             ' Clear the non-volatile measurement buffers.  These will be used as transient storage of measured values.
-            DirectIOWrapper("node[2].smub.nvbuffer1.clear()")
-            DirectIOWrapper("node[2].smub.nvbuffer2.clear()")
+            SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
+            SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
             Delay(10)
             ' Set connection rule to "make before break"
             ' @NOTE: This is the setting from the old software.  Should this be changed?
-            DirectIOWrapper("node[1].channel.connectrule = 2")
+            SwitchIOWrite("node[1].channel.connectrule = 2")
             ' Build a string which will allow us to close all intersections in Row 1
             ' The string is formatted as a series of comma separated codes each of which identify a single switch matrix intersection
             Dim strChannelString As String = ""
@@ -150,7 +150,7 @@ Public Class frmTestForm
             Next
             Delay(10)
             ' close all relays in row 1
-            DirectIOWrapper("node[1].channel.exclusiveclose('" & strChannelString & "')")
+            SwitchIOWrite("node[1].channel.exclusiveclose('" & strChannelString & "')")
             ' Start all timers
             ElapsedTimer.Start() ' Start the form timer component
             stpIntervalTimer.Start() ' Current interval stopwatch
@@ -162,26 +162,24 @@ Public Class frmTestForm
             Do While boolIsTestRunning
                 For z = 0 To tfCurrentTestFile.Sensors.Length - 1
                     ' Open relay to row 1
-                    DirectIOWrapper("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
                     Debug.Print("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
                     ' Close relay to row 2
-                    DirectIOWrapper("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
                     Debug.Print("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
                     ' Allow settling time
                     Delay(cfgGlobal.SettlingTime)
                     ' Record V and I readings to buffer
                     dtTheTime = DateTime.Now()
-                    DirectIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-                    DirectIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
-                    Dim dblCurrent As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                    switchDriver.System.DirectIO.FlushRead()
+                    SwitchIOWrite("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+                    Dim dblCurrent As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)"))
+                    'switchDriver.System.DirectIO.FlushRead()
 
-                    DirectIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
-                    Dim dblVolts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                    switchDriver.System.DirectIO.FlushRead()
+                    Dim dblVolts As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)"))
+                    'switchDriver.System.DirectIO.FlushRead()
                     ' Return relays to their previous state
-                    DirectIOWrapper("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    DirectIOWrapper("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
                     ' Add reading to tfCurrentTestFile.Sensors(z)'s reading array
 
                     tfCurrentTestFile.Sensors(z).AddReading(Reading.ReadingFactory(dtTheTime, dblCurrent, dblVolts))
@@ -197,13 +195,11 @@ Public Class frmTestForm
                 ' Record the voltage and current across all sensors
                 Delay(cfgGlobal.SettlingTime)
                 Dim dtAllTheTime As DateTime = DateTime.Now()
-                DirectIOWrapper("node[2].smua.measure.iv(node[2].smua.nvbuffer1, node[2].smua.nvbuffer2)")
-                DirectIOWrapper("printbuffer(1, node[2].smua.nvbuffer1.n, node[2].smua.nvbuffer1)")
-                Dim dblAllCurrent As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
-                DirectIOWrapper("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)")
-                Dim dblAllVolts As Double = CDbl(switchDriver.System.DirectIO.ReadString())
-                switchDriver.System.DirectIO.FlushRead()
+                SwitchIOWrite("node[2].smua.measure.iv(node[2].smua.nvbuffer1, node[2].smua.nvbuffer2)")
+                Dim dblAllCurrent As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer1.n, node[2].smua.nvbuffer1)"))
+                'switchDriver.System.DirectIO.FlushRead()
+                Dim dblAllVolts As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)"))
+                'switchDriver.System.DirectIO.FlushRead()
                 tfCurrentTestFile.addFullCircuitReading(dtAllTheTime, dblAllCurrent, dblAllVolts)
                 MainLoop.ReportProgress(10)
                 If (stpIntervalTimer.ElapsedMilliseconds > intMilliseconds) Then
@@ -234,13 +230,13 @@ Public Class frmTestForm
             tsInfoFile.writeToFile(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)
             tfCurrentTestFile.WriteToFile()
             btnStartTest.Text = "Test Complete"
-            DirectIOWrapper("node[2].display.clear()")
-            DirectIOWrapper("node[1].display.clear()")
-            DirectIOWrapper("node[2].display.settext('Standby')")
-            DirectIOWrapper("node[1].display.settext('Standby')")
+            SwitchIOWrite("node[2].display.clear()")
+            SwitchIOWrite("node[1].display.clear()")
+            SwitchIOWrite("node[2].display.settext('Standby')")
+            SwitchIOWrite("node[1].display.settext('Standby')")
             boolIsTestStopped = True
             stpTotalTime.Stop()
-            DirectIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+            SwitchIOWrite("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
         Catch ex As COMException
             ComExceptionHandler(ex)
         Catch ex As Exception
@@ -326,7 +322,7 @@ Public Class frmTestForm
         Try
             ' Close the instrument connection when exiting the test form
             If boolIsTestStopped Then
-                If (switchDriver.Initialized) Then
+                If (switchDriver.Connected) Then
                     switchDriver.Close()
                     frmMain.chkIOStatus.Checked = False
                 End If
@@ -351,8 +347,8 @@ Public Class frmTestForm
             ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
             MainLoop.WorkerReportsProgress = True
             prepareForm()
-            DirectIOWrapper("node[2].display.clear()")
-            directIOWrapper("node[2].display.settext('Ready to test')")
+            SwitchIOWrite("node[2].display.clear()")
+            SwitchIOWrite("node[2].display.settext('Ready to test')")
         Catch ex As COMException
             ComExceptionHandler(ex)
             Me.Close()

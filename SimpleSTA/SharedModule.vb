@@ -1,9 +1,11 @@
 ﻿Option Explicit On
 Imports System.IO
 Imports System.Xml.Serialization
-Imports Keithley.Ke37XX.Interop
+'Imports Keithley.Ke37XX.Interop
 Imports System.Runtime.InteropServices
-Imports Ivi.Driver.Interop
+'Imports Ivi.Driver.Interop
+Imports System.Net.Sockets
+
 ' -----------------------------------------------------------------------------------------------------------
 ' The SharedModule is, as the name suggests, a collection of shared utlity functions, enumerated variables
 ' and global variables for use in all objects and forms
@@ -20,13 +22,15 @@ Public Module SharedModule
     Public Const strApplicationDescription As String = "Software for CGM Sensor release testing"
 
     Public strAppDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
-    Public cfgGlobal As New Configuration ' Global instance of the Configuration object that stores config information for the current session
+    Public cfgGlobal As New Configuration ' Global inexstance of the Configuration object that stores config information for the current session
     Public tsInfoFile As New TestSystem ' Global instance of the TestSystem object which tracks system ID info (serials, models) and switch counts per card
     Public tfCurrentTestFile As New TestFile ' Global instance of the TestFile object stores output data and writes itself to file
     Public aryCurrentCards() As Card ' Global array instance of Card objects which represents the Cards in the attached switch
     ' Keithley IVI-COM Driver for communicating with 3700 series system switches.  
     ' This instance is referenced by all functions which communicate with the measurement hardware
-    Public switchDriver As New Ke37XX
+    'Public switchDriver As New Ke37XX 'commented out by DB 29May2013 for raw TCP communication
+    Public switchDriver As New TcpClient
+    Public switchStream As NetworkStream
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
     ' it may be desireable to incorporate database-driven user authentication / authorization for granular permissions
     Public strAdminPassword As String = "C0balt22"
@@ -65,18 +69,20 @@ Public Module SharedModule
             ' switchDriver = New Ke37XX
             ' End If
             If (frmMain.chkConfigStatus.Checked) Then
-                If (switchDriver.Initialized) Then
+                If (switchDriver.Connected) Then
                     frmMain.chkIOStatus.Checked = True
                     Return True
                 Else
-                    Dim strOptions As String
+                    'Dim strOptions As String
                     ' An option string must be explicitly declared or the driver throws a COMException.
-                    strOptions = "QueryInstStatus=false, RangeCheck=false, Cache=false, Simulate=false, RecordCoercions=false, InterchangeCheck=false" '
-                    switchDriver.Initialize(cfgGlobal.Address, False, False, strOptions)
-                    If (switchDriver.Initialized) Then
+                    'strOptions = "QueryInstStatus=false, RangeCheck=false, Cache=false, Simulate=false, RecordCoercions=false, InterchangeCheck=false" '
+                    'switchDriver.Initialize(cfgGlobal.Address, False, False, strOptions)
+                    SwitchIOOpen(cfgGlobal.Address)
+                    If (switchDriver.Connected) Then
                         ' reset the TSPLink so we can communicate with the source meter
-                        Delay(100)
-                        switchDriver.TspLink.Reset()
+                        SwitchIOWrite("tsplink.reset()")
+                        SwitchIOWrite("node[2].display.clear()")
+                        SwitchIOWrite("node[2].display.settext('TspLink Reset')")
                         'Update UI and return true
                         frmMain.chkIOStatus.Checked = True
                         Return True
@@ -104,18 +110,257 @@ Public Module SharedModule
             Return False
         End Try
     End Function
-    ' Name: DirectIOWrapper()
+    ' Name: SwitchIOOpen()
     ' Parameters:
-    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
-    ' Description: As the name suggests, this is simply a wrapper for the System.DirectIO.WriteString method of the Ke37xx driver.
-    Public Sub DirectIOWrapper(ByVal strCommand As String)
+    '           strIPAddress: A string containing the IP Address of the measurement hardware
+    ' Description: This command opens a TCP network stream to the Keithley 3700 and prepares it for communication
+    Public Sub SwitchIOOpen(ByVal strIPAddress As String)
+        Dim switchIOReset As New TcpClient
+        Dim byteReadBuffer(256) As Byte
+
         Try
-            switchDriver.System.DirectIO.WriteString(strCommand)
+            'Connect to the Dead Socket Termination port to close any previous sessions
+            'then close.  Dead sockets are closed when the DST port closes
+            switchIOReset.Connect(strIPAddress, 5030)
+            switchIOReset.Close()
+            'Connect to the Raw port
+            switchDriver.Connect(strIPAddress, 5025)
+            switchStream = switchDriver.GetStream
+            switchStream.ReadTimeout = 1000
+            'Clear any existing errors in the error queue of the 3700
+            SwitchIOSend("errorqueue.clear()")
+            'Set the 3700 to return prompts after each command sent.  This ensures the timely return
+            'of data when it is requested, and also provides a status update with each command.  When
+            'the error queue is empty "TSP>" is returned, and when there is an error "TSP?" is returned.
+            SwitchIOSend("localnode.prompts = 1")
+            'Read the IO buffer to remove any prompts have accumulated
+            Delay(10)
+            Do
+                switchStream.Read(byteReadBuffer, 0, byteReadBuffer.Length)
+            Loop While switchStream.DataAvailable
+
+            SetSwitchPatterns(33)
+
         Catch ex As Exception
             ' Rethrow the exception to the calling function
             Throw
         End Try
     End Sub
+    ' Name: SwitchIOSend()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: As the name suggests, this sends commands to the raw IO interface of the measurement hardware.
+    '              This command does not handle the command prompt, and should be used with care.
+    Public Sub SwitchIOSend(ByVal strCommand As String)
+        Dim byteMessage As [Byte]() = System.Text.Encoding.ASCII.GetBytes(strCommand & vbLf)
+        Try
+            'Send the strCommand to the measurement system
+            switchStream.Write(byteMessage, 0, byteMessage.Length)
+        Catch ex As Exception
+            ' Rethrow the exception to the calling function
+            Throw
+        End Try
+    End Sub
+
+    ' Name: SwitchIOReceive()
+    ' Parameters:
+    '           Returns the TCP network buffer as a string. 
+    ' Description: As the name suggests, this receives information from the raw IO interface of the measurement hardware.
+    '              This command does not handle the command prompt, and should be used with care.
+    Public Function SwitchIOReceive() As String
+        Dim byteReadBuffer(1024) As Byte
+        'Dim strReadBuffer As String
+        Dim strMessage As String = ""
+        Dim intBytesRead As Integer
+
+        Try
+            'Wait until there is data in the IO buffer
+            While switchStream.DataAvailable = False
+            End While
+
+            'Do
+            '    switchStream.Read(byteReadBuffer, 0, 1)
+            '    strReadBuffer = System.Text.Encoding.ASCII.GetString(byteReadBuffer, 0, 1)
+            '    If strReadBuffer = vbLf Then
+            '        Exit Do
+            '    Else
+            '        strMessage = strMessage + strReadBuffer
+            '    End If
+            'Loop
+
+            'Read the data in the buffer
+            intBytesRead = switchStream.Read(byteReadBuffer, 0, byteReadBuffer.Length)
+            strMessage = System.Text.Encoding.ASCII.GetString(byteReadBuffer, 0, intBytesRead)
+
+            'check for command prompt
+            If strMessage.Contains("TSP>") Or strMessage.Contains("TSP?") Then
+
+            Else
+                While switchStream.DataAvailable = False
+                End While
+                intBytesRead = switchStream.Read(byteReadBuffer, 0, byteReadBuffer.Length)
+                strMessage = strMessage + System.Text.Encoding.ASCII.GetString(byteReadBuffer, 0, intBytesRead)
+            End If
+
+            'Dim bytes As Int32 = switchStream.Read(byteMessage, 0, byteMessage.Length)
+            'Dim responseData As [String] = [String].Empty
+            'strResponseData = System.Text.Encoding.ASCII.GetString(byteMessage, 0, bytes)
+
+            Return strMessage
+
+        Catch ex As Exception
+            ' Rethrow the exception to the calling function
+            Throw
+        End Try
+
+    End Function
+
+    ' Name: SwitchIOCheckError()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
+    Public Sub SwitchIOCheckError()
+        Dim strErrorCheck As String
+
+        'Try
+        '    'Check for error message in the error queue
+        'SwitchIOSend("print(errorqueue.count)")
+        strErrorCheck = SwitchIOReceive()
+        If strErrorCheck <> "TSP>" Then
+            Throw New COMException(strErrorCheck)
+        End If
+
+        'Catch comex As COMException
+        '    ' Rethrow the exception to the calling function
+        '    Throw
+        'End Try
+    End Sub
+
+    ' Name: SwitchIOWrite()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
+    Public Sub SwitchIOWrite(ByVal strCommand As String)
+        Dim strCommandPrompt As String
+
+        Try
+            'Send the strCommand to the measurement system
+            SwitchIOSend(strCommand)
+
+            'Check for error message in the error queue
+            strCommandPrompt = SwitchIOReceive()
+            If strCommandPrompt <> "TSP>" & vbLf Then
+                Throw New COMException(strCommandPrompt)
+            End If
+        Catch comex As COMException
+            ' Rethrow the exception to the calling function
+            Throw
+        End Try
+    End Sub
+
+
+    ' Name: SwitchIOWriteRead()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: This command will send a command to the measurement hardware, receive data, and then check to see if an error was generated.
+    Public Function SwitchIOWriteRead(ByVal strCommand As String)
+        Dim strMessage As String
+        Dim strCommandPrompt As String
+
+        Try
+            'Send the strCommand to the measurement system
+            SwitchIOSend(strCommand)
+
+            'Receive the reply
+            strMessage = SwitchIOReceive()
+            
+            '
+            strCommandPrompt = Right(strMessage, 5)
+            strMessage = Left(strMessage, strMessage.Length - 5)
+            'Check the 
+            If strCommandPrompt <> "TSP>" & vbLf Then
+                Throw New COMException(strCommandPrompt)
+            End If
+
+
+
+
+        Catch comex As COMException
+            ' Rethrow the exception to the calling function
+            Throw
+        End Try
+
+        Return strMessage
+
+    End Function
+
+    ' Name: SetSwitchPatterns()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
+    Public Sub SetSwitchPatterns(intSensors As Integer)
+        Dim strPattern As String
+        Dim strPatternName As String
+        Dim i As Integer
+        Dim j As Integer
+
+        'Generate the switch closure patterns for all 32 measurement patterns
+        For i = 1 To intSensors - 1
+            strPattern = "'"
+            For j = 1 To intSensors - 1
+                If j = i Then
+                    strPattern = strPattern + SwitchNumberGenerator(2, j) + ","
+                Else
+                    strPattern = strPattern + SwitchNumberGenerator(1, j) + ","
+                End If
+            Next
+            strPattern = strPattern + "1911,1912,2911,2912'"
+            strPatternName = "Sensor" & i
+            SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", '" & strPatternName & "')")
+        Next
+
+        'generate the switch closure patterns for all closed on row 1
+        strPattern = "'"
+        For j = 1 To intSensors - 1
+            strPattern = strPattern + SwitchNumberGenerator(1, j) + ","
+        Next
+        strPattern = strPattern + "1911,1912,2911,2912'"
+        strPatternName = "Sensor" & intSensors
+        SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", '" & strPatternName & "')")
+
+
+        'generate the all closed
+
+
+    End Sub
+    ' Name: SwitchNumberGenerator()
+    ' Parameters:
+    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
+    ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
+    Public Function SwitchNumberGenerator(intRow As Integer, intColumn As Integer)
+        Dim strSwitchNumber As String
+
+        'Matrix card notation: SRCC, S=slot, R=row, CC=column
+        'Determine Slot (card)
+        If intColumn Mod 16 = 0 Then
+            strSwitchNumber = CStr(intColumn \ 16)
+        Else
+            strSwitchNumber = CStr(intColumn \ 16 + 1) 'interger division; 15\16 = 0, which is card 1, so +1
+        End If
+
+        'Determine row
+        strSwitchNumber = strSwitchNumber + CStr(intRow)
+
+        'Determine column
+        intColumn = intColumn Mod 16 'the mod function returns the remainder of a division operation (ie, 17 becomes 1)
+        If intColumn = 0 Then
+            strSwitchNumber = strSwitchNumber + "16"
+        Else
+            strSwitchNumber = strSwitchNumber + Format(intColumn, "00")
+        End If
+
+        Return strSwitchNumber
+    End Function
     ' Name: RunAuditCheck()
     ' Returns: Boolean: Indicates success of failure (Note: This indicates whether the check has been successfully performed, not whether or not it passed!)
     ' Description: Cycles through all columns in attached switch matrix cards and connects each to a series of resistors, measuring i and v
@@ -123,18 +368,18 @@ Public Module SharedModule
     Public Function RunAuditCheck() As Boolean
         Try
             ' Start with all intersections open
-            switchDriver.Channel.OpenAll()
-            directIOWrapper("node[2].display.clear()")
-            directIOWrapper("node[2].display.settext('Running Self Check')")
+            SwitchIOWrite("channel.open('allslots')")
+            SwitchIOWrite("node[2].display.clear()")
+            SwitchIOWrite("node[2].display.settext('Running Self Check')")
             ' set both SMU channels to DC volts
             ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
-            directIOWrapper("node[2].smub.source.func = 1")
+            SwitchIOWrite("node[2].smub.source.func = 1")
             ' Set the bias for both channels based on the value in cfgGlobal
-            DirectIOWrapper("node[2].smub.source.levelv = " & cfgGlobal.Bias)
+            SwitchIOWrite("node[2].smub.source.levelv = " & cfgGlobal.Bias)
             ' Range is hard-coded to 1.  Does this need to be a Configuration setting in the future?
-            DirectIOWrapper("node[2].smub.source.rangev = 1")
+            SwitchIOWrite("node[2].smub.source.rangev = 1")
             ' disable autorange for both output channels
-            DirectIOWrapper("node[2].smub.source.autorangei = 0")
+            SwitchIOWrite("node[2].smub.source.autorangei = 0")
             ' Populate the AuditCheck object in the tfCurrentTestFile with empty AuditChannel objects
             Dim i As Integer
             Dim z As Integer
@@ -145,30 +390,31 @@ Public Module SharedModule
                     tfCurrentTestFile.AuditCheck.AddChannel(acChannel.ChannelFactory(i, z))
                 Next
             Next
-            DirectIOWrapper("node[2].smub.source.output = 1")
+            SwitchIOWrite("node[2].smub.source.output = 1")
 
             ' Set connection rule to "make before break"
             ' @TODO: This is the setting from the old software.  Should this be changed?
-            DirectIOWrapper("node[1].channel.connectrule = 2")
-            DirectIOWrapper("node[2].display.clear()")
+            SwitchIOWrite("node[1].channel.connectrule = 2")
+            'SwitchIOWrite("node[2].display.clear()")
             ' Configure the DMM
-            DirectIOWrapper("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
-            DirectIOWrapper("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
-            DirectIOWrapper("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
-            DirectIOWrapper("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
-            DirectIOWrapper("node[2].smua.measure.filter.enable = 1")
-            DirectIOWrapper("node[2].smub.measure.filter.enable = 1")
-            DirectIOWrapper("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
-            DirectIOWrapper("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
+            SwitchIOWrite("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
+            SwitchIOWrite("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
             ' Set output off mode to OUTPUT_HIGH_Z
-            DirectIOWrapper("node[2].smua.source.offmode = 2")
-            DirectIOWrapper("node[2].smub.source.offmode = 2")
+            SwitchIOWrite("node[2].smua.source.offmode = 2")
+            SwitchIOWrite("node[2].smub.source.offmode = 2")
             'DirectIOWrapper("node[2].smua.source.output = 0")
             ' Clear the non-volatile measurement buffers
-            DirectIOWrapper("node[2].smub.nvbuffer1.clear()")
-            DirectIOWrapper("node[2].smub.nvbuffer2.clear()")
+            SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
+            SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
             ' NOTE: Should this be changed in the future to be adaptive rather than hard coded?
-            DirectIOWrapper("node[2].smub.source.rangei = .00001")
+            SwitchIOWrite("node[2].smub.source.rangei = .000001")
+            SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
 
             For Each acChannel In tfCurrentTestFile.AuditCheck.AuditChannels
                 'Take readings from first resistor
@@ -181,7 +427,7 @@ Public Module SharedModule
                 tsInfoFile.AddSwitchEvent(acChannel.Card, 6)
             Next
             ' Turn off output to source meter channels
-            DirectIOWrapper("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+            SwitchIOWrite("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
             Return True
         Catch ex As COMException
             ComExceptionHandler(ex)
@@ -203,20 +449,21 @@ Public Module SharedModule
             End If
             Dim dblCurrent As Double
             Dim dblVoltage As Double
-            switchDriver.System.DirectIO.FlushRead()
+            'switchDriver.System.DirectIO.FlushRead()
             If boolLastCheck Then
-                DirectIOWrapper("node[1].channel.exclusiveclose('" & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "91" & intRow & "')")
+                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "91" & intRow & "')")
             Else
-                DirectIOWrapper("node[1].channel.exclusiveclose('" & acChannel.Card & 2 & StrPad(acChannel.Column, 2) & "," & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "912," & acChannel.Card & "91" & intRow & "')")
+                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & 2 & StrPad(acChannel.Column, 2) & "," & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "912," & acChannel.Card & "91" & intRow & "')")
             End If
             Delay(cfgGlobal.SettlingTime)
-            DirectIOWrapper("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-            DirectIOWrapper("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")
-            dblCurrent = CDbl(switchDriver.System.DirectIO.ReadString())
-            switchDriver.System.DirectIO.FlushRead()
-            DirectIOWrapper("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)")
-            dblVoltage = CDbl(switchDriver.System.DirectIO.ReadString())
-            switchDriver.System.DirectIO.FlushRead()
+            Debug.Print("Start of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond)
+            SwitchIOWrite("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+            'node[1].channel.exclusiveclose('1101,1911') node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2) printbuffer(1, 1, node[2].smub.nvbuffer1)
+            dblCurrent = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer1)"))
+            'switchDriver.System.DirectIO.FlushRead()
+            dblVoltage = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer2)"))
+            'switchDriver.System.DirectIO.FlushRead()
+            Debug.Print("End of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond & vbLf)
             acChannel.AddReading(AuditReading.ReadingFactory(dblVoltage, dblCurrent, cfgGlobal.ResistorNominalValues(intRow - 3), intRow, boolLastCheck))
         Catch ex As Exception
             Throw
@@ -277,7 +524,7 @@ Public Module SharedModule
         Dim srReader As StreamReader
         Try
             If (frmMain.chkConfigStatus.Checked) Then
-                If (switchDriver.Initialized) Then
+                If (switchDriver.Connected) Then
                     If (File.Exists(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)) Then
                         srReader = New StreamReader(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)
                         Dim serializer As New XmlSerializer(tsInfoFile.GetType)
@@ -351,10 +598,9 @@ Public Module SharedModule
                 Next
             End If
             ' Collect the Switch(localnode) serial number
-            switchDriver.System.DirectIO.FlushRead()
-            DirectIOWrapper("print(localnode.serialno)")
-            serialNo = switchDriver.System.DirectIO.ReadString()
-            switchDriver.System.DirectIO.FlushRead()
+            'switchDriver.System.DirectIO.FlushRead()
+            serialNo = SwitchIOWriteRead("print(localnode.serialno)")
+            'switchDriver.System.DirectIO.FlushRead()
             ' If the switch has already been registered in the TestSystem info file, set the value for the swtCurrentSwitch in the 
             ' test file to the existing value and set it to active
             If Not tsInfoFile.GetSwitchBySerial(serialNo) Is Nothing Then
@@ -367,22 +613,19 @@ Public Module SharedModule
                 tfCurrentTestFile.Switch.Active = True
                 tfCurrentTestFile.Switch.FirstTest = Now()
                 ' Collect the switch model #
-                DirectIOWrapper("print(localnode.model)")
-                tfCurrentTestFile.Switch.ModelNumber = switchDriver.System.DirectIO.ReadString()
-                switchDriver.System.DirectIO.FlushRead()
+                tfCurrentTestFile.Switch.ModelNumber = SwitchIOWriteRead("print(localnode.model)")
+                'switchDriver.System.DirectIO.FlushRead()
                 ' Collect the model revision for the switch
-                DirectIOWrapper("print(localnode.revision)")
-                tfCurrentTestFile.Switch.Revision = switchDriver.System.DirectIO.ReadString()
-                switchDriver.System.DirectIO.FlushRead()
+                tfCurrentTestFile.Switch.Revision = SwitchIOWriteRead("print(localnode.model)")
+                'switchDriver.System.DirectIO.FlushRead()
                 ' add the new switch to the tsInfoFile object / file
                 tsInfoFile.AddSwitch(tfCurrentTestFile.Switch)
             End If
             ' Collect the serial number for the connected SourceMeter
-            switchDriver.System.DirectIO.FlushRead()
-            DirectIOWrapper("print(node[2].serialno)")
-            serialNo = switchDriver.System.DirectIO.ReadString()
+            'switchDriver.System.DirectIO.FlushRead()
+            serialNo = SwitchIOWriteRead("print(node[2].serialno)")
             tfCurrentTestFile.SourceMeterSerial = serialNo
-            switchDriver.System.DirectIO.FlushRead()
+            'switchDriver.System.DirectIO.FlushRead()
             ' If the source has already been registered in the TestSystem info file, set the value for the tfCurrentTestFile.Source in the 
             ' test file to the existing value and set it to active
             If Not tsInfoFile.GetSourceBySerial(serialNo) Is Nothing Then
@@ -395,20 +638,18 @@ Public Module SharedModule
                 tfCurrentTestFile.Source.Active = True
                 tfCurrentTestFile.Source.FirstTest = Now()
                 ' Collect the source model
-                DirectIOWrapper("print(node[2].model)")
-                tfCurrentTestFile.Source.ModelNumber = switchDriver.System.DirectIO.ReadString()
-                switchDriver.System.DirectIO.FlushRead()
+                tfCurrentTestFile.Source.ModelNumber = SwitchIOWriteRead("print(node[2].model)")
+                'switchDriver.System.DirectIO.FlushRead()
                 ' collect the source model revision
-                DirectIOWrapper("print(node[2].revision)")
-                tfCurrentTestFile.Source.Revision = switchDriver.System.DirectIO.ReadString()
-                switchDriver.System.DirectIO.FlushRead()
+                tfCurrentTestFile.Source.Revision = SwitchIOWriteRead("print(node[2].revision)")
+                'switchDriver.System.DirectIO.FlushRead()
                 ' add the new sourcemeter to the test system info file / object
                 tsInfoFile.AddSource(tfCurrentTestFile.Source)
             End If
             aryCurrentCards = Nothing
             ' Gather identifying information for all cards currently installed
             For i = 1 To 6
-                addCardInfo(i)
+                AddCardInfo(i)
             Next
             ' Note: We set the Cards array for the swtCurrentSwitch object which, because we already assigned swtCurrentSwitch to the tsInfoFile
             ' Switches array, will be reflected in the tsInfoFile as well
@@ -435,12 +676,11 @@ Public Module SharedModule
             Dim strIDNString As String
             Dim strSerialNo As String
             Dim intCardIndex As Integer
-            switchDriver.System.DirectIO.FlushRead()
-            DirectIOWrapper("print(slot[" & intSlot & "].idn)")
-            strIDNString = switchDriver.System.DirectIO.ReadString()
+            'switchDriver.System.DirectIO.FlushRead()
+            strIDNString = SwitchIOWriteRead("print(slot[" & intSlot & "].idn)")
             ' The line below can be removed once the currentSwitch object properly serializes in the test file
             strSerialNo = ParseIDN(strIDNString, "Serial")
-            switchDriver.System.DirectIO.FlushRead()
+            'switchDriver.System.DirectIO.FlushRead()
             If Not strIDNString.Contains("Empty Slot") Then
                 ' Check to see if the card has already been registered with the swtCurrentSwitch
                 If Not tfCurrentTestFile.Switch.GetCardBySerial(strSerialNo) Is Nothing Then
@@ -498,11 +738,17 @@ Public Module SharedModule
     ' Description: COM Exceptions are thrown by COM-based drivers, in this case the Ke37xx driver.
     '           This function queries the instrument for details about the error and generates and error message
     Public Sub ComExceptionHandler(ByRef theException As COMException)
-        If theException.ErrorCode = IviDriver_ErrorCodes.E_IVI_INSTRUMENT_STATUS Then
+        If theException.ErrorCode <> 0 Then '= IviDriver_ErrorCodes.E_IVI_INSTRUMENT_STATUS Then
             ' ErrorQuery should give us more information
             Dim intErrCode As Integer = 0
             Dim strErrMsg As String = ""
-            switchDriver.Utility.ErrorQuery(intErrCode, strErrMsg)
+            'switchDriver.Utility.ErrorQuery(intErrCode, strErrMsg)
+            SwitchIOSend("errorcode, message = errorqueue.next")
+            SwitchIOSend("print(errorcode)")
+            intErrCode = CInt(SwitchIOReceive())
+            SwitchIOSend("print(message)")
+            SwitchIOSend("errorqueue.clear()")
+            strErrMsg = SwitchIOReceive()
             If (intErrCode = 0 And strErrMsg = "") Then
                 MsgBox("Unknown instrument error occurred")
             Else

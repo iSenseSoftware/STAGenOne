@@ -1,0 +1,766 @@
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+Partial Class frmSensorID
+    Inherits System.Windows.Forms.Form
+
+    'Form overrides dispose to clean up the component list.
+    <System.Diagnostics.DebuggerNonUserCode()> _
+    Protected Overrides Sub Dispose(ByVal disposing As Boolean)
+        Try
+            If disposing AndAlso components IsNot Nothing Then
+                components.Dispose()
+            End If
+        Finally
+            MyBase.Dispose(disposing)
+        End Try
+    End Sub
+
+    'Required by the Windows Form Designer
+    Private components As System.ComponentModel.IContainer
+
+    'NOTE: The following procedure is required by the Windows Form Designer
+    'It can be modified using the Windows Form Designer.  
+    'Do not modify it using the code editor.
+    <System.Diagnostics.DebuggerStepThrough()> _
+    Private Sub InitializeComponent()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.txtSensor1 = New System.Windows.Forms.TextBox()
+        Me.txtSensor2 = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.txtSensor3 = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtSensor4 = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtSensor5 = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.txtSensor6 = New System.Windows.Forms.TextBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.txtSensor7 = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.txtSensor8 = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.txtSensor9 = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.txtSensor10 = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.txtSensor11 = New System.Windows.Forms.TextBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.txtSensor12 = New System.Windows.Forms.TextBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.txtSensor13 = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.txtSensor14 = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.txtSensor15 = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.txtSensor16 = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.txtSensor17 = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.txtSensor18 = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.txtSensor19 = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.txtSensor20 = New System.Windows.Forms.TextBox()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.txtSensor21 = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.txtSensor22 = New System.Windows.Forms.TextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.txtSensor23 = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.txtSensor24 = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.txtSensor25 = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.txtSensor26 = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.txtSensor27 = New System.Windows.Forms.TextBox()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.txtSensor28 = New System.Windows.Forms.TextBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.txtSensor29 = New System.Windows.Forms.TextBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.txtSensor30 = New System.Windows.Forms.TextBox()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.txtSensor31 = New System.Windows.Forms.TextBox()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.txtSensor32 = New System.Windows.Forms.TextBox()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnCancel = New System.Windows.Forms.Button()
+        Me.SuspendLayout()
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(16, 21)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(65, 17)
+        Me.Label1.TabIndex = 0
+        Me.Label1.Text = "Sensor 1"
+        '
+        'txtSensor1
+        '
+        Me.txtSensor1.Location = New System.Drawing.Point(89, 21)
+        Me.txtSensor1.Name = "txtSensor1"
+        Me.txtSensor1.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor1.TabIndex = 0
+        '
+        'txtSensor2
+        '
+        Me.txtSensor2.Location = New System.Drawing.Point(89, 57)
+        Me.txtSensor2.Name = "txtSensor2"
+        Me.txtSensor2.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor2.TabIndex = 1
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(16, 57)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(65, 17)
+        Me.Label2.TabIndex = 2
+        Me.Label2.Text = "Sensor 2"
+        '
+        'txtSensor3
+        '
+        Me.txtSensor3.Location = New System.Drawing.Point(89, 93)
+        Me.txtSensor3.Name = "txtSensor3"
+        Me.txtSensor3.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor3.TabIndex = 2
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Location = New System.Drawing.Point(16, 93)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(65, 17)
+        Me.Label3.TabIndex = 4
+        Me.Label3.Text = "Sensor 3"
+        '
+        'txtSensor4
+        '
+        Me.txtSensor4.Location = New System.Drawing.Point(89, 129)
+        Me.txtSensor4.Name = "txtSensor4"
+        Me.txtSensor4.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor4.TabIndex = 3
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(16, 129)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(65, 17)
+        Me.Label4.TabIndex = 6
+        Me.Label4.Text = "Sensor 4"
+        '
+        'txtSensor5
+        '
+        Me.txtSensor5.Location = New System.Drawing.Point(89, 165)
+        Me.txtSensor5.Name = "txtSensor5"
+        Me.txtSensor5.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor5.TabIndex = 4
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(16, 165)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(65, 17)
+        Me.Label5.TabIndex = 8
+        Me.Label5.Text = "Sensor 5"
+        '
+        'txtSensor6
+        '
+        Me.txtSensor6.Location = New System.Drawing.Point(89, 201)
+        Me.txtSensor6.Name = "txtSensor6"
+        Me.txtSensor6.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor6.TabIndex = 5
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Location = New System.Drawing.Point(16, 201)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(65, 17)
+        Me.Label6.TabIndex = 10
+        Me.Label6.Text = "Sensor 6"
+        '
+        'txtSensor7
+        '
+        Me.txtSensor7.Location = New System.Drawing.Point(89, 237)
+        Me.txtSensor7.Name = "txtSensor7"
+        Me.txtSensor7.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor7.TabIndex = 6
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Location = New System.Drawing.Point(16, 237)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(65, 17)
+        Me.Label7.TabIndex = 12
+        Me.Label7.Text = "Sensor 7"
+        '
+        'txtSensor8
+        '
+        Me.txtSensor8.Location = New System.Drawing.Point(89, 273)
+        Me.txtSensor8.Name = "txtSensor8"
+        Me.txtSensor8.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor8.TabIndex = 7
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Location = New System.Drawing.Point(16, 273)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(65, 17)
+        Me.Label8.TabIndex = 14
+        Me.Label8.Text = "Sensor 8"
+        '
+        'txtSensor9
+        '
+        Me.txtSensor9.Location = New System.Drawing.Point(89, 309)
+        Me.txtSensor9.Name = "txtSensor9"
+        Me.txtSensor9.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor9.TabIndex = 8
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Location = New System.Drawing.Point(16, 309)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(65, 17)
+        Me.Label9.TabIndex = 16
+        Me.Label9.Text = "Sensor 9"
+        '
+        'txtSensor10
+        '
+        Me.txtSensor10.Location = New System.Drawing.Point(89, 345)
+        Me.txtSensor10.Name = "txtSensor10"
+        Me.txtSensor10.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor10.TabIndex = 9
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(16, 345)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(73, 17)
+        Me.Label10.TabIndex = 18
+        Me.Label10.Text = "Sensor 10"
+        '
+        'txtSensor11
+        '
+        Me.txtSensor11.Location = New System.Drawing.Point(89, 381)
+        Me.txtSensor11.Name = "txtSensor11"
+        Me.txtSensor11.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor11.TabIndex = 10
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Location = New System.Drawing.Point(16, 381)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(73, 17)
+        Me.Label11.TabIndex = 20
+        Me.Label11.Text = "Sensor 11"
+        '
+        'txtSensor12
+        '
+        Me.txtSensor12.Location = New System.Drawing.Point(89, 417)
+        Me.txtSensor12.Name = "txtSensor12"
+        Me.txtSensor12.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor12.TabIndex = 11
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(16, 417)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(73, 17)
+        Me.Label12.TabIndex = 22
+        Me.Label12.Text = "Sensor 12"
+        '
+        'txtSensor13
+        '
+        Me.txtSensor13.Location = New System.Drawing.Point(89, 453)
+        Me.txtSensor13.Name = "txtSensor13"
+        Me.txtSensor13.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor13.TabIndex = 12
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(16, 453)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(73, 17)
+        Me.Label13.TabIndex = 24
+        Me.Label13.Text = "Sensor 13"
+        '
+        'txtSensor14
+        '
+        Me.txtSensor14.Location = New System.Drawing.Point(89, 489)
+        Me.txtSensor14.Name = "txtSensor14"
+        Me.txtSensor14.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor14.TabIndex = 13
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(16, 489)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(73, 17)
+        Me.Label14.TabIndex = 26
+        Me.Label14.Text = "Sensor 14"
+        '
+        'txtSensor15
+        '
+        Me.txtSensor15.Location = New System.Drawing.Point(89, 525)
+        Me.txtSensor15.Name = "txtSensor15"
+        Me.txtSensor15.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor15.TabIndex = 14
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(16, 525)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(73, 17)
+        Me.Label15.TabIndex = 28
+        Me.Label15.Text = "Sensor 15"
+        '
+        'txtSensor16
+        '
+        Me.txtSensor16.Location = New System.Drawing.Point(89, 561)
+        Me.txtSensor16.Name = "txtSensor16"
+        Me.txtSensor16.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor16.TabIndex = 15
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(16, 561)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(73, 17)
+        Me.Label16.TabIndex = 30
+        Me.Label16.Text = "Sensor 16"
+        '
+        'txtSensor17
+        '
+        Me.txtSensor17.Location = New System.Drawing.Point(398, 21)
+        Me.txtSensor17.Name = "txtSensor17"
+        Me.txtSensor17.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor17.TabIndex = 16
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(325, 21)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(73, 17)
+        Me.Label17.TabIndex = 32
+        Me.Label17.Text = "Sensor 17"
+        '
+        'txtSensor18
+        '
+        Me.txtSensor18.Location = New System.Drawing.Point(398, 57)
+        Me.txtSensor18.Name = "txtSensor18"
+        Me.txtSensor18.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor18.TabIndex = 17
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(325, 57)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(73, 17)
+        Me.Label18.TabIndex = 34
+        Me.Label18.Text = "Sensor 18"
+        '
+        'txtSensor19
+        '
+        Me.txtSensor19.Location = New System.Drawing.Point(398, 93)
+        Me.txtSensor19.Name = "txtSensor19"
+        Me.txtSensor19.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor19.TabIndex = 18
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(325, 93)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(73, 17)
+        Me.Label19.TabIndex = 36
+        Me.Label19.Text = "Sensor 19"
+        '
+        'txtSensor20
+        '
+        Me.txtSensor20.Location = New System.Drawing.Point(398, 129)
+        Me.txtSensor20.Name = "txtSensor20"
+        Me.txtSensor20.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor20.TabIndex = 19
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(325, 129)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(73, 17)
+        Me.Label20.TabIndex = 38
+        Me.Label20.Text = "Sensor 20"
+        '
+        'txtSensor21
+        '
+        Me.txtSensor21.Location = New System.Drawing.Point(398, 165)
+        Me.txtSensor21.Name = "txtSensor21"
+        Me.txtSensor21.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor21.TabIndex = 20
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(325, 165)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(73, 17)
+        Me.Label21.TabIndex = 40
+        Me.Label21.Text = "Sensor 21"
+        '
+        'txtSensor22
+        '
+        Me.txtSensor22.Location = New System.Drawing.Point(398, 201)
+        Me.txtSensor22.Name = "txtSensor22"
+        Me.txtSensor22.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor22.TabIndex = 21
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Location = New System.Drawing.Point(325, 201)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(73, 17)
+        Me.Label22.TabIndex = 42
+        Me.Label22.Text = "Sensor 22"
+        '
+        'txtSensor23
+        '
+        Me.txtSensor23.Location = New System.Drawing.Point(398, 237)
+        Me.txtSensor23.Name = "txtSensor23"
+        Me.txtSensor23.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor23.TabIndex = 22
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Location = New System.Drawing.Point(325, 237)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(73, 17)
+        Me.Label23.TabIndex = 44
+        Me.Label23.Text = "Sensor 23"
+        '
+        'txtSensor24
+        '
+        Me.txtSensor24.Location = New System.Drawing.Point(398, 273)
+        Me.txtSensor24.Name = "txtSensor24"
+        Me.txtSensor24.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor24.TabIndex = 23
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(325, 273)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(73, 17)
+        Me.Label24.TabIndex = 46
+        Me.Label24.Text = "Sensor 24"
+        '
+        'txtSensor25
+        '
+        Me.txtSensor25.Location = New System.Drawing.Point(398, 309)
+        Me.txtSensor25.Name = "txtSensor25"
+        Me.txtSensor25.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor25.TabIndex = 24
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Location = New System.Drawing.Point(325, 309)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(73, 17)
+        Me.Label25.TabIndex = 48
+        Me.Label25.Text = "Sensor 25"
+        '
+        'txtSensor26
+        '
+        Me.txtSensor26.Location = New System.Drawing.Point(398, 345)
+        Me.txtSensor26.Name = "txtSensor26"
+        Me.txtSensor26.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor26.TabIndex = 25
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Location = New System.Drawing.Point(325, 345)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(73, 17)
+        Me.Label26.TabIndex = 50
+        Me.Label26.Text = "Sensor 26"
+        '
+        'txtSensor27
+        '
+        Me.txtSensor27.Location = New System.Drawing.Point(398, 381)
+        Me.txtSensor27.Name = "txtSensor27"
+        Me.txtSensor27.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor27.TabIndex = 26
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Location = New System.Drawing.Point(325, 381)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(73, 17)
+        Me.Label27.TabIndex = 52
+        Me.Label27.Text = "Sensor 27"
+        '
+        'txtSensor28
+        '
+        Me.txtSensor28.Location = New System.Drawing.Point(398, 417)
+        Me.txtSensor28.Name = "txtSensor28"
+        Me.txtSensor28.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor28.TabIndex = 27
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Location = New System.Drawing.Point(325, 417)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(73, 17)
+        Me.Label28.TabIndex = 54
+        Me.Label28.Text = "Sensor 28"
+        '
+        'txtSensor29
+        '
+        Me.txtSensor29.Location = New System.Drawing.Point(398, 453)
+        Me.txtSensor29.Name = "txtSensor29"
+        Me.txtSensor29.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor29.TabIndex = 28
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Location = New System.Drawing.Point(325, 453)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(73, 17)
+        Me.Label29.TabIndex = 56
+        Me.Label29.Text = "Sensor 29"
+        '
+        'txtSensor30
+        '
+        Me.txtSensor30.Location = New System.Drawing.Point(398, 489)
+        Me.txtSensor30.Name = "txtSensor30"
+        Me.txtSensor30.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor30.TabIndex = 29
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(325, 489)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(73, 17)
+        Me.Label30.TabIndex = 58
+        Me.Label30.Text = "Sensor 30"
+        '
+        'txtSensor31
+        '
+        Me.txtSensor31.Location = New System.Drawing.Point(398, 525)
+        Me.txtSensor31.Name = "txtSensor31"
+        Me.txtSensor31.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor31.TabIndex = 30
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Location = New System.Drawing.Point(325, 525)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(73, 17)
+        Me.Label31.TabIndex = 60
+        Me.Label31.Text = "Sensor 31"
+        '
+        'txtSensor32
+        '
+        Me.txtSensor32.Location = New System.Drawing.Point(398, 561)
+        Me.txtSensor32.Name = "txtSensor32"
+        Me.txtSensor32.Size = New System.Drawing.Size(200, 22)
+        Me.txtSensor32.TabIndex = 31
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(325, 561)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(73, 17)
+        Me.Label32.TabIndex = 62
+        Me.Label32.Text = "Sensor 32"
+        '
+        'btnOK
+        '
+        Me.btnOK.Location = New System.Drawing.Point(170, 589)
+        Me.btnOK.Name = "btnOK"
+        Me.btnOK.Size = New System.Drawing.Size(92, 35)
+        Me.btnOK.TabIndex = 63
+        Me.btnOK.Text = "Ok"
+        Me.btnOK.UseVisualStyleBackColor = True
+        '
+        'btnCancel
+        '
+        Me.btnCancel.Location = New System.Drawing.Point(361, 589)
+        Me.btnCancel.Name = "btnCancel"
+        Me.btnCancel.Size = New System.Drawing.Size(92, 35)
+        Me.btnCancel.TabIndex = 64
+        Me.btnCancel.Text = "Cancel"
+        Me.btnCancel.UseVisualStyleBackColor = True
+        '
+        'frmSensorID
+        '
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.ClientSize = New System.Drawing.Size(622, 636)
+        Me.Controls.Add(Me.btnCancel)
+        Me.Controls.Add(Me.btnOK)
+        Me.Controls.Add(Me.txtSensor32)
+        Me.Controls.Add(Me.Label32)
+        Me.Controls.Add(Me.txtSensor31)
+        Me.Controls.Add(Me.Label31)
+        Me.Controls.Add(Me.txtSensor30)
+        Me.Controls.Add(Me.Label30)
+        Me.Controls.Add(Me.txtSensor29)
+        Me.Controls.Add(Me.Label29)
+        Me.Controls.Add(Me.txtSensor28)
+        Me.Controls.Add(Me.Label28)
+        Me.Controls.Add(Me.txtSensor27)
+        Me.Controls.Add(Me.Label27)
+        Me.Controls.Add(Me.txtSensor26)
+        Me.Controls.Add(Me.Label26)
+        Me.Controls.Add(Me.txtSensor25)
+        Me.Controls.Add(Me.Label25)
+        Me.Controls.Add(Me.txtSensor24)
+        Me.Controls.Add(Me.Label24)
+        Me.Controls.Add(Me.txtSensor23)
+        Me.Controls.Add(Me.Label23)
+        Me.Controls.Add(Me.txtSensor22)
+        Me.Controls.Add(Me.Label22)
+        Me.Controls.Add(Me.txtSensor21)
+        Me.Controls.Add(Me.Label21)
+        Me.Controls.Add(Me.txtSensor20)
+        Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.txtSensor19)
+        Me.Controls.Add(Me.Label19)
+        Me.Controls.Add(Me.txtSensor18)
+        Me.Controls.Add(Me.Label18)
+        Me.Controls.Add(Me.txtSensor17)
+        Me.Controls.Add(Me.Label17)
+        Me.Controls.Add(Me.txtSensor16)
+        Me.Controls.Add(Me.Label16)
+        Me.Controls.Add(Me.txtSensor15)
+        Me.Controls.Add(Me.Label15)
+        Me.Controls.Add(Me.txtSensor14)
+        Me.Controls.Add(Me.Label14)
+        Me.Controls.Add(Me.txtSensor13)
+        Me.Controls.Add(Me.Label13)
+        Me.Controls.Add(Me.txtSensor12)
+        Me.Controls.Add(Me.Label12)
+        Me.Controls.Add(Me.txtSensor11)
+        Me.Controls.Add(Me.Label11)
+        Me.Controls.Add(Me.txtSensor10)
+        Me.Controls.Add(Me.Label10)
+        Me.Controls.Add(Me.txtSensor9)
+        Me.Controls.Add(Me.Label9)
+        Me.Controls.Add(Me.txtSensor8)
+        Me.Controls.Add(Me.Label8)
+        Me.Controls.Add(Me.txtSensor7)
+        Me.Controls.Add(Me.Label7)
+        Me.Controls.Add(Me.txtSensor6)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.txtSensor5)
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.txtSensor4)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.txtSensor3)
+        Me.Controls.Add(Me.Label3)
+        Me.Controls.Add(Me.txtSensor2)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.txtSensor1)
+        Me.Controls.Add(Me.Label1)
+        Me.Name = "frmSensorID"
+        Me.Text = "frmSensorID"
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
+
+    End Sub
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor1 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor2 As System.Windows.Forms.TextBox
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor4 As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor5 As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor6 As System.Windows.Forms.TextBox
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor7 As System.Windows.Forms.TextBox
+    Friend WithEvents Label7 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor8 As System.Windows.Forms.TextBox
+    Friend WithEvents Label8 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor9 As System.Windows.Forms.TextBox
+    Friend WithEvents Label9 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor10 As System.Windows.Forms.TextBox
+    Friend WithEvents Label10 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor11 As System.Windows.Forms.TextBox
+    Friend WithEvents Label11 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor12 As System.Windows.Forms.TextBox
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor13 As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor14 As System.Windows.Forms.TextBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor15 As System.Windows.Forms.TextBox
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor16 As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor17 As System.Windows.Forms.TextBox
+    Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor18 As System.Windows.Forms.TextBox
+    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor19 As System.Windows.Forms.TextBox
+    Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor20 As System.Windows.Forms.TextBox
+    Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor21 As System.Windows.Forms.TextBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor22 As System.Windows.Forms.TextBox
+    Friend WithEvents Label22 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor23 As System.Windows.Forms.TextBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor24 As System.Windows.Forms.TextBox
+    Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor25 As System.Windows.Forms.TextBox
+    Friend WithEvents Label25 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor26 As System.Windows.Forms.TextBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor27 As System.Windows.Forms.TextBox
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor28 As System.Windows.Forms.TextBox
+    Friend WithEvents Label28 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor29 As System.Windows.Forms.TextBox
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor30 As System.Windows.Forms.TextBox
+    Friend WithEvents Label30 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor31 As System.Windows.Forms.TextBox
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents txtSensor32 As System.Windows.Forms.TextBox
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+End Class

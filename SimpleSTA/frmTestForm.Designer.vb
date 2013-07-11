@@ -23,12 +23,10 @@ Partial Class frmTestForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTestForm))
         Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmTestForm))
         Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Me.ToolStrip1 = New System.Windows.Forms.ToolStrip()
-        Me.MainStrip = New System.Windows.Forms.MenuStrip()
         Me.MainLoop = New System.ComponentModel.BackgroundWorker()
         Me.TestChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -68,19 +66,6 @@ Partial Class frmTestForm
         Me.flwInjections.SuspendLayout()
         Me.HideShowSensors.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'ToolStrip1
-        '
-        resources.ApplyResources(Me.ToolStrip1, "ToolStrip1")
-        Me.ToolStrip1.Name = "ToolStrip1"
-        '
-        'MainStrip
-        '
-        resources.ApplyResources(Me.MainStrip, "MainStrip")
-        Me.MainStrip.Name = "MainStrip"
-        '
-        'MainLoop
-        '
         '
         'TestChart
         '
@@ -291,9 +276,6 @@ Partial Class frmTestForm
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.HideShowSensors)
         Me.Controls.Add(Me.Panel2)
-        Me.Controls.Add(Me.ToolStrip1)
-        Me.Controls.Add(Me.MainStrip)
-        Me.MainMenuStrip = Me.MainStrip
         Me.Name = "frmTestForm"
         CType(Me.TestChart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel1.ResumeLayout(False)
@@ -305,11 +287,8 @@ Partial Class frmTestForm
         Me.HideShowSensors.ResumeLayout(False)
         Me.HideShowSensors.PerformLayout()
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents ToolStrip1 As System.Windows.Forms.ToolStrip
-    Friend WithEvents MainStrip As System.Windows.Forms.MenuStrip
     Friend WithEvents MainLoop As System.ComponentModel.BackgroundWorker
     Friend WithEvents TestChart As System.Windows.Forms.DataVisualization.Charting.Chart
     Friend WithEvents Panel1 As System.Windows.Forms.Panel

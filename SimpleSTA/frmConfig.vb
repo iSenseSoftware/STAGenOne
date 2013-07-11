@@ -2,7 +2,7 @@
 Imports System.IO
 Imports System
 Imports System.Xml.Serialization
-Imports SimpleSTA.SharedModule
+Imports SimpleSTA.modShared
 ' ------------------------------------------------------------------------------------------------
 ' frmConfig is the form used to provide read-only access to configuration settings for test users
 ' and read/write access to administative users possessing a hard-coded password.
@@ -25,7 +25,7 @@ Public Class frmConfig
             txtInterval.Text = cfgGlobal.RecordInterval
             txtNPLC.Text = cfgGlobal.NPLC
             txtSamples.Text = cfgGlobal.Samples
-            txtDumpDir.Text = cfgGlobal.DumpDirectory
+            txtDataDir.Text = cfgGlobal.DumpDirectory
             txtSettlingTime.Text = cfgGlobal.SettlingTime
             txtRow3Resistor.Text = cfgGlobal.ResistorNominalValues(0) \ 10 ^ 6
             txtRow4Resistor.Text = cfgGlobal.ResistorNominalValues(1) \ 10 ^ 6
@@ -109,11 +109,11 @@ Public Class frmConfig
                     boolValidates = False
                 End If
             End If
-            If (txtDumpDir.Text = "") Then
+            If (txtDataDir.Text = "") Then
                 MsgBox("Data file directory field cannot be blank")
                 boolValidates = False
             End If
-            If Not (System.IO.Directory.Exists(txtDumpDir.Text)) Then
+            If Not (System.IO.Directory.Exists(txtDataDir.Text)) Then
                 MsgBox("Directory selected for data file does not exist")
                 boolValidates = False
             End If
@@ -212,7 +212,7 @@ Public Class frmConfig
         ' enable all controls after password check has been passed
         txtAddress.Enabled = True
         txtBias.Enabled = True
-        txtDumpDir.Enabled = True
+        txtDataDir.Enabled = True
         txtInterval.Enabled = True
         txtNPLC.Enabled = True
         txtSamples.Enabled = True
@@ -221,7 +221,7 @@ Public Class frmConfig
         cmbCardConfig.Enabled = True
         cmbFilterType.Enabled = True
         cmbRange.Enabled = True
-        btnSelectFile.Enabled = True
+        btnSelDataDir.Enabled = True
         btnSelectInfoFile.Enabled = True
         txtRow3Resistor.Enabled = True
         txtRow4Resistor.Enabled = True
@@ -319,7 +319,7 @@ Public Class frmConfig
                     cfgGlobal.Bias = CDbl(txtBias.Text)
                     cfgGlobal.RecordInterval = CDbl(txtInterval.Text)
                     cfgGlobal.Samples = txtSamples.Text
-                    cfgGlobal.DumpDirectory = txtDumpDir.Text
+                    cfgGlobal.DumpDirectory = txtDataDir.Text
                     cfgGlobal.NPLC = txtNPLC.Text
                     cfgGlobal.Filter = cmbFilterType.SelectedValue
                     cfgGlobal.SettlingTime = txtSettlingTime.Text
@@ -334,7 +334,7 @@ Public Class frmConfig
                     If cfgGlobal.Validate() Then
                         ' Attempt to write the configuration to file
                         If (cfgGlobal.WriteToFile(strAppDir & Path.DirectorySeparatorChar & strConfigFileName)) Then
-                            frmMain.chkConfigStatus.Checked = True
+                            boolConfigStatus = True
                             Me.Close()
                         Else
                             MsgBox("Could not write configuration to file.")
@@ -342,7 +342,7 @@ Public Class frmConfig
                     Else
                         MsgBox("Could not validate configuration.  Make sure all settings entered are valid.")
                         cfgGlobal = Nothing
-                        frmMain.chkConfigStatus.Checked = False
+                        boolConfigStatus = False
                     End If
                 Else
                     ' Do nothing.  The validateForm method will generate value-specific error messages if there is a failure
@@ -351,7 +351,7 @@ Public Class frmConfig
         Catch ex As Exception
             GenericExceptionHandler(ex)
             cfgGlobal = Nothing
-            frmMain.chkConfigStatus.Checked = False
+            boolConfigStatus = False
         End Try
     End Sub
     ' Name: btnCancel_Click
@@ -359,28 +359,28 @@ Public Class frmConfig
     ' Description: Closes the form and update the status indicator based on whether the current config object can be validated
     Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         If cfgGlobal Is Nothing Then
-            frmMain.chkConfigStatus.Checked = False
+            boolConfigStatus = False
             Me.Close()
             Exit Sub
         End If
         If cfgGlobal.Validate() Then
-            frmMain.chkConfigStatus.Checked = True
+            boolConfigStatus = True
         Else
-            frmMain.chkConfigStatus.Checked = False
+            boolConfigStatus = False
         End If
         Me.Close()
     End Sub
     ' Name: btnSelectFile_Click()
     ' Handles: User clicks select file button "..." for the save directory field
     ' Description: Opens the dialog allowing the user to navigate to the directory to which test data will be saved
-    Private Sub btnSelectFile_Click(sender As Object, e As EventArgs) Handles btnSelectFile.Click
+    Private Sub btnSelectFile_Click(sender As Object, e As EventArgs) Handles btnSelDataDir.Click
         Try
             FolderBrowserDialog1.Description = "Select test data default directory"
             FolderBrowserDialog1.ShowNewFolderButton = True
             Dim result As DialogResult = FolderBrowserDialog1.ShowDialog()
 
             If result = Windows.Forms.DialogResult.OK Then
-                txtDumpDir.Text = FolderBrowserDialog1.SelectedPath
+                txtDataDir.Text = FolderBrowserDialog1.SelectedPath
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -391,7 +391,7 @@ Public Class frmConfig
     ' Description:
     ' Opens the dialog allowing the user to navigate to the directory to which 
     ' TestSystemInfo file is saved
-    Private Sub btnSelectInfoFile_Click(sender As Object, e As EventArgs) Handles btnSelectInfoFile.Click
+    Private Sub btnSelectInfoFile_Click(sender As Object, e As EventArgs)
         Try
             FolderBrowserDialog1.Description = "Select System Info data default directory"
             FolderBrowserDialog1.ShowNewFolderButton = True
@@ -404,5 +404,6 @@ Public Class frmConfig
             GenericExceptionHandler(ex)
         End Try
     End Sub
+
 
 End Class

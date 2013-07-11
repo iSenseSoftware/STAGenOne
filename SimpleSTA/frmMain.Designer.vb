@@ -22,145 +22,54 @@ Partial Class frmMain
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
-        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.NewTestToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EditConfigurationToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AboutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
-        Me.chkIOStatus = New System.Windows.Forms.CheckBox()
-        Me.chkConfigStatus = New System.Windows.Forms.CheckBox()
-        Me.chkSysInfoStatus = New System.Windows.Forms.CheckBox()
-        Me.MenuStrip1.SuspendLayout()
+        Me.btnNewTest = New System.Windows.Forms.Button()
+        Me.btnConfig = New System.Windows.Forms.Button()
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
-        'MenuStrip1
+        'btnNewTest
         '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.HelpToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(784, 24)
-        Me.MenuStrip1.TabIndex = 0
-        Me.MenuStrip1.Text = "MenuStrip1"
+        Me.btnNewTest.Location = New System.Drawing.Point(223, 61)
+        Me.btnNewTest.Name = "btnNewTest"
+        Me.btnNewTest.Size = New System.Drawing.Size(297, 181)
+        Me.btnNewTest.TabIndex = 7
+        Me.btnNewTest.Text = "New Test"
+        Me.btnNewTest.UseVisualStyleBackColor = True
         '
-        'FileToolStripMenuItem
+        'btnConfig
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NewTestToolStripMenuItem, Me.ExitToolStripMenuItem})
-        Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
-        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(35, 20)
-        Me.FileToolStripMenuItem.Text = "File"
+        Me.btnConfig.Location = New System.Drawing.Point(223, 275)
+        Me.btnConfig.Name = "btnConfig"
+        Me.btnConfig.Size = New System.Drawing.Size(297, 181)
+        Me.btnConfig.TabIndex = 8
+        Me.btnConfig.Text = "Configuration"
+        Me.btnConfig.UseVisualStyleBackColor = True
         '
-        'NewTestToolStripMenuItem
+        'lblVersion
         '
-        Me.NewTestToolStripMenuItem.Name = "NewTestToolStripMenuItem"
-        Me.NewTestToolStripMenuItem.Size = New System.Drawing.Size(131, 22)
-        Me.NewTestToolStripMenuItem.Text = "New Test..."
-        '
-        'ExitToolStripMenuItem
-        '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(131, 22)
-        Me.ExitToolStripMenuItem.Text = "Exit"
-        '
-        'SettingsToolStripMenuItem
-        '
-        Me.SettingsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.EditConfigurationToolStripMenuItem})
-        Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(58, 20)
-        Me.SettingsToolStripMenuItem.Text = "Settings"
-        '
-        'EditConfigurationToolStripMenuItem
-        '
-        Me.EditConfigurationToolStripMenuItem.Name = "EditConfigurationToolStripMenuItem"
-        Me.EditConfigurationToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
-        Me.EditConfigurationToolStripMenuItem.Text = "Edit Configuration"
-        '
-        'HelpToolStripMenuItem
-        '
-        Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AboutToolStripMenuItem})
-        Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
-        Me.HelpToolStripMenuItem.Text = "Help"
-        '
-        'AboutToolStripMenuItem
-        '
-        Me.AboutToolStripMenuItem.Name = "AboutToolStripMenuItem"
-        Me.AboutToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
-        Me.AboutToolStripMenuItem.Text = "About..."
-        '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 540)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(784, 22)
-        Me.StatusStrip1.TabIndex = 1
-        Me.StatusStrip1.Text = "StatusStrip1"
-        '
-        'chkIOStatus
-        '
-        Me.chkIOStatus.AutoSize = True
-        Me.chkIOStatus.Enabled = False
-        Me.chkIOStatus.Location = New System.Drawing.Point(12, 544)
-        Me.chkIOStatus.Name = "chkIOStatus"
-        Me.chkIOStatus.Size = New System.Drawing.Size(99, 17)
-        Me.chkIOStatus.TabIndex = 5
-        Me.chkIOStatus.Text = "I/O Established"
-        Me.chkIOStatus.UseVisualStyleBackColor = True
-        '
-        'chkConfigStatus
-        '
-        Me.chkConfigStatus.AutoSize = True
-        Me.chkConfigStatus.Enabled = False
-        Me.chkConfigStatus.Location = New System.Drawing.Point(117, 545)
-        Me.chkConfigStatus.Name = "chkConfigStatus"
-        Me.chkConfigStatus.Size = New System.Drawing.Size(127, 17)
-        Me.chkConfigStatus.TabIndex = 6
-        Me.chkConfigStatus.Text = "Configuration Loaded"
-        Me.chkConfigStatus.UseVisualStyleBackColor = True
-        '
-        'chkSysInfoStatus
-        '
-        Me.chkSysInfoStatus.AutoSize = True
-        Me.chkSysInfoStatus.Enabled = False
-        Me.chkSysInfoStatus.Location = New System.Drawing.Point(250, 545)
-        Me.chkSysInfoStatus.Name = "chkSysInfoStatus"
-        Me.chkSysInfoStatus.Size = New System.Drawing.Size(120, 17)
-        Me.chkSysInfoStatus.TabIndex = 7
-        Me.chkSysInfoStatus.Text = "System Info Loaded"
-        Me.chkSysInfoStatus.UseVisualStyleBackColor = True
+        Me.lblVersion.AutoSize = True
+        Me.lblVersion.Location = New System.Drawing.Point(28, 9)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(92, 17)
+        Me.lblVersion.TabIndex = 9
+        Me.lblVersion.Text = "Version 0.0.0"
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(784, 562)
-        Me.Controls.Add(Me.chkSysInfoStatus)
-        Me.Controls.Add(Me.chkConfigStatus)
-        Me.Controls.Add(Me.chkIOStatus)
-        Me.Controls.Add(Me.StatusStrip1)
-        Me.Controls.Add(Me.MenuStrip1)
-        Me.MainMenuStrip = Me.MenuStrip1
+        Me.ClientSize = New System.Drawing.Size(782, 555)
+        Me.Controls.Add(Me.lblVersion)
+        Me.Controls.Add(Me.btnConfig)
+        Me.Controls.Add(Me.btnNewTest)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmMain"
         Me.Text = "GlucoMatrix"
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
-    Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents NewTestToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents ExitToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents SettingsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents EditConfigurationToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents HelpToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents AboutToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
-    Friend WithEvents chkIOStatus As System.Windows.Forms.CheckBox
-    Friend WithEvents chkConfigStatus As System.Windows.Forms.CheckBox
-    Friend WithEvents chkSysInfoStatus As System.Windows.Forms.CheckBox
+    Friend WithEvents btnNewTest As System.Windows.Forms.Button
+    Friend WithEvents btnConfig As System.Windows.Forms.Button
+    Friend WithEvents lblVersion As System.Windows.Forms.Label
 End Class

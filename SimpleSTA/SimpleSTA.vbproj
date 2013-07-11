@@ -79,6 +79,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -103,17 +104,7 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditChannel.vb" />
-    <Compile Include="AuditCheck.vb" />
-    <Compile Include="AuditReading.vb" />
-    <Compile Include="Card.vb" />
-    <Compile Include="Configuration.vb" />
-    <Compile Include="frmAbout.Designer.vb">
-      <DependentUpon>frmAbout.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmAbout.vb">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="clsConfiguration.vb" />
     <Compile Include="frmConfig.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +116,12 @@
       <DependentUpon>frmPassword.vb</DependentUpon>
     </Compile>
     <Compile Include="frmPassword.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSensorID.Designer.vb">
+      <DependentUpon>frmSensorID.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSensorID.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTestInfo.Designer.vb">
@@ -139,6 +136,17 @@
     <Compile Include="frmMain.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmTestName.Designer.vb">
+      <DependentUpon>frmTestName.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTestName.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modFileComm.vb" />
+    <Compile Include="modGraph.vb" />
+    <Compile Include="modMain.vb" />
+    <Compile Include="modTest.vb" />
+    <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -154,13 +162,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Reading.vb" />
-    <Compile Include="Sensor.vb" />
-    <Compile Include="SharedModule.vb" />
-    <Compile Include="SourceMeter.vb" />
-    <Compile Include="Switch.vb" />
-    <Compile Include="TestSystem.vb" />
-    <Compile Include="TestFile.vb" />
+    <Compile Include="modShared.vb" />
+    <Compile Include="Test1.Designer.vb">
+      <DependentUpon>Test1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Test1.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmTestForm.Designer.vb">
       <DependentUpon>frmTestForm.vb</DependentUpon>
     </Compile>
@@ -169,9 +177,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="frmAbout.resx">
-      <DependentUpon>frmAbout.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmConfig.resx">
       <DependentUpon>frmConfig.vb</DependentUpon>
     </EmbeddedResource>
@@ -181,11 +186,17 @@
     <EmbeddedResource Include="frmPassword.resx">
       <DependentUpon>frmPassword.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmSensorID.resx">
+      <DependentUpon>frmSensorID.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmTestForm.af-ZA.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestInfo.resx">
       <DependentUpon>frmTestInfo.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTestName.resx">
+      <DependentUpon>frmTestName.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -196,6 +207,9 @@
     <EmbeddedResource Include="frmTestForm.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Test1.resx">
+      <DependentUpon>Test1.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

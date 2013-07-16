@@ -30,19 +30,8 @@ Public Class frmTestForm
     Dim strDumpDir As String
     Dim strCardConfig As String
 
-    ' All variables prefaced with current- are declared with
-    ' module-level scope so that cross-thread references can be made without throwing an exception
-    Dim lngCurrentTime As Long ' Timestamp for last gathered reading
-    Dim dblCurrentCurrent As Double ' Current for last gathered reading
-    Dim intCurrentSlot As Integer ' Card slow for last gathered reading
-    Dim intCurrentColumn As Integer ' Card column for last gathered reading
-    Dim strCurrentID As String ' SensorID for last gathered reading
 
-    Dim boolIsTestRunning As Boolean = False 'Boolean flag - has the user clicked start and not yet clicked stop
-    Dim boolIsTestStopped As Boolean = True ' Boolean flag - has the test actually stopped
-    Dim stpTotalTime As New Stopwatch ' Stopwatch to track the total elapsed time in the test
-    Dim stpInjectionTime As New Stopwatch ' Stopwatch to track the time since the last noted injection
- 
+
 
     
     ' Name: TestForm_FormClosing()
@@ -96,7 +85,7 @@ Public Class frmTestForm
         ' Add the current time to the test file injections array
         Try
             Dim timestamp As DateTime = DateTime.Now()
-            tfCurrentTestFile.addInjection(timestamp)
+            fCurrentTestFile.addInjection(timestamp)
             Dim txtNewInjection As New Label
             txtNewInjection.Text = StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2)
             flwInjections.Controls.Add(txtNewInjection)
@@ -140,8 +129,8 @@ Public Class frmTestForm
             ' Clear the default or previous series and legends from the test chart
             TestChart.Series.Clear()
             TestChart.Legends.Clear()
-            txtTestName.Text = "Test Name: " & tfCurrentTestFile.Name
-            txtOperator.Text = "Operator: " & tfCurrentTestFile.OperatorID
+            txtTestName.Text = "Test Name: " & fCurrentTestFile.Name
+            txtOperator.Text = "Operator: " & fCurrentTestFile.OperatorID
             ' Configure the test chart
             With TestChart.ChartAreas(0)
                 .CursorX.AutoScroll = False
@@ -163,16 +152,16 @@ Public Class frmTestForm
                 .Name = "Main"
             End With
             ' Populate the chart series and legend
-            For Each ssrSensor As Sensor In tfCurrentTestFile.Sensors
-                TestChart.Series.Add(ssrSensor.SensorID)
-                With TestChart.Series(ssrSensor.SensorID)
+            For i = 1 To 32
+                TestChart.Series.Add("Sensor" & i)
+                With TestChart.Series("Sensor" & i)
                     .ChartType = SeriesChartType.Line
                     .BorderWidth = 2
                     ' other properties go here later
                 End With
-                TestChart.Legends.Add(ssrSensor.SensorID)
-                With TestChart.Legends(ssrSensor.SensorID)
-                    .Title = ssrSensor.SensorID
+                TestChart.Legends.Add("Sensor" & i)
+                With TestChart.Legends("Sensor" & i)
+                    .Title = "Sensor" & i
                     .BorderColor = Color.Black
                     .BorderWidth = 2
                     .LegendStyle = LegendStyle.Column
@@ -182,8 +171,8 @@ Public Class frmTestForm
                 Dim chkNewBox As New CheckBox
                 With chkNewBox
                     .Width = 140
-                    .Name = ssrSensor.SensorID
-                    .Text = ssrSensor.SensorID
+                    .Name = "Sensor" & i
+                    .Text = "Sensor" & i
                     .Enabled = True
                     .Visible = True
                     .Checked = True

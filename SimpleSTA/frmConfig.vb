@@ -33,7 +33,6 @@ Public Class frmConfig
             txtRow6Resistor.Text = cfgGlobal.ResistorNominalValues(3) \ 10 ^ 6
             txtTolerance.Text = cfgGlobal.AuditTolerance * 100
             txtAuditZero.Text = cfgGlobal.AuditZero * 10 ^ 9
-            txtSystemInfoFile.Text = cfgGlobal.SystemFileDirectory
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -115,14 +114,6 @@ Public Class frmConfig
             End If
             If Not (System.IO.Directory.Exists(txtDataDir.Text)) Then
                 MsgBox("Directory selected for data file does not exist")
-                boolValidates = False
-            End If
-            If (txtSystemInfoFile.Text = "") Then
-                MsgBox("System Info file directory field cannot be left blank")
-                boolValidates = False
-            End If
-            If Not System.IO.Directory.Exists(txtSystemInfoFile.Text) Then
-                MsgBox("System info file directory  selected could not be found")
                 boolValidates = False
             End If
             If (txtSettlingTime.Text = "") Then
@@ -222,13 +213,11 @@ Public Class frmConfig
         cmbFilterType.Enabled = True
         cmbRange.Enabled = True
         btnSelDataDir.Enabled = True
-        btnSelectInfoFile.Enabled = True
         txtRow3Resistor.Enabled = True
         txtRow4Resistor.Enabled = True
         txtRow5Resistor.Enabled = True
         txtRow6Resistor.Enabled = True
         txtTolerance.Enabled = True
-        txtSystemInfoFile.Enabled = True
         txtAuditZero.Enabled = True
     End Sub
     ' Name: ValidatePassword
@@ -329,7 +318,6 @@ Public Class frmConfig
                     cfgGlobal.ResistorNominalValues(3) = CDbl(txtRow6Resistor.Text) * 10 ^ 6
                     cfgGlobal.AuditTolerance = CDbl(txtTolerance.Text) / 100
                     cfgGlobal.AuditZero = CDbl(txtAuditZero.Text) * 10 ^ -9
-                    cfgGlobal.SystemFileDirectory = txtSystemInfoFile.Text
                     ' Perform secondary validation on the cfgGlobal object
                     If cfgGlobal.Validate() Then
                         ' Attempt to write the configuration to file
@@ -386,24 +374,4 @@ Public Class frmConfig
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    ' Name: btnSelectInfoFile_Click()
-    ' Handles: User clicks select file button "..." for the system info file directory field
-    ' Description:
-    ' Opens the dialog allowing the user to navigate to the directory to which 
-    ' TestSystemInfo file is saved
-    Private Sub btnSelectInfoFile_Click(sender As Object, e As EventArgs)
-        Try
-            FolderBrowserDialog1.Description = "Select System Info data default directory"
-            FolderBrowserDialog1.ShowNewFolderButton = True
-            Dim result As DialogResult = FolderBrowserDialog1.ShowDialog()
-
-            If result = Windows.Forms.DialogResult.OK Then
-                txtSystemInfoFile.Text = FolderBrowserDialog1.SelectedPath
-            End If
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
-
-
 End Class

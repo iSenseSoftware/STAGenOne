@@ -23,9 +23,10 @@ Public Module modShared
 
     Public strAppDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
     Public cfgGlobal As New clsConfiguration ' Global inexstance of the Configuration object that stores config information for the current session
-    Public tsInfoFile As New TestSystem ' Global instance of the TestSystem object which tracks system ID info (serials, models) and switch counts per card
-    Public tfCurrentTestFile As New TestFile ' Global instance of the TestFile object stores output data and writes itself to file
-    Public aryCurrentCards() As Card ' Global array instance of Card objects which represents the Cards in the attached switch
+    'Public tsInfoFile As New TestSystem ' Global instance of the TestSystem object which tracks system ID info (serials, models) and switch counts per card
+    Public fCurrentTestFile As File
+    'Public fCurrentTestFile As New TestFile ' Global instance of the TestFile object stores output data and writes itself to file
+    'Public aryCurrentCards() As Card ' Global array instance of Card objects which represents the Cards in the attached switch
     ' Keithley IVI-COM Driver for communicating with 3700 series system switches.  
     ' This instance is referenced by all functions which communicate with the measurement hardware
     'Public switchDriver As New Ke37XX 'commented out by DB 29May2013 for raw TCP communication
@@ -65,9 +66,6 @@ Public Module modShared
     ' Description: Attempts to initialize the switchDriver with hard-coded configuration settings
     Public Function EstablishIO() As Boolean
         Try
-            'If (switchDriver Is Nothing) Then
-            ' switchDriver = New Ke37XX
-            ' End If
             If (boolConfigStatus) Then
                 If (switchDriver.Connected) Then
                     boolIOStatus = True
@@ -75,8 +73,6 @@ Public Module modShared
                 Else
                     'Dim strOptions As String
                     ' An option string must be explicitly declared or the driver throws a COMException.
-                    'strOptions = "QueryInstStatus=false, RangeCheck=false, Cache=false, Simulate=false, RecordCoercions=false, InterchangeCheck=false" '
-                    'switchDriver.Initialize(cfgGlobal.Address, False, False, strOptions)
                     SwitchIOOpen(cfgGlobal.Address)
                     If (switchDriver.Connected) Then
                         ' reset the TSPLink so we can communicate with the source meter
@@ -380,14 +376,14 @@ Public Module modShared
             SwitchIOWrite("node[2].smub.source.rangev = 1")
             ' disable autorange for both output channels
             SwitchIOWrite("node[2].smub.source.autorangei = 0")
-            ' Populate the AuditCheck object in the tfCurrentTestFile with empty AuditChannel objects
+            ' Populate the AuditCheck object in the fCurrentTestFile with empty AuditChannel objects
             Dim i As Integer
             Dim z As Integer
             Dim acChannel As New AuditChannel
             'For i = cfgGlobal.CardConfig To 1 Step -1
             For i = 1 To cfgGlobal.CardConfig
                 For z = 1 To 16
-                    tfCurrentTestFile.AuditCheck.AddChannel(acChannel.ChannelFactory(i, z))
+                    fCurrentTestFile.AuditCheck.AddChannel(acChannel.ChannelFactory(i, z))
                 Next
             Next
             SwitchIOWrite("node[2].smub.source.output = 1")
@@ -416,7 +412,7 @@ Public Module modShared
             SwitchIOWrite("node[2].smub.source.rangei = .000001")
             SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
 
-            For Each acChannel In tfCurrentTestFile.AuditCheck.AuditChannels
+            For Each acChannel In fCurrentTestFile.AuditCheck.AuditChannels
                 'Take readings from first resistor
                 GatherAuditReading(4, acChannel)
                 GatherAuditReading(5, acChannel)
@@ -533,7 +529,7 @@ Public Module modShared
     ' Name: UpdateSystemInfo()
     ' Returns: Boolean: Indicates success of failure
     ' Description:
-    ' Updates the tsInfoFile and tfCurrentTestFilewith identifying information for the current connected hardware
+    ' Updates the tsInfoFile and fCurrentTestFilewith identifying information for the current connected hardware
     ' and toggles the Active attribute to denote which hardware is current vs historical
     Public Function UpdateSystemInfo() As Boolean
         Try
@@ -559,47 +555,47 @@ Public Module modShared
             ' If the switch has already been registered in the TestSystem info file, set the value for the swtCurrentSwitch in the 
             ' test file to the existing value and set it to active
             If Not tsInfoFile.GetSwitchBySerial(serialNo) Is Nothing Then
-                tfCurrentTestFile.Switch = tsInfoFile.GetSwitchBySerial(serialNo)
-                tfCurrentTestFile.Switch.Active = True
+                fCurrentTestFile.Switch = tsInfoFile.GetSwitchBySerial(serialNo)
+                fCurrentTestFile.Switch.Active = True
             Else
                 ' otherwise create a new entry for the current switch
-                tfCurrentTestFile.Switch = New Switch
-                tfCurrentTestFile.Switch.SerialNumber = serialNo
-                tfCurrentTestFile.Switch.Active = True
-                tfCurrentTestFile.Switch.FirstTest = Now()
+                fCurrentTestFile.Switch = New Switch
+                fCurrentTestFile.Switch.SerialNumber = serialNo
+                fCurrentTestFile.Switch.Active = True
+                fCurrentTestFile.Switch.FirstTest = Now()
                 ' Collect the switch model #
-                tfCurrentTestFile.Switch.ModelNumber = SwitchIOWriteRead("print(localnode.model)")
+                fCurrentTestFile.Switch.ModelNumber = SwitchIOWriteRead("print(localnode.model)")
                 'switchDriver.System.DirectIO.FlushRead()
                 ' Collect the model revision for the switch
-                tfCurrentTestFile.Switch.Revision = SwitchIOWriteRead("print(localnode.model)")
+                fCurrentTestFile.Switch.Revision = SwitchIOWriteRead("print(localnode.model)")
                 'switchDriver.System.DirectIO.FlushRead()
                 ' add the new switch to the tsInfoFile object / file
-                tsInfoFile.AddSwitch(tfCurrentTestFile.Switch)
+                tsInfoFile.AddSwitch(fCurrentTestFile.Switch)
             End If
             ' Collect the serial number for the connected SourceMeter
             'switchDriver.System.DirectIO.FlushRead()
             serialNo = SwitchIOWriteRead("print(node[2].serialno)")
-            tfCurrentTestFile.SourceMeterSerial = serialNo
+            fCurrentTestFile.SourceMeterSerial = serialNo
             'switchDriver.System.DirectIO.FlushRead()
-            ' If the source has already been registered in the TestSystem info file, set the value for the tfCurrentTestFile.Source in the 
+            ' If the source has already been registered in the TestSystem info file, set the value for the fCurrentTestFile.Source in the 
             ' test file to the existing value and set it to active
             If Not tsInfoFile.GetSourceBySerial(serialNo) Is Nothing Then
-                tfCurrentTestFile.Source = tsInfoFile.GetSourceBySerial(serialNo)
-                tfCurrentTestFile.Source.Active = True
+                fCurrentTestFile.Source = tsInfoFile.GetSourceBySerial(serialNo)
+                fCurrentTestFile.Source.Active = True
             Else
                 ' otherwise create a new entry for the current source meter
-                tfCurrentTestFile.Source = New SourceMeter
-                tfCurrentTestFile.Source.SerialNumber = serialNo
-                tfCurrentTestFile.Source.Active = True
-                tfCurrentTestFile.Source.FirstTest = Now()
+                fCurrentTestFile.Source = New SourceMeter
+                fCurrentTestFile.Source.SerialNumber = serialNo
+                fCurrentTestFile.Source.Active = True
+                fCurrentTestFile.Source.FirstTest = Now()
                 ' Collect the source model
-                tfCurrentTestFile.Source.ModelNumber = SwitchIOWriteRead("print(node[2].model)")
+                fCurrentTestFile.Source.ModelNumber = SwitchIOWriteRead("print(node[2].model)")
                 'switchDriver.System.DirectIO.FlushRead()
                 ' collect the source model revision
-                tfCurrentTestFile.Source.Revision = SwitchIOWriteRead("print(node[2].revision)")
+                fCurrentTestFile.Source.Revision = SwitchIOWriteRead("print(node[2].revision)")
                 'switchDriver.System.DirectIO.FlushRead()
                 ' add the new sourcemeter to the test system info file / object
-                tsInfoFile.AddSource(tfCurrentTestFile.Source)
+                tsInfoFile.AddSource(fCurrentTestFile.Source)
             End If
             aryCurrentCards = Nothing
             ' Gather identifying information for all cards currently installed
@@ -608,7 +604,7 @@ Public Module modShared
             Next
             ' Note: We set the Cards array for the swtCurrentSwitch object which, because we already assigned swtCurrentSwitch to the tsInfoFile
             ' Switches array, will be reflected in the tsInfoFile as well
-            tfCurrentTestFile.Switch.Cards = aryCurrentCards
+            fCurrentTestFile.Switch.Cards = aryCurrentCards
             tsInfoFile.writeToFile(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)
             Return True
         Catch comEx As COMException
@@ -638,7 +634,7 @@ Public Module modShared
             'switchDriver.System.DirectIO.FlushRead()
             If Not strIDNString.Contains("Empty Slot") Then
                 ' Check to see if the card has already been registered with the swtCurrentSwitch
-                If Not tfCurrentTestFile.Switch.GetCardBySerial(strSerialNo) Is Nothing Then
+                If Not fCurrentTestFile.Switch.GetCardBySerial(strSerialNo) Is Nothing Then
                     ' if it has, add it to the aryCurrentCards array
                     If aryCurrentCards Is Nothing Then
                         ReDim aryCurrentCards(0)
@@ -648,7 +644,7 @@ Public Module modShared
                         ReDim Preserve aryCurrentCards(lngUpper + 1)
                         intCardIndex = lngUpper + 1
                     End If
-                    aryCurrentCards(intCardIndex) = tfCurrentTestFile.Switch.GetCardBySerial(strSerialNo)
+                    aryCurrentCards(intCardIndex) = fCurrentTestFile.Switch.GetCardBySerial(strSerialNo)
                     aryCurrentCards(intCardIndex).Active = True
                     aryCurrentCards(intCardIndex).Slot = intSlot
                 Else
@@ -830,8 +826,8 @@ Public Module modShared
                     aSource.LastTest = DateTime.Now()
                 End If
             Next
-            tfCurrentTestFile.Source.LastTest = DateTime.Now()
-            tfCurrentTestFile.Switch.LastTest = DateTime.Now()
+            fCurrentTestFile.Source.LastTest = DateTime.Now()
+            fCurrentTestFile.Switch.LastTest = DateTime.Now()
             For Each aSwitch In tsInfoFile.Switches
                 If aSwitch.Active Then
                     aSwitch.LastTest = DateTime.Now()

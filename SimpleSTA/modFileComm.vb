@@ -1,4 +1,7 @@
 ﻿Option Explicit On
+Imports System.IO
+Imports System.Xml.Serialization
+
 Module modFileComm
 
 
@@ -26,7 +29,7 @@ Module modFileComm
                 ' If it passes, attempt to write it to file
                 If (cfgGlobal.WriteToFile(strAppDir & Path.DirectorySeparatorChar & strConfigFileName)) Then
                     ' Update the UI and return true
-                    frmMain.chkConfigStatus.Checked = True
+                    boolConfigStatus = True
                     Return True
                 Else
                     ' update the UI and return false

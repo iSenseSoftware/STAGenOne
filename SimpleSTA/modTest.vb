@@ -1,4 +1,18 @@
 ﻿Module modTest
+    Public boolIsTestRunning As Boolean = False 'Boolean flag - has the user clicked start and not yet clicked stop
+    Public boolIsTestStopped As Boolean = True ' Boolean flag - has the test actually stopped
+    Public stpInjectionTime As New Stopwatch ' Stopwatch to track the time since the last noted injection
+    Public stpTotalTime As New Stopwatch ' Stopwatch to track the total elapsed time in the test
+
+
+    ' All variables prefaced with current- are declared with
+    ' module-level scope so that cross-thread references can be made without throwing an exception
+    Dim lngCurrentTime As Long ' Timestamp for last gathered reading
+    Dim dblCurrentCurrent As Double ' Current for last gathered reading
+    Dim intCurrentSlot As Integer ' Card slow for last gathered reading
+    Dim intCurrentColumn As Integer ' Card column for last gathered reading
+    Dim strCurrentID As String ' SensorID for last gathered reading
+
     ' ----------------------------------
     ' Test Loop thread
     ' ----------------------------------
@@ -22,7 +36,7 @@
             Dim dtTheTime As Date ' Represents the timestamp of the current reading
             Dim intMilliseconds As Integer ' Measurement interval in milliseconds
             Dim intCardCount As Integer = cfgGlobal.CardConfig
-            Dim intSensorCount As Integer = tfCurrentTestFile.Sensors.Length
+            Dim intSensorCount As Integer = fCurrentTestFile.Sensors.Length
             intMilliseconds = intInterval * 1000
             ' To simplify interaction with user interface in main thread and timer threads, disable prevention of
             ' cross-thread calls.  Because of the simplicity of the test sequence and its form this can be done safely
@@ -96,9 +110,9 @@
             Dim strChannelString As String = ""
             For i = 0 To intSensorCount - 1
                 If (i = intSensorCount - 1) Then
-                    strChannelString = strChannelString & tfCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(tfCurrentTestFile.Sensors(i).Column), 2) & ""
+                    strChannelString = strChannelString & fCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(fCurrentTestFile.Sensors(i).Column), 2) & ""
                 Else
-                    strChannelString = strChannelString & tfCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(tfCurrentTestFile.Sensors(i).Column), 2) & ","
+                    strChannelString = strChannelString & fCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(fCurrentTestFile.Sensors(i).Column), 2) & ","
                 End If
             Next
             ' Add codes to the string to identify the necessary backplane relay intersections
@@ -109,21 +123,21 @@
             ' close all relays in row 1
             SwitchIOWrite("node[1].channel.exclusiveclose('" & strChannelString & "')")
             ' Start all timers
-            ElapsedTimer.Start() ' Start the form timer component
+            frmTestForm.ElapsedTimer.Start() ' Start the form timer component
             stpIntervalTimer.Start() ' Current interval stopwatch
             stpTotalTime.Start() ' total test time stopwatch
-            tfCurrentTestFile.TestStart = DateTime.Now()
+            fCurrentTestFile.TestStart = DateTime.Now()
             ' Run the test loop until the boolTestStop variable returns false (the user clicks Abort)
             boolIsTestRunning = True
             boolIsTestStopped = False
             Do While boolIsTestRunning
-                For z = 0 To tfCurrentTestFile.Sensors.Length - 1
+                For z = 0 To fCurrentTestFile.Sensors.Length - 1
                     ' Open relay to row 1
-                    SwitchIOWrite("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    Debug.Print("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.open('" & fCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    Debug.Print("node[1].channel.open('" & fCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
                     ' Close relay to row 2
-                    SwitchIOWrite("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    Debug.Print("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    SwitchIOWrite("node[1].channel.close('" & fCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
+                    Debug.Print("node[1].channel.close('" & fCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
                     ' Allow settling time
                     Delay(cfgGlobal.SettlingTime)
                     ' Record V and I readings to buffer
@@ -145,7 +159,7 @@
                     lngCurrentTime = stpTotalTime.ElapsedMilliseconds
                     dblCurrentCurrent = dblCurrent * 10 ^ 9
                     ' Report progress so the chart can be updated
-                    MainLoop.ReportProgress(0)
+                    frmTestForm.MainLoop.ReportProgress(0)
                     ' Update system info file with switch count
                     tsInfoFile.AddSwitchEvent(tfCurrentTestFile.Sensors(z).Slot, 4)
                 Next
@@ -158,7 +172,7 @@
                 Dim dblAllVolts As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)"))
                 'switchDriver.System.DirectIO.FlushRead()
                 tfCurrentTestFile.addFullCircuitReading(dtAllTheTime, dblAllCurrent, dblAllVolts)
-                MainLoop.ReportProgress(10)
+                frmTestForm.MainLoop.ReportProgress(10)
                 If (stpIntervalTimer.ElapsedMilliseconds > intMilliseconds) Then
                     MsgBox("Could not finish measurements within injection interval specified")
                     boolIsTestRunning = False
@@ -170,11 +184,11 @@
 
                     If Not boolIsTestRunning Then
                         If intLast = 0 And (intMilliseconds - stpIntervalTimer.ElapsedMilliseconds) / 1000 = 0 Then
-                            btnStartTest.Text = "Test Complete"
+                            frmTestForm.btnStartTest.Text = "Test Complete"
                         Else
                             If Not ((intMilliseconds - stpIntervalTimer.ElapsedMilliseconds) / 1000 = intLast) Then
                                 intLast = (intMilliseconds - stpIntervalTimer.ElapsedMilliseconds) / 1000
-                                btnStartTest.Text = "Ending In " & intLast
+                                frmTestForm.btnStartTest.Text = "Ending In " & intLast
                             End If
                         End If
                     End If
@@ -184,9 +198,8 @@
             ' After test is complete, reset state
             tfCurrentTestFile.TestEnd = DateTime.Now()
             SetLastTestForSysInfo()
-            tsInfoFile.writeToFile(cfgGlobal.SystemFileDirectory & Path.DirectorySeparatorChar & strSystemInfoFileName)
             tfCurrentTestFile.WriteToFile()
-            btnStartTest.Text = "Test Complete"
+            frmTestForm.btnStartTest.Text = "Test Complete"
             SwitchIOWrite("node[2].display.clear()")
             SwitchIOWrite("node[1].display.clear()")
             SwitchIOWrite("node[2].display.settext('Standby')")
@@ -268,5 +281,9 @@
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
+    End Sub
+
+    Public Sub EndTest()
+
     End Sub
 End Module

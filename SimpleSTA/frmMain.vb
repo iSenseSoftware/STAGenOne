@@ -20,6 +20,12 @@ Public Class frmMain
     ' Handles: User clicks the "New Test" button
     ' Description: Opens the frmTestInfo form allowing the user to enter test info and create a new test
     Private Sub btnNewTest_Click(sender As Object, e As EventArgs) Handles btnNewTest.Click
+        If EstablishIO() = False Then
+            MsgBox("Communication not established")
+            Exit Sub
+        End If
+        btnConfig.Enabled = False
+        btnNewTest.Enabled = False
         frmTestName.Show()
     End Sub
     ' Name: btnConfig_Click

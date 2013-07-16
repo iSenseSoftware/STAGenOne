@@ -33,7 +33,7 @@ Public Class clsConfiguration
 
     ' Set default save paths based on installation directory (strAppDir)
     Dim strDumpDirectory As String = strAppDir & Path.DirectorySeparatorChar & "RawTestData"
-    Dim strSystemFileDirectory As String = strAppDir & Path.DirectorySeparatorChar & "SystemInfo"
+    'Dim strSystemFileDirectory As String = strAppDir & Path.DirectorySeparatorChar & "SystemInfo"
     Public Property AuditZero As Double
         Get
             Return dblAuditCheckZero
@@ -50,14 +50,14 @@ Public Class clsConfiguration
             aryResistorNominalValues = aryValue
         End Set
     End Property
-    Public Property SystemFileDirectory As String
-        Get
-            Return strSystemFileDirectory
-        End Get
-        Set(ByVal strValue As String)
-            strSystemFileDirectory = strValue
-        End Set
-    End Property
+    'Public Property SystemFileDirectory As String
+    '    Get
+    '        Return strSystemFileDirectory
+    '    End Get
+    '    Set(ByVal strValue As String)
+    '        strSystemFileDirectory = strValue
+    '    End Set
+    'End Property
     Public Property AuditTolerance As Double
         Get
             Return dblAuditCheckTolerance

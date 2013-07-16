@@ -203,5 +203,34 @@ Public Class frmTestForm
         End Try
     End Sub
    
+    Public Sub TestChart_AxisViewChanged(sender As Object, e As ViewEventArgs) Handles TestChart.AxisViewChanged
+        AxisViewChanged(TestChart)
+    End Sub
+    Public Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
+        ChartMouseDown(TestChart)
+    End Sub
+
+    Public Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomReset.Click
+        ZoomReset(TestChart)
+    End Sub
+    Public Sub chkZoomEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkZoomEnabled.CheckedChanged
+        ZoomEnabled(TestChart)
+    End Sub
+    Public Sub chkScrollEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrollEnabled.CheckedChanged
+        ScrollEnabled(TestChart)
+    End Sub
+    Public Sub btnZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomOut.Click
+        ZoomOut(TestChart)
+    End Sub
+    Public Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
+        ApplyButton(TestChart)
+    End Sub
+    Public Sub showAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        ShowAllButton(TestChart)
+    End Sub
+    Public Sub hideAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        HideAllButton(TestChart)
+    End Sub
     
+
 End Class

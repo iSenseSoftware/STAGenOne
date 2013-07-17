@@ -21,6 +21,8 @@ Public Module modShared
     Public Const strApplicationVersion As String = "1.0"
     Public Const strApplicationDescription As String = "Software for CGM Sensor release testing"
 
+    Public strHardwareErrorList As String 'Lists Hardware Errors 
+
     Public strAppDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
     Public cfgGlobal As New clsConfiguration ' Global inexstance of the Configuration object that stores config information for the current session
     'Public tsInfoFile As New TestSystem ' Global instance of the TestSystem object which tracks system ID info (serials, models) and switch counts per card
@@ -234,6 +236,64 @@ Public Module modShared
     End Sub
 
     Public Sub HardwareVerification()
+        'Display Message to "Open all Fixtures"
+        MsgBox("Open all Fixtures")
+
+        Dim dblPassHigh As Double
+        Dim dblPassLow As Double
+
+
+        'Verification of Row 3 Open
+        dblPassHigh = CDbl(frmConfig.txtRow3Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
+        dblPassLow = CDbl(frmConfig.txtRow3Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        RowVerification(3, True, dblPassHigh, dblPassLow)
+
+        'Verification of Row 3 Closed
+        dblPassHigh = CDbl(frmConfig.txtRow3Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
+        dblPassLow = CDbl(frmConfig.txtRow3Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        RowVerification(3, False, dblPassHigh, dblPassLow)
+
+        'Verification of Row 4 Closed
+        dblPassHigh = CDbl(frmConfig.txtRow4Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
+        dblPassLow = CDbl(frmConfig.txtRow4Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        RowVerification(4, False, dblPassHigh, dblPassLow)
+
+        'Verificaiton of Row 5 Closed
+        dblPassHigh = CDbl(frmConfig.txtRow5Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
+        dblPassLow = CDbl(frmConfig.txtRow5Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        RowVerification(5, False, dblPassHigh, dblPassLow)
+
+        'Verification of Row 6 Closed
+        dblPassHigh = CDbl(frmConfig.txtRow6Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
+        dblPassLow = CDbl(frmConfig.txtRow6Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        RowVerification(6, False, dblPassHigh, dblPassLow)
+
+        'Errors decision (yes- display error message box & save error list to file & end test, no- open all switches)
+        If boolHardwareError Then
+            MsgBox("Hardware Verification Failed" + txtHardwareErrorList) 'List All Errors  NEED TO COMPLETE MSG BOX
+
+            ' Write string to data file
+            WriteToDataFile(txtHardwareErrorList)
+
+            EndTest()
+        Else
+            'Open all switches
+            SwitchIOWrite("channel.open('allslots')")
+        End If
+
+    End Sub
+    ' Name: RowVerification()
+    ' Parameters:
+    '           intRow: The switch matrix row in which the resistor to be used for testing is wired
+    '           boolOpen: Whether the switches are open or closed True=Switches Open, False=Switches closed
+    '           dblPassHigh: High end of the Pass criteria for the resistor value
+    '           dblPassLow: Low end of the pass criteria for the resistor value
+    ' Description: 
+    
+    Public Sub RowVerification(ByVal intRow As Integer, ByVal boolOpen As Boolean, ByVal dblPassHigh As Double, ByVal dblPassLow As Double)
+        'Set Column Counter to 1
+
+
     End Sub
     ' ------------------------------------------------------------
     ' Exception Handlers

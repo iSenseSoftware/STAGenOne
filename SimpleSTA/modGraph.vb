@@ -2,6 +2,19 @@
 Imports System.Windows.Forms.DataVisualization.Charting
 
 Public Module modGraph
+
+    ' Name: AddGraphData()
+    ' Parameters:
+    '           strSensorID: String of sensor ID in the form of "SensorX", where X is a positive integer
+    '           intTimePoint: Time index in seconds, a multiple of "interval" seconds
+    '           dblCurrentReading: Current reading corresponding to the reading at intTimePoint
+    ' Description: 
+    Public Sub AddGraphData(strSensorID As String, intTimePoint As Integer, dblCurrentReading As Double)
+        'Add data point using the variables passed to the subroutines
+        frmTestForm.TestChart.Series(strSensorID).Points.AddXY(intTimePoint, Math.Round(dblCurrentReading, 2))
+    End Sub
+
+
     ' --------------------------------------------------------
     ' Zoom and Chart updating functions and event handlers
     ' --------------------------------------------------------
@@ -188,5 +201,5 @@ Public Module modGraph
 
 
 
-        
+
 End Module

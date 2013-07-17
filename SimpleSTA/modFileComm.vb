@@ -4,7 +4,7 @@ Imports System.Xml.Serialization
 
 Public Module modFileComm
     Dim srDataFile As StreamWriter  'StreamWriter for data file, to remain open until test is complete
-    Dim boolDataFileOpen As Boolean 'flag to indicate if the data file has been sucessfully created
+    Public boolDataFileOpen As Boolean 'flag to indicate if the data file has been sucessfully created
 
     ' Name: OpenDataFile()
     ' Variables: strFile
@@ -39,10 +39,10 @@ Public Module modFileComm
         End Try
     End Sub
     ' Name: CloseDataFile()
-    ' Variables: strFile
-    ' Description: This function attempts to open a new Data File.  If this is successful, it will set the 
-    '              property of the StreamWriter to autoflush data to the file with each attempt to write data.
-    Public Sub CloseDataFile(strData As String)
+    ' Variables: 
+    ' Description: This function closes the data file.
+
+    Public Sub CloseDataFile()
         Try
             srDataFile.Close()
             boolDataFileOpen = False

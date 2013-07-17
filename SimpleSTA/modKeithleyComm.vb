@@ -5,6 +5,10 @@ Imports System.Runtime.InteropServices
 
 
 Public Module modKeithleyComm
+    'Variables for network communication
+    Public switchDriver As New TcpClient
+    Public switchStream As NetworkStream
+
     ' Device I/O and Configuration Functions
     ' -----------------------------------------------------------------
     ' Name: EstablishIO()
@@ -234,14 +238,26 @@ Public Module modKeithleyComm
         Return strMessage
 
     End Function
+    ' Name: CloseKeithleyIO()
+    ' Parameters: None
+    ' Description: This command will close the communication port.
+
+    Public Sub CloseKeithleyIO()
+        'Close the TCP client
+        switchDriver.Close()
+
+        'Set the IO flag to false
+        boolIOStatus = False
+
+    End Sub
 
     ' Name: SetSwitchPatterns()
     ' Parameters:
-    '           strCommand: A string containing the tsp command to be sent to the measurement hardware
-    ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
+    '           intSensors: The number of sensors + 1 to generate switch patterns for
+    ' Description: This command will generate switch patterns for easy switching during sensor scans
+
     Public Sub SetSwitchPatterns(intSensors As Integer)
         Dim strPattern As String
-        Dim strPatternName As String
         Dim i As Integer
         Dim j As Integer
 
@@ -256,8 +272,7 @@ Public Module modKeithleyComm
                 End If
             Next
             strPattern = strPattern + "1911,1912,2911,2912'"
-            strPatternName = "Sensor" & i
-            SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", '" & strPatternName & "')")
+            SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", 'Sensor" & i & "')")
         Next
 
         'generate the switch closure patterns for all closed on row 1
@@ -266,12 +281,7 @@ Public Module modKeithleyComm
             strPattern = strPattern + SwitchNumberGenerator(1, j) + ","
         Next
         strPattern = strPattern + "1911,1912,2911,2912'"
-        strPatternName = "Sensor" & intSensors
-        SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", '" & strPatternName & "')")
-
-
-        'generate the all closed
-
+        SwitchIOWrite("channel.pattern.setimage(" & strPattern & ", 'Sensor" & intSensors & "')")
 
     End Sub
     ' Name: SwitchNumberGenerator()
@@ -307,7 +317,7 @@ Public Module modKeithleyComm
     '           
     ' Description: This command gets information for the card installed in slot 'intSlot' of the keithley system switch.
     '               It returns a comma separated string of the model, serial number, Rev, and switch closures.  Each row of
-    '               switch closures is averaged; backplane closures are reported separately.
+    '               switch closures is averaged; backplane closures are reported individually.
     Public Function CardInfo(intCard As Integer) As String
         Dim strCardInfo As String
         Dim strIDNString As String

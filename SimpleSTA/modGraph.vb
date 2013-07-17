@@ -13,6 +13,21 @@ Public Module modGraph
         'Add data point using the variables passed to the subroutines
         frmTestForm.TestChart.Series(strSensorID).Points.AddXY(intTimePoint, Math.Round(dblCurrentReading, 2))
     End Sub
+    ' Name: RefreshGraph()
+    ' Parameters:
+    '           strSensorID: String of sensor ID in the form of "SensorX", where X is a positive integer
+    '           intTimePoint: Time index in seconds, a multiple of "interval" seconds
+    '           dblCurrentReading: Current reading corresponding to the reading at intTimePoint
+    ' Description: 
+    Public Sub RefreshGraph(sender As Object)
+        If Not (sender.ChartAreas(0).AxisY.ScaleView.IsZoomed Or sender.ChartAreas(0).AxisX.ScaleView.IsZoomed) Then
+            sender.ChartAreas(0).AxisX.Interval = sender.ChartAreas(0).AxisX.Maximum \ 10
+            sender.ChartAreas(0).AxisY.Interval = Math.Round(sender.ChartAreas(0).AxisY.Maximum / 10, 1)
+        Else
+            ' do nothing
+        End If
+        sender.Update()
+    End Sub
 
 
     ' --------------------------------------------------------
@@ -39,7 +54,7 @@ Public Module modGraph
     End Sub
 
     ' This method requires the series names to be the same as their legend entries
-    Public Sub ChartMouseDown(ChartName As Chart)
+    Public Sub ChartMouseDown(ChartName As Chart, ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         ' Call hit test method
         Try
             Dim result As HitTestResult = ChartName.HitTest(e.X, e.Y)
@@ -61,28 +76,31 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ZoomReset(ChartName As Chart)
+    Public Sub ZoomReset(ChartName As Chart, ByVal sender As System.Object)
         Try
-            With 
-                .ChartName.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
-                .ChartName.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
-                .ChartName.ChartAreas(0).AxisX.Maximum = Double.NaN
-                .ChartName.ChartAreas(0).AxisX.Minimum = 0
-                .ChartName.ChartAreas(0).AxisY.Maximum = Double.NaN
-                .ChartName.ChartAreas(0).AxisY.Minimum = 0
+            With ChartName
+                .ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
+                .ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
+                .ChartAreas(0).AxisX.Maximum = Double.NaN
+                .ChartAreas(0).AxisX.Minimum = 0
+                .ChartAreas(0).AxisY.Maximum = Double.NaN
+                .ChartAreas(0).AxisY.Minimum = 0
+            End With
+            With sender
                 .txtXMax.Text = ""
                 .txtYMax.Text = ""
                 .txtXMin.Text = ""
                 .txtYMin.Text = ""
             End With
 
+
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ZoomEnabled(ChartName As Chart)
+    Public Sub ZoomEnabled(ChartName As Chart, ByVal sender As System.Object)
         Try
-            If (chkZoomEnabled.Checked) Then
+            If (sender.chkZoomEnabled.Checked) Then
                 With ChartName.ChartAreas(0)
                     .AxisX.ScaleView.Zoomable = True
                     .AxisY.ScaleView.Zoomable = True
@@ -108,9 +126,9 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ScrollEnabled(ChartName As Chart)
+    Public Sub ScrollEnabled(ChartName As Chart, ByVal sender As System.Object)
         Try
-            If (ChartName.chkZoomEnabled.Checked) Then
+            If (sender.chkZoomEnabled.Checked) Then
                 With ChartName.ChartAreas(0)
                     .CursorX.AutoScroll = True
                     .CursorY.AutoScroll = True
@@ -133,21 +151,21 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ApplyButton(ChartName As Chart)
+    Public Sub ApplyButton(ChartName As Chart, sender As System.Object)
         Try
-            If Not (ChartName.txtXMax.Text = "") Then
-                ChartName.ChartAreas(0).AxisX.Maximum = ChartName.txtXMax.Text
+            If Not (sender.txtXMax.Text = "") Then
+                ChartName.ChartAreas(0).AxisX.Maximum = sender.txtXMax.Text
             Else
                 ChartName.ChartAreas(0).AxisX.Maximum = Double.NaN
             End If
-            If Not (ChartName.txtYMax.Text = "") Then
-                ChartName.ChartAreas(0).AxisY.Maximum = ChartName.txtYMax.Text
+            If Not (sender.txtYMax.Text = "") Then
+                ChartName.ChartAreas(0).AxisY.Maximum = sender.txtYMax.Text
             End If
-            If Not (ChartName.txtXMin.Text = "") Then
-                ChartName.ChartAreas(0).AxisX.Minimum = ChartName.txtXMin.Text
+            If Not (sender.txtXMin.Text = "") Then
+                ChartName.ChartAreas(0).AxisX.Minimum = sender.txtXMin.Text
             End If
-            If Not (ChartName.txtYMin.Text = "") Then
-                ChartName.ChartAreas(0).AxisY.Minimum = ChartName.txtYMin.Text
+            If Not (sender.txtYMin.Text = "") Then
+                ChartName.ChartAreas(0).AxisY.Minimum = sender.txtYMin.Text
             End If
             ChartName.ChartAreas(0).AxisX.ScaleView.ZoomReset(0)
             ChartName.ChartAreas(0).AxisY.ScaleView.ZoomReset(0)
@@ -185,7 +203,7 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub UpdateTraces()
+    Public Sub UpdateTraces(ChartName As Chart, sender As Object)
         Try
             If (sender.Checked) Then
                 ChartName.Series(sender.name).Enabled = True

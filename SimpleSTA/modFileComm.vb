@@ -3,7 +3,7 @@ Imports System.IO
 Imports System.Xml.Serialization
 
 Public Module modFileComm
-    Dim srDataFile As StreamWriter  'StreamWriter for data file, to remain open until test is complete
+    Dim swDataFile As StreamWriter  'StreamWriter for data file, to remain open until test is complete
     Public boolDataFileOpen As Boolean 'flag to indicate if the data file has been sucessfully created
 
     ' Name: OpenDataFile()
@@ -16,8 +16,8 @@ Public Module modFileComm
                 boolDataFileOpen = False
                 Return False
             Else
-                srDataFile = New StreamWriter(strPath & Path.DirectorySeparatorChar & strFile, True)
-                srDataFile.AutoFlush = True
+                swDataFile = New StreamWriter(strPath & Path.DirectorySeparatorChar & strFile, True)
+                swDataFile.AutoFlush = True
                 Return True
             End If
         Catch ex As Exception
@@ -33,7 +33,7 @@ Public Module modFileComm
     '              property of the StreamWriter to autoflush data to the file with each attempt to write data.
     Public Sub WriteToDataFile(strData As String)
         Try
-            srDataFile.WriteLine(strData)
+            swDataFile.WriteLine(strData)
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -44,7 +44,7 @@ Public Module modFileComm
 
     Public Sub CloseDataFile()
         Try
-            srDataFile.Close()
+            swDataFile.Close()
             boolDataFileOpen = False
         Catch ex As Exception
             GenericExceptionHandler(ex)

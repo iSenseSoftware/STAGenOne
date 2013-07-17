@@ -78,6 +78,49 @@ Public Class frmTestForm
             Me.Close()
         End Try
     End Sub
+    Private Sub MainLoop_DoWork(ByVal sender As System.Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles MainLoop.DoWork
+        MeasurementLoop(sender, e)
+    End Sub
+
+
+
+    ' --------------------------------------------
+    ' Timer loop threads
+    ' ---------------------------------------------
+    ' Timer1_Tick and InjectionTime_Tick are both triggered every second by the Timer1 and InjectionTimer components in the user form.
+    ' There are corresponding stopwatches that are managed within the test control loop
+    ' and these are referenced within the Tick events to update the elapsed time shown to the user.
+
+    ' Name: ElapsedTimer_Tick()
+    ' Handles: Tick event for ElapsedTimer
+    ' Description: The ElapsedTimer triggers the Tick event every second.  This sub runs when this event is triggered.  
+    '           It grabs the the time elapsed in the stpTotalTime stopwatch, parses it into human-readable format and updates
+    '           the user interface
+    Private Sub ElapsedTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
+        Try
+            ' Update the total time timer in the user interface
+            txtTime.Text = "Total Time: " & StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2) & ":" & StrPad(stpTotalTime.Elapsed.Seconds, 2)
+            tfCurrentTestFile.TestLength = stpTotalTime.Elapsed.TotalSeconds
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+    ' Name: InjectionTimer_Tick()
+    ' Handles: Tick event for InjectionTimer
+    ' Description: The InjectionTimer triggers the Tick event every second.  This sub runs when this event is triggered.  
+    '           It grabs the the time elapsed in the stpInjectionTime stopwatch, parses it into human-readable format and updates
+    '           the user interface
+    Private Sub InjectionTimer_Tick(sender As Object, e As EventArgs) Handles InjectionTimer.Tick
+        Try
+            ' Updat the time since injection in the user interface
+            If Not boolIsTestStopped Then
+                txtTimeSinceInjection.Text = "Time Since Injection: " & StrPad(stpInjectionTime.Elapsed.Hours, 2) & ":" & StrPad(stpInjectionTime.Elapsed.Minutes, 2) & ":" & StrPad(stpInjectionTime.Elapsed.Seconds, 2)
+            End If
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+
     ' Name: btnNoteInjection_Click
     ' Handles: User clicks 'Note Injection' button
     ' Description: Adds a new timestamp to the TestFile Injections array and resets the stpInjectionTime stopwatch.
@@ -120,7 +163,7 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-   
+
     ' ----------------------------------------------
     ' Utility functions
     ' ----------------------------------------------
@@ -130,7 +173,7 @@ Public Class frmTestForm
             TestChart.Series.Clear()
             TestChart.Legends.Clear()
             txtTestName.Text = "Test Name: " & fCurrentTestFile.Name
-            txtOperator.Text = "Operator: " & fCurrentTestFile.OperatorID
+            txtOperator.Text = "Operator: " & frmTestInfo.txt
             ' Configure the test chart
             With TestChart.ChartAreas(0)
                 .CursorX.AutoScroll = False
@@ -202,7 +245,7 @@ Public Class frmTestForm
             GenericExceptionHandler(ex)
         End Try
     End Sub
-   
+
     Public Sub TestChart_AxisViewChanged(sender As Object, e As ViewEventArgs) Handles TestChart.AxisViewChanged
         AxisViewChanged(TestChart)
     End Sub
@@ -231,6 +274,6 @@ Public Class frmTestForm
     Public Sub hideAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         HideAllButton(TestChart)
     End Sub
-    
+
 
 End Class

@@ -45,6 +45,7 @@ Public Module modShared
         ten_uA = 2
         hundred_uA = 3
     End Enum
+
     Public Enum FilterType
         FILTER_MOVING_AVG = 1
         FILTER_REPEAT_AVG = 2
@@ -58,115 +59,7 @@ Public Module modShared
         FIVE_CARD_EIGHTY_SENSORS = 5
         SIX_CARD_NINETY_SIX_SENSORS = 6
     End Enum
-    ' -----------------------------------------------------------------
-    ' Name: RunAuditCheck()
-    ' Returns: Boolean: Indicates success of failure (Note: This indicates whether the check has been successfully performed, not whether or not it passed!)
-    ' Description: Cycles through all columns in attached switch matrix cards and connects each to a series of resistors, measuring i and v
-    '           and storing the readings in an AuditCheck object
-    Public Function RunAuditCheck() As Boolean
-        Try
-            ' Start with all intersections open
-            SwitchIOWrite("channel.open('allslots')")
-            SwitchIOWrite("node[2].display.clear()")
-            SwitchIOWrite("node[2].display.settext('Running Self Check')")
-            ' set both SMU channels to DC volts
-            ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
-            SwitchIOWrite("node[2].smub.source.func = 1")
-            ' Set the bias for both channels based on the value in cfgGlobal
-            SwitchIOWrite("node[2].smub.source.levelv = " & cfgGlobal.Bias)
-            ' Range is hard-coded to 1.  Does this need to be a Configuration setting in the future?
-            SwitchIOWrite("node[2].smub.source.rangev = 1")
-            ' disable autorange for both output channels
-            SwitchIOWrite("node[2].smub.source.autorangei = 0")
-            ' Populate the AuditCheck object in the fCurrentTestFile with empty AuditChannel objects
-            Dim i As Integer
-            Dim z As Integer
-            Dim acChannel As New AuditChannel
-            'For i = cfgGlobal.CardConfig To 1 Step -1
-            For i = 1 To cfgGlobal.CardConfig
-                For z = 1 To 16
-                    fCurrentTestFile.AuditCheck.AddChannel(acChannel.ChannelFactory(i, z))
-                Next
-            Next
-            SwitchIOWrite("node[2].smub.source.output = 1")
 
-            ' Set connection rule to "make before break"
-            ' @TODO: This is the setting from the old software.  Should this be changed?
-            SwitchIOWrite("node[1].channel.connectrule = 2")
-            'SwitchIOWrite("node[2].display.clear()")
-            ' Configure the DMM
-            SwitchIOWrite("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
-            SwitchIOWrite("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
-            SwitchIOWrite("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
-            SwitchIOWrite("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
-            SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
-            SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
-            SwitchIOWrite("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
-            SwitchIOWrite("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
-            ' Set output off mode to OUTPUT_HIGH_Z
-            SwitchIOWrite("node[2].smua.source.offmode = 2")
-            SwitchIOWrite("node[2].smub.source.offmode = 2")
-            'DirectIOWrapper("node[2].smua.source.output = 0")
-            ' Clear the non-volatile measurement buffers
-            SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
-            SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
-            ' NOTE: Should this be changed in the future to be adaptive rather than hard coded?
-            SwitchIOWrite("node[2].smub.source.rangei = .000001")
-            SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
-
-            For Each acChannel In fCurrentTestFile.AuditCheck.AuditChannels
-                'Take readings from first resistor
-                GatherAuditReading(4, acChannel)
-                GatherAuditReading(5, acChannel)
-                GatherAuditReading(6, acChannel)
-                GatherAuditReading(3, acChannel)
-                GatherAuditReading(3, acChannel, True)
-                ' Add three switches to total
-                tsInfoFile.AddSwitchEvent(acChannel.Card, 6)
-            Next
-            ' Turn off output to source meter channels
-            SwitchIOWrite("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
-            Return True
-        Catch ex As COMException
-            ComExceptionHandler(ex)
-            Return False
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-            Return False
-        End Try
-    End Function
-    ' Name: GatherAuditReading()
-    ' Parameters:
-    '           intRow: The switch matrix row in which the resistor to be used for testing is wired
-    '           acChannel: The AuditChannel object to which the AuditReading generated by this sub is added
-    ' Description: 
-    Public Sub GatherAuditReading(ByVal intRow As Integer, ByRef acChannel As AuditChannel, Optional ByVal boolLastCheck As Boolean = False)
-        Try
-            If (intRow < 3 Or intRow > 6) Then
-                Throw New Exception("Row value given as first parameter to GatherAuditReading was not a valid auditing channel")
-            End If
-            Dim dblCurrent As Double
-            Dim dblVoltage As Double
-            'switchDriver.System.DirectIO.FlushRead()
-            If boolLastCheck Then
-                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "91" & intRow & "')")
-            Else
-                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & 2 & StrPad(acChannel.Column, 2) & "," & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "912," & acChannel.Card & "91" & intRow & "')")
-            End If
-            Delay(cfgGlobal.SettlingTime)
-            Debug.Print("Start of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond)
-            SwitchIOWrite("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-            'node[1].channel.exclusiveclose('1101,1911') node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2) printbuffer(1, 1, node[2].smub.nvbuffer1)
-            dblCurrent = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer1)"))
-            'switchDriver.System.DirectIO.FlushRead()
-            dblVoltage = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer2)"))
-            'switchDriver.System.DirectIO.FlushRead()
-            Debug.Print("End of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond & vbLf)
-            acChannel.AddReading(AuditReading.ReadingFactory(dblVoltage, dblCurrent, cfgGlobal.ResistorNominalValues(intRow - 3), intRow, boolLastCheck))
-        Catch ex As Exception
-            Throw
-        End Try
-    End Sub
     ' Name: ConfigureHardware()
     ' Parameters:
     '           strVolts: the voltage to set the sourcemeter channels to
@@ -231,8 +124,6 @@ Public Module modShared
         'Turn on SourceMeter
         SwitchIOWrite("node[2].smua.source.output = 1")
         SwitchIOWrite("node[2].smub.source.output = 1")
-
-
     End Sub
 
     Public Sub HardwareVerification()
@@ -441,27 +332,4 @@ Public Module modShared
             Throw
         End Try
     End Function
-    Public Sub SetLastTestForSysInfo()
-        Try
-            For Each aSource In tsInfoFile.Sources
-                If aSource.Active Then
-                    aSource.LastTest = DateTime.Now()
-                End If
-            Next
-            fCurrentTestFile.Source.LastTest = DateTime.Now()
-            fCurrentTestFile.Switch.LastTest = DateTime.Now()
-            For Each aSwitch In tsInfoFile.Switches
-                If aSwitch.Active Then
-                    aSwitch.LastTest = DateTime.Now()
-                    For Each aCard In aSwitch.Cards
-                        If (aCard.Active) Then
-                            aCard.LastTest = DateTime.Now()
-                        End If
-                    Next
-                End If
-            Next
-        Catch ex As Exception
-            Throw
-        End Try
-    End Sub
 End Module

@@ -7,6 +7,11 @@ Public Module modMain
     Public boolConfigStatus As Boolean
     Public boolIOStatus As Boolean
 
+    Const strAuditVolt As String = "0.65"
+    Const strAuditCurrentRange As String = "1e-6"
+    Const strAuditFilterType As String = "FILTER_REPEAT_AVG"
+    Const strAuditFilterCount As String = "1"
+    Const strAuditNPLC As String = "1"
 
 
     ' Name: NewTest()
@@ -60,16 +65,25 @@ Public Module modMain
                         & "R4 BP Closures,R5 BP Closures,R6 BP Closures")
         For i = 1 To 6
             strData = "Slot " & i & "," & CardInfo(i)
-            WriteToDataFile(strData & vbCr)
+            WriteToDataFile(strData)
         Next
 
         'configure hardware for verifcation
-        ConfigureHardware()
-        WriteToDataFile(",Voltage,Current Range,Filter Type,Filter Count,NPLC,Row3 (Ohms),Row3 Open (nA),Row4 (Ohms)," _
+        ConfigureHardware(strAuditVolt, strAuditcurrenrange, )
+        WriteToDataFile(vbCr & ",Voltage,Current Range,Filter Type,Filter Count,NPLC,Row3 (Ohms),Row3 Open (nA),Row4 (Ohms)," _
                         & "Row5 (Ohms),Row6 (Ohms),Tollerance (+/- %)")
-        WriteToDataFile("Audit Config,0.65,1e-6,FILTER_REPEAT_AVG,1,1," & frmConfig.txtRow3Resistor.Text & "," _
-                        & frmConfig.txtAuditZero.Text & "," & frmConfig.txtRow4Resistor.Text & "," _
-                        & frmConfig.txtRow6Resistor.Text & "," & frmConfig.txtTolerance.Text)
+        WriteToDataFile("Audit Config," _
+                        & strAuditVolt & "," _
+                        & strAuditCurrentRange & "," _
+                        & strAuditFilterType & "," _
+                        & strAuditFilterCount & "," _
+                        & strAuditNPLC & "," _
+                        & frmConfig.txtRow3Resistor.Text & "," _
+                        & frmConfig.txtAuditZero.Text & "," _
+                        & frmConfig.txtRow4Resistor.Text & "," _
+                        & frmConfig.txtRow5Resistor.Text & "," _
+                        & frmConfig.txtRow6Resistor.Text & "," _
+                        & frmConfig.txtTolerance.Text)
 
         'hardware verification
         HardwareVerification()

@@ -19,7 +19,7 @@ Public Module modMain
         Dim strData As String   'used to temporarily hold data to write to data file
         Dim i As Integer        'generic counter variable
 
-        'hide frmTestInfo
+        'Hide frmTestInfo
         frmTestName.Hide()
 
         'Open communication with the measurement hardware

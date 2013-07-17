@@ -30,8 +30,6 @@ Public Module modShared
     ' Keithley IVI-COM Driver for communicating with 3700 series system switches.  
     ' This instance is referenced by all functions which communicate with the measurement hardware
     'Public switchDriver As New Ke37XX 'commented out by DB 29May2013 for raw TCP communication
-    Public switchDriver As New TcpClient
-    Public switchStream As NetworkStream
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
     ' it may be desireable to incorporate database-driven user authentication / authorization for granular permissions
     Public strAdminPassword As String = "C0balt22"
@@ -167,13 +165,75 @@ Public Module modShared
             Throw
         End Try
     End Sub
+    ' Name: ConfigureHardware()
+    ' Parameters:
+    '           strVolts: the voltage to set the sourcemeter channels to
+    '           strCurrent: the current range and compliance limit to set the sourcemeter to
+    '           strFilter: the filter type to set the sourcemeter to
+    '           strCount: the number of readings for the filter to use
+    '           strNPLC: the Number of PowerLine Cycles for each reading
+    ' Description: This subroutine will configure both channels of the SourceMeter to the parameters passed to the subroutine.
 
-    Public Sub ConfigureHardware()
+    Public Sub ConfigureHardware(strVolts As String, strCurrent As String, strFilter As String, _
+                                    strCount As String, strNPLC As String)
+        ' Start with all intersections open
+        SwitchIOWrite("channel.open('allslots')")
+        ' Set connection rule to "make before break"
+        SwitchIOWrite("node[1].channel.connectrule = 2")
+
+        ' set both SMU channels to DC volts
+        ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
+        SwitchIOWrite("node[2].smua.source.func = 1")
+        SwitchIOWrite("node[2].smub.source.func = 1")
+
+        ' Set the bias for both channels based on the passed value
+        SwitchIOWrite("node[2].smua.source.levelv = " & strVolts)
+        SwitchIOWrite("node[2].smub.source.levelv = " & strVolts)
+
+        ' Range is hard-coded to 1.  
+        SwitchIOWrite("node[2].smua.source.rangev = 1")
+        SwitchIOWrite("node[2].smub.source.rangev = 1")
+
+        'Set the current measurement range based on the passed value
+        SwitchIOWrite("node[2].smua.source.rangei = " & strCurrent)
+        SwitchIOWrite("node[2].smub.source.rangei = " & strCurrent)
+
+        ' disable autorange for both output channels
+        SwitchIOWrite("node[2].smua.source.autorangei = 0")
+        SwitchIOWrite("node[2].smub.source.autorangei = 0")
+
+        ' Configure the DMM
+        SwitchIOWrite("node[2].smua.measure.filter.type = " & strFilter)
+        SwitchIOWrite("node[2].smub.measure.filter.type = " & strFilter)
+        SwitchIOWrite("node[2].smua.measure.filter.count = " & strCount)
+        SwitchIOWrite("node[2].smub.measure.filter.count = " & strCount)
+        SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
+        SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
+        SwitchIOWrite("node[2].smua.measure.nplc = " & strNPLC)
+        SwitchIOWrite("node[2].smub.measure.nplc = " & strNPLC)
+
+        ' Set output off mode to OUTPUT_HIGH_Z
+        SwitchIOWrite("node[2].smua.source.offmode = 2")
+        SwitchIOWrite("node[2].smub.source.offmode = 2")
+
+        ' Clear the non-volatile measurement buffers
+        SwitchIOWrite("node[2].smua.nvbuffer1.clear()")
+        SwitchIOWrite("node[2].smua.nvbuffer2.clear()")
+        SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
+        SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
+
+        ' Set the Autozero for both channels to autozero once
+        SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
+        SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
+
+        'Turn on SourceMeter
+        SwitchIOWrite("node[2].smua.source.output = 1")
+        SwitchIOWrite("node[2].smub.source.output = 1")
+
 
     End Sub
 
     Public Sub HardwareVerification()
-
     End Sub
     ' ------------------------------------------------------------
     ' Exception Handlers

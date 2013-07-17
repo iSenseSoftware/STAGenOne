@@ -33,42 +33,37 @@
             ' --------------------------------------
             Dim stpIntervalTimer As New Stopwatch ' Tracks elapsed time for current measurement interval
             Dim intInterval As Integer = cfgGlobal.RecordInterval ' Length of measurement interval in seconds
-            Dim dtTheTime As Date ' Represents the timestamp of the current reading
-            Dim intMilliseconds As Integer ' Measurement interval in milliseconds
+            Dim dtTheTime As Date               ' Represents the timestamp of the current reading
+            Dim intMilliseconds As Integer      ' Measurement interval in milliseconds
             Dim intCardCount As Integer = cfgGlobal.CardConfig
-            Dim intSensorCount As Integer = fCurrentTestFile.Sensors.Length
+            Dim intSensorCount As Integer       ' Number of Sensors to scan
+            Dim strVoltageReadings As String    ' String for building list of voltage readings
+            Dim strCurrentReadings As String    ' String for building list of current readings
+            Dim intReading As Integer = 0       ' Integer for counting the number of measurements; used for calculating
+            Dim intTimeInterval As Integer      ' IntTimeInterval = intReading * intInterval
+            Dim intLoopSensor As Integer        ' Loop counter for main measurement loop
+            Dim dblCurrent As Double
+            Dim dblVolts As Double
+
+            ' Define Variables
             intMilliseconds = intInterval * 1000
+            intSensorCount = 16 * cfgGlobal.CardConfig
+
             ' To simplify interaction with user interface in main thread and timer threads, disable prevention of
             ' cross-thread calls.  Because of the simplicity of the test sequence and its form this can be done safely
             ' though in general, allowing the program to make cross-thread calls can lead to problematic and unexpected results
             ' such as duplicate assignment of variable values or attempts to simultaneously access the same resource.
             Control.CheckForIllegalCrossThreadCalls = False
+
             ' Update the instrument front displays
             SwitchIOWrite("node[2].display.clear()")
             SwitchIOWrite("node[1].display.clear()")
             SwitchIOWrite("node[2].display.settext('Test Running')")
             SwitchIOWrite("node[1].display.settext('Test Running')")
-            ' Set both SMU channels to DC volts
-            SwitchIOWrite("node[2].smua.source.func = 1")
-            SwitchIOWrite("node[2].smub.source.func = 1")
-            ' NOTE: I had to add a 10ms delat between source meter setting changes to avoid overflowing the System Switch
-            ' input buffer.  It appears that the delay in relaying messages from the switch to the SMU through the TSP-Net link
-            ' can cause a backlog.
-            Delay(10)
-            ' Set the bias for both channels based on the value in config
-            SwitchIOWrite("node[2].smua.source.levelv = " & cfgGlobal.Bias)
-            SwitchIOWrite("node[2].smub.source.levelv = " & cfgGlobal.Bias)
-            Delay(10)
-            ' @TODO: Range is hard-coded to 1.  This should be changed to adapt to the user-entered config setting
-            ' as the specified range for the SMU is up to 40v
-            SwitchIOWrite("node[2].smua.source.rangev = 1")
-            SwitchIOWrite("node[2].smub.source.rangev = 1")
-            Delay(10)
-            ' disable autorange for both output channels.  This reflects the settings used in the experimental version of the STA
-            SwitchIOWrite("node[2].smua.source.autorangei = 0")
-            SwitchIOWrite("node[2].smub.source.autorangei = 0")
-            Delay(10)
-            ' Set the dynamic range based on the configuration settings
+
+            ' Configure SourceMeter
+            ConfigureHardware(cfgGlobal.Bias, cfgGlobal.Range, cfgGlobal.Filter, cfgGlobal.Samples, cfgGlobal.NPLC)
+
             Select Case cfgGlobal.Range
                 Case CurrentRange.one_uA
                     SwitchIOWrite("node[2].smua.source.rangei = .001")
@@ -80,108 +75,84 @@
                     SwitchIOWrite("node[2].smua.source.rangei = .1")
                     SwitchIOWrite("node[2].smub.source.rangei = .1")
             End Select
-            ' Turn both channels on
-            Delay(10)
-            SwitchIOWrite("node[2].smua.source.output = 1")
-            SwitchIOWrite("node[2].smub.source.output = 1")
-            Delay(10)
-            ' Configure the DMM
-            SwitchIOWrite("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
-            SwitchIOWrite("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
-            Delay(10)
-            SwitchIOWrite("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
-            SwitchIOWrite("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
-            Delay(10)
-            SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
-            SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
-            Delay(10)
-            SwitchIOWrite("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
-            SwitchIOWrite("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
-            Delay(10)
-            ' Clear the non-volatile measurement buffers.  These will be used as transient storage of measured values.
-            SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
-            SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
-            Delay(10)
-            ' Set connection rule to "make before break"
-            ' @NOTE: This is the setting from the old software.  Should this be changed?
-            SwitchIOWrite("node[1].channel.connectrule = 2")
-            ' Build a string which will allow us to close all intersections in Row 1
-            ' The string is formatted as a series of comma separated codes each of which identify a single switch matrix intersection
-            Dim strChannelString As String = ""
-            For i = 0 To intSensorCount - 1
-                If (i = intSensorCount - 1) Then
-                    strChannelString = strChannelString & fCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(fCurrentTestFile.Sensors(i).Column), 2) & ""
-                Else
-                    strChannelString = strChannelString & fCurrentTestFile.Sensors(i).Slot & 1 & StrPad(CStr(fCurrentTestFile.Sensors(i).Column), 2) & ","
-                End If
-            Next
-            ' Add codes to the string to identify the necessary backplane relay intersections
-            For x As Integer = 1 To intCardCount
-                strChannelString = strChannelString & "," & x & "911," & x & "912"
-            Next
-            Delay(10)
-            ' close all relays in row 1
-            SwitchIOWrite("node[1].channel.exclusiveclose('" & strChannelString & "')")
-            ' Start all timers
-            frmTestForm.ElapsedTimer.Start() ' Start the form timer component
-            stpIntervalTimer.Start() ' Current interval stopwatch
-            stpTotalTime.Start() ' total test time stopwatch
-            fCurrentTestFile.TestStart = DateTime.Now()
-            ' Run the test loop until the boolTestStop variable returns false (the user clicks Abort)
+
+            'Here's some legacy code to figure out:
+            '' '' Start all timers
+            ' ''frmTestForm.ElapsedTimer.Start() ' Start the form timer component
+            ' ''stpIntervalTimer.Start() ' Current interval stopwatch
+            ' ''stpTotalTime.Start() ' total test time stopwatch
+            ' ''fCurrentTestFile.TestStart = DateTime.Now()
+
+            'Set the flags for running the loop
             boolIsTestRunning = True
             boolIsTestStopped = False
+
+            'Run the testloop until the boolTestStop variable returns false (the user clicks Abort)
             Do While boolIsTestRunning
-                For z = 0 To fCurrentTestFile.Sensors.Length - 1
-                    ' Open relay to row 1
-                    SwitchIOWrite("node[1].channel.open('" & fCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    Debug.Print("node[1].channel.open('" & fCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    ' Close relay to row 2
-                    SwitchIOWrite("node[1].channel.close('" & fCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    Debug.Print("node[1].channel.close('" & fCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(fCurrentTestFile.Sensors(z).Column), 2) & "')")
+                ' Determine the "Time" for the set of measurements, and add it to the current measurement string
+                intTimeInterval = intReading * intInterval
+                strCurrentReadings = intTimeInterval + ","
+                ' Reset the voltage measurement string
+                strVoltageReadings = ","
+
+                'loop through sensor readings
+                For intLoopSensor = 1 To intSensorCount
+                    'Close the appropriate switch pattern
+                    SwitchIOWrite("node[1].channel.exclusiveclose('Sensor" & intLoopSensor & "')")
+                    Debug.Print("node[1].channel.exclusiveclose('Sensor" & intLoopSensor & "')")
+
                     ' Allow settling time
                     Delay(cfgGlobal.SettlingTime)
+
                     ' Record V and I readings to buffer
-                    dtTheTime = DateTime.Now()
                     SwitchIOWrite("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
-                    Dim dblCurrent As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)"))
-                    'switchDriver.System.DirectIO.FlushRead()
 
-                    Dim dblVolts As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)"))
-                    'switchDriver.System.DirectIO.FlushRead()
-                    ' Return relays to their previous state
-                    SwitchIOWrite("node[1].channel.open('" & tfCurrentTestFile.Sensors(z).Slot & "2" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    SwitchIOWrite("node[1].channel.close('" & tfCurrentTestFile.Sensors(z).Slot & "1" & StrPad(CStr(tfCurrentTestFile.Sensors(z).Column), 2) & "')")
-                    ' Add reading to tfCurrentTestFile.Sensors(z)'s reading array
+                    ' Read V and I from buffer
+                    dblCurrent = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer1.n, node[2].smub.nvbuffer1)")) * 10 ^ 9
+                    dblVolts = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smub.nvbuffer2.n, node[2].smub.nvbuffer2)"))
 
-                    tfCurrentTestFile.Sensors(z).AddReading(Reading.ReadingFactory(dtTheTime, dblCurrent, dblVolts))
-                    ' Set module-wide vars for the most recent readings for use by the chart-updating function
-                    strCurrentID = tfCurrentTestFile.Sensors(z).SensorID
-                    lngCurrentTime = stpTotalTime.ElapsedMilliseconds
-                    dblCurrentCurrent = dblCurrent * 10 ^ 9
-                    ' Report progress so the chart can be updated
-                    frmTestForm.MainLoop.ReportProgress(0)
-                    ' Update system info file with switch count
-                    tsInfoFile.AddSwitchEvent(tfCurrentTestFile.Sensors(z).Slot, 4)
+                    ' Add reading to current and voltage strings
+                    strCurrentReadings = strCurrentReadings + dblCurrent + ","
+                    strVoltageReadings = strVoltageReadings + dblVolts + ","
+
+                    ' Update the Chart
+                    strCurrentID = "Sensor" + intLoopSensor
+                    AddGraphData(strCurrentID, intTimeInterval, dblCurrent)
                 Next
+
                 ' Record the voltage and current across all sensors
+                ' Close all Switches
+                SwitchIOWrite("node[1].channel.exclusiveclose('Sensor" & intSensorCount + 1 & "')")
+                Debug.Print("node[1].channel.exclusiveclose('Sensor" & intSensorCount + 1 & "')")
+
+                ' Allow settling time
                 Delay(cfgGlobal.SettlingTime)
-                Dim dtAllTheTime As DateTime = DateTime.Now()
+
+                ' Record V and I readings to buffer
                 SwitchIOWrite("node[2].smua.measure.iv(node[2].smua.nvbuffer1, node[2].smua.nvbuffer2)")
-                Dim dblAllCurrent As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer1.n, node[2].smua.nvbuffer1)"))
-                'switchDriver.System.DirectIO.FlushRead()
-                Dim dblAllVolts As Double = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)"))
-                'switchDriver.System.DirectIO.FlushRead()
-                tfCurrentTestFile.addFullCircuitReading(dtAllTheTime, dblAllCurrent, dblAllVolts)
+
+                ' Read V and I from buffer
+                dblCurrent = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer1.n, node[2].smua.nvbuffer1)")) * 10 ^ 9
+                dblVolts = CDbl(SwitchIOWriteRead("printbuffer(1, node[2].smua.nvbuffer2.n, node[2].smua.nvbuffer2)"))
+
+                ' Add Channel A readings to data string
+
+                ' Write string to data file
+                WriteToDataFile(strCurrentReadings + strVoltageReadings)
+
                 frmTestForm.MainLoop.ReportProgress(10)
+
+                ' Check if measurements complete within the interval period
                 If (stpIntervalTimer.ElapsedMilliseconds > intMilliseconds) Then
                     MsgBox("Could not finish measurements within injection interval specified")
                     boolIsTestRunning = False
                     boolIsTestStopped = True
                 End If
                 Dim intLast As Integer
+
+                'Wait for the remainder of the interval period to elapse
                 Do Until stpIntervalTimer.ElapsedMilliseconds >= intMilliseconds
                     ' do nothing.  This is to ensure that the interval elapses before another round of measurements
-
                     If Not boolIsTestRunning Then
                         If intLast = 0 And (intMilliseconds - stpIntervalTimer.ElapsedMilliseconds) / 1000 = 0 Then
                             frmTestForm.btnStartTest.Text = "Test Complete"
@@ -193,8 +164,11 @@
                         End If
                     End If
                 Loop
+
+                'Restart the interval timer, then repeat the loop
                 stpIntervalTimer.Restart()
             Loop
+
             ' After test is complete, reset state
             tfCurrentTestFile.TestEnd = DateTime.Now()
             SetLastTestForSysInfo()
@@ -284,6 +258,31 @@
     End Sub
 
     Public Sub EndTest()
+
+        'Things to do if communication is open:
+        If boolIOStatus Then
+            'Open all switches
+            SwitchIOWrite("channel.open('allslots')")
+
+            'Turn off the sourcemeters
+            SwitchIOWrite("node[2].smua.source.output = 0")
+            SwitchIOWrite("node[2].smub.source.output = 0")
+
+            'Close communication
+            CloseKeithleyIO()
+        End If
+
+        'Things to do if data file is open
+        If boolDataFileOpen Then
+            'Close the data file
+            CloseDataFile()
+        End If
+
+        'Re-enable the frmMainForm buttons
+        With frmMain
+            .btnConfig.Enabled = True
+            .btnNewTest.Enabled = True
+        End With
 
     End Sub
 End Module

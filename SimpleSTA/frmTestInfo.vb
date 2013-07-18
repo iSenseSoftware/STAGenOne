@@ -18,32 +18,32 @@ Public Class frmTestInfo
     ' 1. Attempts to load the configuration from file or defaults
     ' 2. Attempts to establish a connection with the measurement hardware
     ' 3. Loads existing system info file (or creates new) and updates with current hardware
-    Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Try
-            ' Attempt to load configuration
-            If (LoadOrRefreshConfiguration()) Then
-                If (EstablishIO()) Then
-                    '                    tfCurrentTestFile = New TestFile
-                    If (LoadAndUpdateSystemInfo()) Then
-                        ' do nothing, hooray!
-                    Else
-                        MsgBox("Unable to read or update test system info file")
-                        Me.Close()
-                    End If
-                Else
-                    MsgBox("Unable to establish I/O with the system switch")
-                    Me.Close()
-                End If
-            Else
-                MsgBox("Unable to load configuration.")
-                Me.Close()
-            End If
-            ' Set form control visibility based upon the card configuration 
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-            Me.Close()
-        End Try
-    End Sub
+    'Private Sub frmTestInfo_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    '    Try
+    '        ' Attempt to load configuration
+    '        If (LoadOrRefreshConfiguration()) Then
+    '            If (EstablishIO()) Then
+    '                '                    tfCurrentTestFile = New TestFile
+    '                If (LoadAndUpdateSystemInfo()) Then
+    '                    ' do nothing, hooray!
+    '                Else
+    '                    MsgBox("Unable to read or update test system info file")
+    '                    Me.Close()
+    '                End If
+    '            Else
+    '                MsgBox("Unable to establish I/O with the system switch")
+    '                Me.Close()
+    '            End If
+    '        Else
+    '            MsgBox("Unable to load configuration.")
+    '            Me.Close()
+    '        End If
+    '        ' Set form control visibility based upon the card configuration 
+    '    Catch ex As Exception
+    '        GenericExceptionHandler(ex)
+    '        Me.Close()
+    '    End Try
+    'End Sub
     ' Name: btnCreateTest_Click()
     ' Handles: User clicks 'Create Test' button
     ' Description:
@@ -52,39 +52,39 @@ Public Class frmTestInfo
     '   3. Performs a continuity check using a set of resistors in matrix rows 3-6
     '   4. If the check passes, opens the TestForm
     '   5. If it fails, aborts and alerts the user
-    Private Sub btnCreateTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateTest.Click
-        Try
-            If (ValidateForm()) Then
-                If (File.Exists(cfgGlobal.DumpDirectory & Path.DirectorySeparatorChar & txtTestName.Text & ".xml")) Then
-                    MsgBox("A file with that name already exists.  Choose a new name.")
-                    txtTestName.SelectAll()
-                Else
-                    UpdateTestFile()
-                    MsgBox("Preparing to perform system self check.  Make sure all fixtures are open before proceeding", vbOKOnly)
-                    'tfCurrentTestFile.AuditCheck = New AuditCheck
-                    RunAuditCheck()
-                    tfCurrentTestFile.AuditCheck.Validate()
-                    If (tfCurrentTestFile.AuditCheck.Pass) Then
-                        tfCurrentTestFile.WriteToFile()
-                        SwitchIOWrite("node[2].display.clear()")
-                        SwitchIOWrite("node[2].display.settext('Ready to test')")
-                        frmTestForm.Show()
-                        Me.Close()
-                    Else
-                        ' Make sure the test file is created even with a failure so the user can see why the test failed
-                        tfCurrentTestFile.WriteToFile()
-                        tfCurrentTestFile = Nothing
-                        MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
-                        Me.Close()
-                    End If
-                End If
-            Else
-                MsgBox("Form validation failed.  Check that all fields are complete.")
-            End If
-        Catch ex As Exception
-            GenericExceptionHandler(ex)
-        End Try
-    End Sub
+    'Private Sub btnCreateTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCreateTest.Click
+    '    Try
+    '        If (ValidateForm()) Then
+    '            If (File.Exists(cfgGlobal.DumpDirectory & Path.DirectorySeparatorChar & txtTestName.Text & ".xml")) Then
+    '                MsgBox("A file with that name already exists.  Choose a new name.")
+    '                txtTestName.SelectAll()
+    '            Else
+    '                UpdateTestFile()
+    '                MsgBox("Preparing to perform system self check.  Make sure all fixtures are open before proceeding", vbOKOnly)
+    '                'tfCurrentTestFile.AuditCheck = New AuditCheck
+    '                RunAuditCheck()
+    '                tfCurrentTestFile.AuditCheck.Validate()
+    '                If (tfCurrentTestFile.AuditCheck.Pass) Then
+    '                    tfCurrentTestFile.WriteToFile()
+    '                    SwitchIOWrite("node[2].display.clear()")
+    '                    SwitchIOWrite("node[2].display.settext('Ready to test')")
+    '                    frmTestForm.Show()
+    '                    Me.Close()
+    '                Else
+    '                    ' Make sure the test file is created even with a failure so the user can see why the test failed
+    '                    tfCurrentTestFile.WriteToFile()
+    '                    tfCurrentTestFile = Nothing
+    '                    MsgBox("Self check failed!  Contact instrument owner to determine course of action.")
+    '                    Me.Close()
+    '                End If
+    '            End If
+    '        Else
+    '            MsgBox("Form validation failed.  Check that all fields are complete.")
+    '        End If
+    '    Catch ex As Exception
+    '        GenericExceptionHandler(ex)
+    '    End Try
+    'End Sub
     ' Name: ValidateForm()
     ' Returns: Boolean: Indicates success / failure
     ' Description: Checks user inputs against a set of formatting / data type rules

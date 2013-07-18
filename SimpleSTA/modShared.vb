@@ -22,6 +22,9 @@ Public Module modShared
     Public Const strApplicationDescription As String = "Software for CGM Sensor release testing"
 
     Public strHardwareErrorList As String 'Lists Hardware Errors 
+    Public boolAuditPassFail() As Boolean
+    Public boolAuditVerificationFailure As Boolean
+
 
     Public strAppDir As String = My.Application.Info.DirectoryPath ' The path to the application install directory
     Public cfgGlobal As New clsConfiguration ' Global inexstance of the Configuration object that stores config information for the current session
@@ -45,7 +48,6 @@ Public Module modShared
         ten_uA = 2
         hundred_uA = 3
     End Enum
-
     Public Enum FilterType
         FILTER_MOVING_AVG = 1
         FILTER_REPEAT_AVG = 2
@@ -59,7 +61,116 @@ Public Module modShared
         FIVE_CARD_EIGHTY_SENSORS = 5
         SIX_CARD_NINETY_SIX_SENSORS = 6
     End Enum
+   
+    ' -----------------------------------------------------------------
+    ' Name: RunAuditCheck()
+    ' Returns: Boolean: Indicates success of failure (Note: This indicates whether the check has been successfully performed, not whether or not it passed!)
+    ' Description: Cycles through all columns in attached switch matrix cards and connects each to a series of resistors, measuring i and v
+    '           and storing the readings in an AuditCheck object
+    Public Function RunAuditCheck() As Boolean
+        Try
+            ' Start with all intersections open
+            SwitchIOWrite("channel.open('allslots')")
+            SwitchIOWrite("node[2].display.clear()")
+            SwitchIOWrite("node[2].display.settext('Running Self Check')")
+            ' set both SMU channels to DC volts
+            ' Note: The 2602A does not appear to understand the enum variables spelled out in the user manual.  Integers are used instead
+            SwitchIOWrite("node[2].smub.source.func = 1")
+            ' Set the bias for both channels based on the value in cfgGlobal
+            SwitchIOWrite("node[2].smub.source.levelv = " & cfgGlobal.Bias)
+            ' Range is hard-coded to 1.  Does this need to be a Configuration setting in the future?
+            SwitchIOWrite("node[2].smub.source.rangev = 1")
+            ' disable autorange for both output channels
+            SwitchIOWrite("node[2].smub.source.autorangei = 0")
+            ' Populate the AuditCheck object in the fCurrentTestFile with empty AuditChannel objects
+            Dim i As Integer
+            Dim z As Integer
+            Dim acChannel As New AuditChannel
+            'For i = cfgGlobal.CardConfig To 1 Step -1
+            For i = 1 To cfgGlobal.CardConfig
+                For z = 1 To 16
+                    fCurrentTestFile.AuditCheck.AddChannel(acChannel.ChannelFactory(i, z))
+                Next
+            Next
+            SwitchIOWrite("node[2].smub.source.output = 1")
 
+            ' Set connection rule to "make before break"
+            ' @TODO: This is the setting from the old software.  Should this be changed?
+            SwitchIOWrite("node[1].channel.connectrule = 2")
+            'SwitchIOWrite("node[2].display.clear()")
+            ' Configure the DMM
+            SwitchIOWrite("node[2].smua.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smub.measure.filter.type = " & cfgGlobal.Filter - 1)
+            SwitchIOWrite("node[2].smua.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smub.measure.filter.count = " & cfgGlobal.Samples)
+            SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smub.measure.filter.enable = 1")
+            SwitchIOWrite("node[2].smua.measure.nplc = " & cfgGlobal.NPLC)
+            SwitchIOWrite("node[2].smub.measure.nplc = " & cfgGlobal.NPLC)
+            ' Set output off mode to OUTPUT_HIGH_Z
+            SwitchIOWrite("node[2].smua.source.offmode = 2")
+            SwitchIOWrite("node[2].smub.source.offmode = 2")
+            'DirectIOWrapper("node[2].smua.source.output = 0")
+            ' Clear the non-volatile measurement buffers
+            SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
+            SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
+            ' NOTE: Should this be changed in the future to be adaptive rather than hard coded?
+            SwitchIOWrite("node[2].smub.source.rangei = .000001")
+            SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
+
+            For Each acChannel In fCurrentTestFile.AuditCheck.AuditChannels
+                'Take readings from first resistor
+                GatherAuditReading(4, acChannel)
+                GatherAuditReading(5, acChannel)
+                GatherAuditReading(6, acChannel)
+                GatherAuditReading(3, acChannel)
+                GatherAuditReading(3, acChannel, True)
+                ' Add three switches to total
+                tsInfoFile.AddSwitchEvent(acChannel.Card, 6)
+            Next
+            ' Turn off output to source meter channels
+            SwitchIOWrite("node[2].smub.source.output = 0 node[2].smua.source.output = 0")
+            Return True
+        Catch ex As COMException
+            ComExceptionHandler(ex)
+            Return False
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+            Return False
+        End Try
+    End Function
+    ' Name: GatherAuditReading()
+    ' Parameters:
+    '           intRow: The switch matrix row in which the resistor to be used for testing is wired
+    '           acChannel: The AuditChannel object to which the AuditReading generated by this sub is added
+    ' Description: 
+    Public Sub GatherAuditReading(ByVal intRow As Integer, ByRef acChannel As AuditChannel, Optional ByVal boolLastCheck As Boolean = False)
+        Try
+            If (intRow < 3 Or intRow > 6) Then
+                Throw New Exception("Row value given as first parameter to GatherAuditReading was not a valid auditing channel")
+            End If
+            Dim dblCurrent As Double
+            Dim dblVoltage As Double
+            'switchDriver.System.DirectIO.FlushRead()
+            If boolLastCheck Then
+                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "91" & intRow & "')")
+            Else
+                SwitchIOWrite("node[1].channel.exclusiveclose('" & acChannel.Card & 2 & StrPad(acChannel.Column, 2) & "," & acChannel.Card & intRow & StrPad(acChannel.Column, 2) & "," & acChannel.Card & "912," & acChannel.Card & "91" & intRow & "')")
+            End If
+            Delay(cfgGlobal.SettlingTime)
+            Debug.Print("Start of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond)
+            SwitchIOWrite("node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2)")
+            'node[1].channel.exclusiveclose('1101,1911') node[2].smub.measure.iv(node[2].smub.nvbuffer1, node[2].smub.nvbuffer2) printbuffer(1, 1, node[2].smub.nvbuffer1)
+            dblCurrent = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer1)"))
+            'switchDriver.System.DirectIO.FlushRead()
+            dblVoltage = CDbl(SwitchIOWriteRead("printbuffer(1, 1, node[2].smub.nvbuffer2)"))
+            'switchDriver.System.DirectIO.FlushRead()
+            Debug.Print("End of Audit Reading: " & DateTime.Now.Second & ":" & DateTime.Now.Millisecond & vbLf)
+            acChannel.AddReading(AuditReading.ReadingFactory(dblVoltage, dblCurrent, cfgGlobal.ResistorNominalValues(intRow - 3), intRow, boolLastCheck))
+        Catch ex As Exception
+            Throw
+        End Try
+    End Sub
     ' Name: ConfigureHardware()
     ' Parameters:
     '           strVolts: the voltage to set the sourcemeter channels to
@@ -124,6 +235,8 @@ Public Module modShared
         'Turn on SourceMeter
         SwitchIOWrite("node[2].smua.source.output = 1")
         SwitchIOWrite("node[2].smub.source.output = 1")
+
+
     End Sub
 
     Public Sub HardwareVerification()
@@ -132,7 +245,12 @@ Public Module modShared
 
         Dim dblPassHigh As Double
         Dim dblPassLow As Double
+        Dim strPassFail As String
 
+        'Set Pass/Fail Array
+        For i = 1 To 32
+            boolAuditPassFail(i) = True
+        Next
 
         'Verification of Row 3 Open
         dblPassHigh = CDbl(frmConfig.txtRow3Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
@@ -159,12 +277,21 @@ Public Module modShared
         dblPassLow = CDbl(frmConfig.txtRow6Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
         RowVerification(6, False, dblPassHigh, dblPassLow)
 
-        'Errors decision (yes- display error message box & save error list to file & end test, no- open all switches)
-        If boolHardwareError Then
-            MsgBox("Hardware Verification Failed" + txtHardwareErrorList) 'List All Errors  NEED TO COMPLETE MSG BOX
+        'Write Pass/Fail Data to file
+        strPassFail = "Pass/Fail"
+        For i = 1 To 32
+            If boolAuditPassFail(i) Then
+                strPassFail = strPassFail + ",Pass"
+            Else
+                strPassFail = strPassFail + ",Fail"
+            End If
+        Next
 
-            ' Write string to data file
-            WriteToDataFile(txtHardwareErrorList)
+        WriteToDataFile(strPassFail)
+
+        'Errors decision (yes- display error message box & save error list to file & end test, no- open all switches)
+        If boolAuditVerificationFailure = True Then
+            MsgBox("Hardware Verification Failed" + vbCr + strHardwareErrorList)
 
             EndTest()
         Else
@@ -180,19 +307,71 @@ Public Module modShared
     '           dblPassHigh: High end of the Pass criteria for the resistor value
     '           dblPassLow: Low end of the pass criteria for the resistor value
     ' Description: 
-    
-    Public Sub RowVerification(ByVal intRow As Integer, ByVal boolOpen As Boolean, ByVal dblPassHigh As Double, ByVal dblPassLow As Double)
+
+
+    Public Sub RowVerification(ByVal intRow As Integer, ByVal boolOpen As Boolean, ByVal dblHigh As Double, ByVal dblLow As Double)
+
+        'Local Variables
+        Dim intColumnCounter As Integer
+        Dim strCurrentReading As String
+        Dim strMeasurements As String
+        Dim strSwitchPattern As String
+        Dim strOpenClosed As String
+        Dim strAuditPassFail As String
+
+        'Giving boolOpen True will return Open, boolOpen False will return Close
+        If boolOpen = True Then
+            strOpenClosed = "Open"
+        Else
+            strOpenClosed = "Close"
+        End If
+
+        strMeasurements = "Row" + intRow + "_" + strOpenClosed + "_ (nA)"
+
+
         'Set Column Counter to 1
+        intColumnCounter = 1
+
+        For intColumnCounter = 1 To cfgGlobal.CardConfig * 16
+
+            'Generate Switch Pattern 
+            strSwitchPattern = AuditPatternGenerator(1, intRow, intColumnCounter)
+
+
+            'Close Switches
+            SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+            Debug.Print("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+
+            'Record I Reading
+            strCurrentReading = SwitchIOWriteRead("print(node[2].smua.measure.i)")
+
+            'Add Reading to String
+            strMeasurements = strMeasurements + "," + strCurrentReading
+            'Verify Measurement 
+            If CDbl(strCurrentReading) > dblHigh Or CDbl(strCurrentReading) < dblLow Then
+                boolAuditPassFail(intColumnCounter) = False
+
+                boolAuditVerificationFailure = True
+
+                strAuditPassFail = "Row" + intRow + "_" + intColumnCounter + "_" + strOpenClosed + "_:" + strCurrentReading * 10 ^ 9 + "nA" + vbCr
+                strHardwareErrorList = strHardwareErrorList + "," + strAuditPassFail
+            End If
+
+        Next
 
 
     End Sub
-    ' ------------------------------------------------------------
-    ' Exception Handlers
-    ' ------------------------------------------------------------
-    ' Name: GenericExceptionHandler()
-    ' Parameters:
-    '           theException: the generic Exception object from which a (hopefully) useful error message is generated
-    ' Description: Generates a generic error message for the input exception
+
+    Function AuditPatternGenerator(by Val intRowA as Integer, by Val intRowB as Integer, byVal intColumn as Integer) As String
+
+
+        ' ------------------------------------------------------------
+        ' Exception Handlers
+        ' ------------------------------------------------------------
+        ' Name: GenericExceptionHandler()
+        ' Parameters:
+        '           theException: the generic Exception object from which a (hopefully) useful error message is generated
+        ' Description: Generates a generic error message for the input exception
     Public Sub GenericExceptionHandler(ByVal theException As Exception)
         MsgBox(theException.GetType.ToString() & Environment.NewLine & theException.Message & Environment.NewLine & theException.ToString)
     End Sub
@@ -332,4 +511,27 @@ Public Module modShared
             Throw
         End Try
     End Function
+    Public Sub SetLastTestForSysInfo()
+        Try
+            For Each aSource In tsInfoFile.Sources
+                If aSource.Active Then
+                    aSource.LastTest = DateTime.Now()
+                End If
+            Next
+            fCurrentTestFile.Source.LastTest = DateTime.Now()
+            fCurrentTestFile.Switch.LastTest = DateTime.Now()
+            For Each aSwitch In tsInfoFile.Switches
+                If aSwitch.Active Then
+                    aSwitch.LastTest = DateTime.Now()
+                    For Each aCard In aSwitch.Cards
+                        If (aCard.Active) Then
+                            aCard.LastTest = DateTime.Now()
+                        End If
+                    Next
+                End If
+            Next
+        Catch ex As Exception
+            Throw
+        End Try
+    End Sub
 End Module

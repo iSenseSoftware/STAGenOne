@@ -333,7 +333,7 @@ Public Module modKeithleyComm
             Return strCardInfo
         Else
             'Add Model, SN, and Rev to strCardInfo
-            aryIDN() = Split(strCardInfo, ",")
+            aryIDN = Split(strIDNString, ",")
             strCardInfo = aryIDN(0) + "," + aryIDN(3) + "," + aryIDN(2)
 
             'Calculate Ave closure counts for each row

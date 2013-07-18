@@ -100,7 +100,6 @@ Public Class frmTestForm
         Try
             ' Update the total time timer in the user interface
             txtTime.Text = "Total Time: " & StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2) & ":" & StrPad(stpTotalTime.Elapsed.Seconds, 2)
-            tfCurrentTestFile.TestLength = stpTotalTime.Elapsed.TotalSeconds
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -127,11 +126,11 @@ Public Class frmTestForm
     Private Sub btnNoteInjection_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNoteInjection.Click
         ' Add the current time to the test file injections array
         Try
-            Dim timestamp As DateTime = DateTime.Now()
-            fCurrentTestFile.addInjection(timestamp)
             Dim txtNewInjection As New Label
             txtNewInjection.Text = StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2)
             flwInjections.Controls.Add(txtNewInjection)
+            intInjectionCounter = intInjectionCounter + 1
+
             If (stpInjectionTime.IsRunning) Then
                 stpInjectionTime.Restart()
             Else
@@ -172,8 +171,8 @@ Public Class frmTestForm
             ' Clear the default or previous series and legends from the test chart
             TestChart.Series.Clear()
             TestChart.Legends.Clear()
-            txtTestName.Text = "Test Name: " & fCurrentTestFile.Name
-            txtOperator.Text = "Operator: " & frmTestInfo.txt
+            txtTestName.Text = "Test Name: " & frmTestName.txtTestID.Text
+            txtOperator.Text = "Operator: " & frmTestName.txtOperatorIntitials.Text
             ' Configure the test chart
             With TestChart.ChartAreas(0)
                 .CursorX.AutoScroll = False
@@ -247,32 +246,32 @@ Public Class frmTestForm
     End Sub
 
     Public Sub TestChart_AxisViewChanged(sender As Object, e As ViewEventArgs) Handles TestChart.AxisViewChanged
-        AxisViewChanged(TestChart)
+        AxisViewChanged(sender, e)
     End Sub
     Public Sub TestChart_MouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles TestChart.MouseDown
-        ChartMouseDown(TestChart)
+        ChartMouseDown(sender, e)
     End Sub
 
     Public Sub btnZoomReset_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomReset.Click
-        ZoomReset(TestChart)
+        ZoomReset(sender, e)
     End Sub
     Public Sub chkZoomEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkZoomEnabled.CheckedChanged
-        ZoomEnabled(TestChart)
+        ZoomEnabled(sender, e)
     End Sub
     Public Sub chkScrollEnabled_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkScrollEnabled.CheckedChanged
-        ScrollEnabled(TestChart)
+        ScrollEnabled(sender, e)
     End Sub
     Public Sub btnZoomOut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnZoomOut.Click
-        ZoomOut(TestChart)
+        ZoomOut(sender, e)
     End Sub
     Public Sub btnApply_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply.Click
-        ApplyButton(TestChart)
+        ApplyButton(sender, e)
     End Sub
     Public Sub showAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        ShowAllButton(TestChart)
+        ShowAllButton(sender, e)
     End Sub
     Public Sub hideAllButton_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        HideAllButton(TestChart)
+        HideAllButton(sender, e)
     End Sub
 
 

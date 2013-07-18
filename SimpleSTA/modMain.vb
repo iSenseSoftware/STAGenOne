@@ -69,7 +69,7 @@ Public Module modMain
         Next
 
         'configure hardware for verifcation
-        ConfigureHardware(strAuditVolt, strAuditcurrenrange, )
+        ConfigureHardware(strAuditVolt, strAuditCurrentRange, strAuditFilterType, strAuditFilterCount, strAuditNPLC)
         WriteToDataFile(vbCr & ",Voltage,Current Range,Filter Type,Filter Count,NPLC,Row3 (Ohms),Row3 Open (nA),Row4 (Ohms)," _
                         & "Row5 (Ohms),Row6 (Ohms),Tollerance (+/- %)")
         WriteToDataFile("Audit Config," _

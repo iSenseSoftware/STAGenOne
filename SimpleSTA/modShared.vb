@@ -144,28 +144,28 @@ Public Module modShared
         Next
 
         'Verification of Row 3 Open
-        dblPassHigh = CDbl(frmConfig.txtRow3Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
-        dblPassLow = CDbl(frmConfig.txtRow3Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        dblPassHigh = CDbl(frmConfig.txtAuditZero.Text)
+        dblPassLow = 0
         RowVerification(3, True, dblPassHigh, dblPassLow)
 
         'Verification of Row 3 Closed
-        dblPassHigh = CDbl(frmConfig.txtRow3Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
-        dblPassLow = CDbl(frmConfig.txtRow3Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow3Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow3Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
         RowVerification(3, False, dblPassHigh, dblPassLow)
 
         'Verification of Row 4 Closed
-        dblPassHigh = CDbl(frmConfig.txtRow4Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
-        dblPassLow = CDbl(frmConfig.txtRow4Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow4Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow4Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
         RowVerification(4, False, dblPassHigh, dblPassLow)
 
         'Verificaiton of Row 5 Closed
-        dblPassHigh = CDbl(frmConfig.txtRow5Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
-        dblPassLow = CDbl(frmConfig.txtRow5Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow5Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow5Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
         RowVerification(5, False, dblPassHigh, dblPassLow)
 
         'Verification of Row 6 Closed
-        dblPassHigh = CDbl(frmConfig.txtRow6Resistor.Text) * (1 + CDbl(frmConfig.txtTolerance.Text))
-        dblPassLow = CDbl(frmConfig.txtRow6Resistor.Text) * (1 - CDbl(frmConfig.txtTolerance.Text))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow6Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow6Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
         RowVerification(6, False, dblPassHigh, dblPassLow)
 
         'Write Pass/Fail Data to file
@@ -204,65 +204,102 @@ Public Module modShared
 
         'Local Variables
         Dim intColumnCounter As Integer
-        Dim strCurrentReading As String
+        Dim dblCurrentReading As Double
         Dim strMeasurements As String
         Dim strSwitchPattern As String
         Dim strOpenClosed As String
         Dim strAuditPassFail As String
+        Dim intSourceMeter As Integer
+        Dim strSourceMeter As String
 
-        'Giving boolOpen True will return Open, boolOpen False will return Close
+        'When boolOpen = True will List "Open" in the Audit Configuration Row Identififier about the Switches
+        'When boolOpen = False will List "Close" in the Audit Configuration Row Identififier about the Switches
         If boolOpen = True Then
             strOpenClosed = "Open"
         Else
             strOpenClosed = "Close"
         End If
 
-        strMeasurements = "Row" + intRow + "_" + strOpenClosed + "_ (nA)"
+        'Nested Loop to perform row verification
+        'Outer Loop sets the Source Meter 1= SMUA, 2= SMUB (the 2 meausement rows)
+        'Inner Loop, loops through the 32 sensor channels (the 32 sensor columns)
+        For intSourceMeter = 1 To 2
 
-
-        'Set Column Counter to 1
-        intColumnCounter = 1
-
-        For intColumnCounter = 1 To cfgGlobal.CardConfig * 16
-
-            'Generate Switch Pattern 
-            strSwitchPattern = AuditPatternGenerator(1, intRow, intColumnCounter)
-
-
-            'Close Switches
-            SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
-            Debug.Print("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
-
-            'Record I Reading
-            strCurrentReading = SwitchIOWriteRead("print(node[2].smua.measure.i)")
-
-            'Add Reading to String
-            strMeasurements = strMeasurements + "," + strCurrentReading
-            'Verify Measurement 
-            If CDbl(strCurrentReading) > dblHigh Or CDbl(strCurrentReading) < dblLow Then
-                boolAuditPassFail(intColumnCounter) = False
-
-                boolAuditVerificationFailure = True
-
-                strAuditPassFail = "Row" + intRow + "_" + intColumnCounter + "_" + strOpenClosed + "_:" + strCurrentReading * 10 ^ 9 + "nA" + vbCr
-                strHardwareErrorList = strHardwareErrorList + "," + strAuditPassFail
+            'When intSourceMeter = 1 will List "SMUA" in the Audit Configuration Row Identififier about the SourceMeter
+            'When intSourceMeter = 2 will List "SMUB" in the Audit Configuration Row Identififier about the SourceMeter
+            If intSourceMeter = 1 Then
+                strSourceMeter = "SMUA"
+            Else
+                strSourceMeter = "SMUB"
             End If
 
-        Next
+            'String that provides the Audit Configuration Row Identifier
+            strMeasurements = "Row" + intRow + "_" + strOpenClosed + "_(nA)_" + strSourceMeter
 
+            'When boolOpen = True then the switches on Row need to be open, this loops sets the row under investigation (3-6 of Cards)
+            'to be equal to the SourceMeter value (2 measurements rows)
+            If boolOpen = True Then
+                intRow = intSourceMeter
+            End If
+
+            'Column Counter loop to run through all 32 sensor channels
+            For intColumnCounter = 1 To cfgGlobal.CardConfig * 16
+
+                'Generate Switch Pattern 
+                'intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
+                'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
+                'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
+                strSwitchPattern = AuditPatternGenerator(intSourceMeter, intRow, intColumnCounter)
+
+                'Close Switches based on AuditPatternGenerator Function
+                SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+                Debug.Print("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+
+                'Record I Reading
+                dblCurrentReading = CDbl(SwitchIOWriteRead("print(node[2].smua.measure.i)")) * 10 ^ 9
+
+                'Add Reading to String
+                strMeasurements = strMeasurements + "," + dblCurrentReading
+
+                'Verify Measurement against theoretically expected current based on the resistor used
+                If dblCurrentReading > dblHigh Or dblCurrentReading < dblLow Then
+                    boolAuditPassFail(intColumnCounter) = False
+
+                    boolAuditVerificationFailure = True
+
+                    strAuditPassFail = "Row" + intRow + "_" + intColumnCounter + "_" + strOpenClosed + "_:" + dblCurrentReading * 10 ^ 9 + "nA" + vbCr
+                    strHardwareErrorList = strHardwareErrorList + "," + strAuditPassFail
+                End If
+
+            Next 'intColumnCounter 
+
+            'Write String to Data File
+            WriteToDataFile(strMeasurements)
+
+        Next 'intSourceMeter
 
     End Sub
 
-    Function AuditPatternGenerator(by Val intRowA as Integer, by Val intRowB as Integer, byVal intColumn as Integer) As String
+    Function AuditPatternGenerator(ByVal intRowA As Integer, ByVal intRowB As Integer, ByVal intColumn As Integer) As String
+        Dim strSwitchPattern As String
+
+        'Generates the switch pattern needed to be closed to run Row Verification
+        '191x and 291x are the backplanes to read across the 6 cards int the STA (x corresponds to which card)
+        strSwitchPattern = SwitchNumberGenerator(intRowA, intColumn)
+        strSwitchPattern = strSwitchPattern + "," + SwitchNumberGenerator(intRowB, intColumn)
+        strSwitchPattern = strSwitchPattern + ",191" + intRowA + ",291" + intRowA + ",191" + intRowB + ",291" + intRowB
+        Return strSwitchPattern
+
+    End Function
 
 
-        ' ------------------------------------------------------------
-        ' Exception Handlers
-        ' ------------------------------------------------------------
-        ' Name: GenericExceptionHandler()
-        ' Parameters:
-        '           theException: the generic Exception object from which a (hopefully) useful error message is generated
-        ' Description: Generates a generic error message for the input exception
+    ' ------------------------------------------------------------
+    ' Exception Handlers
+    ' ------------------------------------------------------------
+    ' Name: GenericExceptionHandler()
+    ' Parameters:
+    '           theException: the generic Exception object from which a (hopefully) useful error message is generated
+    ' Description: Generates a generic error message for the input exception
     Public Sub GenericExceptionHandler(ByVal theException As Exception)
         MsgBox(theException.GetType.ToString() & Environment.NewLine & theException.Message & Environment.NewLine & theException.ToString)
     End Sub

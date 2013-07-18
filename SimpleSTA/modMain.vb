@@ -7,11 +7,11 @@ Public Module modMain
     Public boolConfigStatus As Boolean
     Public boolIOStatus As Boolean
 
-    Const strAuditVolt As String = "0.65"
-    Const strAuditCurrentRange As String = "1e-6"
-    Const strAuditFilterType As String = "FILTER_REPEAT_AVG"
-    Const strAuditFilterCount As String = "1"
-    Const strAuditNPLC As String = "1"
+    Public Const strAuditVolt As String = "0.65"
+    Public Const strAuditCurrentRange As String = "1e-6"
+    Public Const strAuditFilterType As String = "FILTER_REPEAT_AVG"
+    Public Const strAuditFilterCount As String = "1"
+    Public Const strAuditNPLC As String = "1"
 
 
     ' Name: NewTest()

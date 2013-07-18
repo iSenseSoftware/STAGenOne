@@ -34,44 +34,44 @@ Public Module modGraph
     ' Zoom and Chart updating functions and event handlers
     ' --------------------------------------------------------
     ' Name: TestChart_AxisViewChanged()
-    Public Sub AxisViewChanged(ChartName As Chart)
+    Public Sub AxisViewChanged(sender As Object, e As ViewEventArgs)
         Dim dblMin As Double
-        dblMin = ChartName.ChartAreas(0).AxisX.ScaleView.Position
+        dblMin = sender.ChartAreas(0).AxisX.ScaleView.Position
         If dblMin < 0 Then
-            ChartName.ChartAreas(0).AxisX.ScaleView.Position = 0
+            sender.ChartAreas(0).AxisX.ScaleView.Position = 0
         Else
-            ChartName.ChartAreas(0).AxisX.ScaleView.Position = dblMin \ 1
+            sender.ChartAreas(0).AxisX.ScaleView.Position = dblMin \ 1
         End If
-        dblMin = ChartName.ChartAreas(0).AxisY.ScaleView.Position
+        dblMin = sender.ChartAreas(0).AxisY.ScaleView.Position
         If dblMin < 0 Then
-            ChartName.ChartAreas(0).AxisY.ScaleView.Position = 0
+            sender.ChartAreas(0).AxisY.ScaleView.Position = 0
         End If
-        ChartName.ChartAreas(0).AxisY.ScaleView.Position = Math.Round(ChartName.ChartAreas(0).AxisY.ScaleView.Position, 1)
+        sender.ChartAreas(0).AxisY.ScaleView.Position = Math.Round(sender.ChartAreas(0).AxisY.ScaleView.Position, 1)
         ' Adjust the interval so there are 10 lines shown, and round this interval to an integer
-        ChartName.TestChart.ChartAreas(0).AxisX.Interval = ChartName.ChartAreas(0).AxisX.ScaleView.Size \ 10
+        sender.TestChart.ChartAreas(0).AxisX.Interval = sender.ChartAreas(0).AxisX.ScaleView.Size \ 10
         ' Adjust the y interval so 10 lines are shown and round interval to the nearest 0.1
-        ChartName.ChartAreas(0).AxisY.Interval = Math.Round(ChartName.ChartAreas(0).AxisY.ScaleView.Size / 10, 1)
+        sender.ChartAreas(0).AxisY.Interval = Math.Round(sender.ChartAreas(0).AxisY.ScaleView.Size / 10, 1)
     End Sub
 
     ' This method requires the series names to be the same as their legend entries
-    Public Sub ChartMouseDown(ChartName As Chart, ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    Public Sub ChartMouseDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs)
         ' Call hit test method
         Try
-            Dim result As HitTestResult = ChartName.HitTest(e.X, e.Y)
+            Dim result As HitTestResult = sender.HitTest(e.X, e.Y)
             If result.ChartElementType <> ChartElementType.DataPoint Then
                 If (result.ChartElementType <> ChartElementType.LegendItem) Then
                     Return
                 End If
             End If
             Dim strSeriesName As String = result.Series.Name
-            For Each aSeries As Series In ChartName.Series
+            For Each aSeries As Series In sender.Series
                 aSeries.BorderWidth = 2
             Next
-            For Each aLegend As Legend In ChartName.Legends
+            For Each aLegend As Legend In sender.Legends
                 aLegend.BorderWidth = 2
             Next
-            ChartName.Legends(strSeriesName).BorderWidth = 6
-            ChartName.Series(strSeriesName).BorderWidth = 6
+            sender.Legends(strSeriesName).BorderWidth = 6
+            sender.Series(strSeriesName).BorderWidth = 6
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -143,10 +143,10 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ZoomOut(ChartName As Chart)
+    Public Sub ZoomOut(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            ChartName.ChartAreas(0).AxisX.ScaleView.ZoomReset()
-            ChartName.ChartAreas(0).AxisY.ScaleView.ZoomReset()
+            sender.ChartAreas(0).AxisX.ScaleView.ZoomReset()
+            sender.ChartAreas(0).AxisY.ScaleView.ZoomReset()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -173,13 +173,13 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub ShowAllButton(ChartName As Chart)
+    Public Sub ShowAllButton(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            For Each aSeries In ChartName.Series
+            For Each aSeries In sender.Series
                 aSeries.Enabled = True
                 aSeries.IsVisibleInLegend = True
             Next
-            For Each ctrl In HideShowSensors.Controls
+            For Each ctrl In sender.HideShowSensors.Controls
                 If ctrl.GetType.ToString = "System.Windows.Forms.CheckBox" Then
                     ctrl.Checked = True
                 End If
@@ -188,13 +188,13 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub HideAllButton(ChartName As Chart)
+    Public Sub HideAllButton(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
-            For Each aSeries In ChartName.Series
+            For Each aSeries In sender.Series
                 aSeries.Enabled = False
                 aSeries.IsVisibleInLegend = False
             Next
-            For Each ctrl In HideShowSensors.Controls
+            For Each ctrl In sender.HideShowSensors.Controls
                 If ctrl.GetType.ToString = "System.Windows.Forms.CheckBox" Then
                     ctrl.Checked = False
                 End If
@@ -203,14 +203,14 @@ Public Module modGraph
             GenericExceptionHandler(ex)
         End Try
     End Sub
-    Public Sub UpdateTraces(ChartName As Chart, sender As Object)
+    Public Sub UpdateTraces(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             If (sender.Checked) Then
-                ChartName.Series(sender.name).Enabled = True
-                ChartName.Series(sender.name).IsVisibleInLegend = True
+                sender.Series(sender.name).Enabled = True
+                sender.Series(sender.name).IsVisibleInLegend = True
             Else
-                ChartName.Series(sender.name).Enabled = False
-                ChartName.Series(sender.name).IsVisibleInLegend = False
+                sender.Series(sender.name).Enabled = False
+                sender.Series(sender.name).IsVisibleInLegend = False
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)

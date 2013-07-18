@@ -100,8 +100,8 @@ Public Module modShared
         SwitchIOWrite("node[2].smub.source.autorangei = 0")
 
         ' Configure the DMM
-        SwitchIOWrite("node[2].smua.measure.filter.type = " & strFilter)
-        SwitchIOWrite("node[2].smub.measure.filter.type = " & strFilter)
+        SwitchIOWrite("node[2].smua.measure.filter.type = node[2].smua." & strFilter)
+        SwitchIOWrite("node[2].smub.measure.filter.type = node[2].smub." & strFilter)
         SwitchIOWrite("node[2].smua.measure.filter.count = " & strCount)
         SwitchIOWrite("node[2].smub.measure.filter.count = " & strCount)
         SwitchIOWrite("node[2].smua.measure.filter.enable = 1")
@@ -120,7 +120,7 @@ Public Module modShared
         SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
 
         ' Set the Autozero for both channels to autozero once
-        SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
+        SwitchIOWrite("node[2].smua.measure.autozero = 1") 'autozero once
         SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
 
         'Turn on SourceMeter
@@ -139,33 +139,34 @@ Public Module modShared
         Dim strPassFail As String
 
         'Set Pass/Fail Array
+        ReDim boolAuditPassFail(cfgGlobal.CardConfig * 16)
         For i = 1 To 32
             boolAuditPassFail(i) = True
         Next
 
         'Verification of Row 3 Open
-        dblPassHigh = CDbl(frmConfig.txtAuditZero.Text)
+        dblPassHigh = CDbl(cfgGlobal.AuditZero) * 10 ^ 9
         dblPassLow = 0
         RowVerification(3, True, dblPassHigh, dblPassLow)
 
         'Verification of Row 3 Closed
-        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow3Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
-        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow3Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(0)) * (1 + (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
+        dblPassLow = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(0)) * (1 - (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
         RowVerification(3, False, dblPassHigh, dblPassLow)
 
         'Verification of Row 4 Closed
-        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow4Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
-        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow4Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(1)) * (1 + (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
+        dblPassLow = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(1)) * (1 - (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
         RowVerification(4, False, dblPassHigh, dblPassLow)
 
         'Verificaiton of Row 5 Closed
-        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow5Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
-        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow5Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(2)) * (1 + (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
+        dblPassLow = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(2)) * (1 - (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
         RowVerification(5, False, dblPassHigh, dblPassLow)
 
         'Verification of Row 6 Closed
-        dblPassHigh = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow6Resistor.Text) * 10 ^ 6 * (1 + (CDbl(frmConfig.txtTolerance.Text) / 100))
-        dblPassLow = CDbl(strAuditVolt) / CDbl(frmConfig.txtRow6Resistor.Text) * 10 ^ 6 * (1 - (CDbl(frmConfig.txtTolerance.Text) / 100))
+        dblPassHigh = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(3)) * (1 + (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
+        dblPassLow = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(3)) * (1 - (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
         RowVerification(6, False, dblPassHigh, dblPassLow)
 
         'Write Pass/Fail Data to file
@@ -225,41 +226,64 @@ Public Module modShared
         'Inner Loop, loops through the 32 sensor channels (the 32 sensor columns)
         For intSourceMeter = 1 To 2
 
+
             'When intSourceMeter = 1 will List "SMUA" in the Audit Configuration Row Identififier about the SourceMeter
             'When intSourceMeter = 2 will List "SMUB" in the Audit Configuration Row Identififier about the SourceMeter
             If intSourceMeter = 1 Then
+                SwitchIOWrite("node[2].smua.source.output = 1")
+                SwitchIOWrite("node[2].smub.source.output = 0")
                 strSourceMeter = "SMUA"
             Else
+                SwitchIOWrite("node[2].smub.source.output = 1")
+                SwitchIOWrite("node[2].smua.source.output = 0")
                 strSourceMeter = "SMUB"
             End If
 
             'String that provides the Audit Configuration Row Identifier
-            strMeasurements = "Row" + intRow + "_" + strOpenClosed + "_(nA)_" + strSourceMeter
+            strMeasurements = "Row" + CStr(intRow) + "_" + strOpenClosed + "_(nA)_" + strSourceMeter
 
             'When boolOpen = True then the switches on Row need to be open, this loops sets the row under investigation (3-6 of Cards)
             'to be equal to the SourceMeter value (2 measurements rows)
-            If boolOpen = True Then
-                intRow = intSourceMeter
-            End If
+         
 
             'Column Counter loop to run through all 32 sensor channels
             For intColumnCounter = 1 To cfgGlobal.CardConfig * 16
 
-                'Generate Switch Pattern 
-                'intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
-                'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
-                'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
-                strSwitchPattern = AuditPatternGenerator(intSourceMeter, intRow, intColumnCounter)
+                If boolOpen = True Then
+                    'Special case of Row 3 Open
+                    'Generate Switch Pattern 
+                    'intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
+                    'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
+                    'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
+                    strSwitchPattern = AuditPatternGenerator(intRow, intRow, intColumnCounter)
+                Else
+                    'All cases where switches are closed
+                    'Generate Switch Pattern 
+                    ''intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
+                    'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
+                    'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
+                    strSwitchPattern = AuditPatternGenerator(intSourceMeter, intRow, intColumnCounter)
+                End If
+
+
 
                 'Close Switches based on AuditPatternGenerator Function
                 SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
                 Debug.Print("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
 
+                If intColumnCounter = 1 Then
+                    Delay(20)
+                End If
                 'Record I Reading
-                dblCurrentReading = CDbl(SwitchIOWriteRead("print(node[2].smua.measure.i)")) * 10 ^ 9
+                If intSourceMeter = 1 Then
+                    dblCurrentReading = CDbl(SwitchIOWriteRead("print(node[2].smua.measure.i())")) * 10 ^ 9
+                Else
+                    dblCurrentReading = CDbl(SwitchIOWriteRead("print(node[2].smub.measure.i())")) * 10 ^ 9
+                End If
+
 
                 'Add Reading to String
-                strMeasurements = strMeasurements + "," + dblCurrentReading
+                strMeasurements = strMeasurements + "," + CStr(dblCurrentReading)
 
                 'Verify Measurement against theoretically expected current based on the resistor used
                 If dblCurrentReading > dblHigh Or dblCurrentReading < dblLow Then
@@ -267,7 +291,7 @@ Public Module modShared
 
                     boolAuditVerificationFailure = True
 
-                    strAuditPassFail = "Row" + intRow + "_" + intColumnCounter + "_" + strOpenClosed + "_:" + dblCurrentReading * 10 ^ 9 + "nA" + vbCr
+                    strAuditPassFail = "Row" + CStr(intRow) + "_" + CStr(intColumnCounter) + "_" + strOpenClosed + "_:" + CStr(dblCurrentReading) + "nA" + vbCr
                     strHardwareErrorList = strHardwareErrorList + "," + strAuditPassFail
                 End If
 
@@ -287,7 +311,7 @@ Public Module modShared
         '191x and 291x are the backplanes to read across the 6 cards int the STA (x corresponds to which card)
         strSwitchPattern = SwitchNumberGenerator(intRowA, intColumn)
         strSwitchPattern = strSwitchPattern + "," + SwitchNumberGenerator(intRowB, intColumn)
-        strSwitchPattern = strSwitchPattern + ",191" + intRowA + ",291" + intRowA + ",191" + intRowB + ",291" + intRowB
+        strSwitchPattern = strSwitchPattern + ",191" + CStr(intRowA) + ",291" + CStr(intRowA) + ",191" + CStr(intRowB) + ",291" + CStr(intRowB)
         Return strSwitchPattern
 
     End Function

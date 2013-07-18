@@ -224,7 +224,7 @@ Public Module modKeithleyComm
 
             '
             strCommandPrompt = Right(strMessage, 5)
-            strMessage = Left(strMessage, strMessage.Length - 5)
+            strMessage = Left(strMessage, strMessage.Length - 6)
             'Check the 
             If strCommandPrompt <> "TSP>" & vbLf Then
                 Throw New COMException(strCommandPrompt)
@@ -340,15 +340,15 @@ Public Module modKeithleyComm
             For intRow = 1 To 6
                 intCounts = 0
                 For intCol = 1 To 16
-                    intCounts = intCounts + SwitchIOWriteRead("print(channel.getcount(" & intCard & intRow & Format(intCol, "00") & ")")
+                    intCounts = intCounts + SwitchIOWriteRead("print(channel.getcount('" & intCard & intRow & Format(intCol, "00") & "'))")
                 Next
                 intCounts = intCounts / 16
-                strCardInfo = strCardInfo + "," + intCounts
+                strCardInfo = strCardInfo + "," + CStr(intCounts)
             Next
 
             'Get backplan closure counts for each row
             For intRow = 1 To 6
-                strCardInfo = strCardInfo + "," + SwitchIOWriteRead("print(channel.getcount(" & intCard & "91" & intRow & ")")
+                strCardInfo = strCardInfo + "," + SwitchIOWriteRead("print(channel.getcount('" & intCard & "91" & intRow & "'))")
             Next
 
             Return strCardInfo

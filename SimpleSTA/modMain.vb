@@ -8,7 +8,7 @@ Public Module modMain
     Public boolIOStatus As Boolean
 
     Public Const strAuditVolt As String = "0.65"
-    Public Const strAuditCurrentRange As String = "1e-6"
+    Public Const strAuditCurrentRange As String = "0.000001"
     Public Const strAuditFilterType As String = "FILTER_REPEAT_AVG"
     Public Const strAuditFilterCount As String = "1"
     Public Const strAuditNPLC As String = "1"
@@ -27,11 +27,8 @@ Public Module modMain
         'Hide frmTestInfo
         frmTestName.Hide()
 
-        'Open communication with the measurement hardware
-        EstablishKeithleyIO(frmConfig.txtAddress.Text)
-
         'Open data file
-        If Not OpenDataFile(frmConfig.txtDataDir.Text, strBatch & ".csv") Then
+        If Not OpenDataFile(cfgGlobal.DumpDirectory, strBatch & ".csv") Then
             MsgBox("Batch Number already in use.  Please choose another.", MsgBoxStyle.OkOnly, "File already exists.")
             frmTestName.Show()
             Exit Sub
@@ -78,12 +75,21 @@ Public Module modMain
                         & strAuditFilterType & "," _
                         & strAuditFilterCount & "," _
                         & strAuditNPLC & "," _
+<<<<<<< HEAD
                         & cfgGlobal. & "," _
                         & frmConfig.txtAuditZero.Text & "," _
                         & frmConfig.txtRow4Resistor.Text & "," _
                         & frmConfig.txtRow5Resistor.Text & "," _
                         & frmConfig.txtRow6Resistor.Text & "," _
                         & frmConfig.txtTolerance.Text)
+=======
+                        & cfgGlobal.ResistorNominalValues(0) & "," _
+                        & cfgGlobal.AuditZero & "," _
+                        & cfgGlobal.ResistorNominalValues(1) & "," _
+                        & cfgGlobal.ResistorNominalValues(2) & "," _
+                        & cfgGlobal.ResistorNominalValues(3) & "," _
+                        & cfgGlobal.AuditTolerance)
+>>>>>>> fcc9ec975b634eb24de5d96bd6493288915e6cc0
 
         'hardware verification
         HardwareVerification()

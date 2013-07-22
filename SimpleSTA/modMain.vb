@@ -75,21 +75,12 @@ Public Module modMain
                         & strAuditFilterType & "," _
                         & strAuditFilterCount & "," _
                         & strAuditNPLC & "," _
-<<<<<<< HEAD
-                        & cfgGlobal. & "," _
-                        & frmConfig.txtAuditZero.Text & "," _
-                        & frmConfig.txtRow4Resistor.Text & "," _
-                        & frmConfig.txtRow5Resistor.Text & "," _
-                        & frmConfig.txtRow6Resistor.Text & "," _
-                        & frmConfig.txtTolerance.Text)
-=======
                         & cfgGlobal.ResistorNominalValues(0) & "," _
                         & cfgGlobal.AuditZero & "," _
                         & cfgGlobal.ResistorNominalValues(1) & "," _
                         & cfgGlobal.ResistorNominalValues(2) & "," _
                         & cfgGlobal.ResistorNominalValues(3) & "," _
                         & cfgGlobal.AuditTolerance)
->>>>>>> fcc9ec975b634eb24de5d96bd6493288915e6cc0
 
         'hardware verification
         HardwareVerification()

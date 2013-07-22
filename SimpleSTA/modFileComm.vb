@@ -12,7 +12,7 @@ Public Module modFileComm
     '              property of the StreamWriter to autoflush data to the file with each attempt to write data.
     Public Function OpenDataFile(strPath As String, strFile As String) As Boolean
         Try
-            If Not File.Exists(strPath & Path.DirectorySeparatorChar & strFile) Then
+            If File.Exists(strPath & Path.DirectorySeparatorChar & strFile) Then
                 boolDataFileOpen = False
                 Return False
             Else

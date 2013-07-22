@@ -78,7 +78,7 @@ Public Module modMain
                         & strAuditFilterType & "," _
                         & strAuditFilterCount & "," _
                         & strAuditNPLC & "," _
-                        & frmConfig.txtRow3Resistor.Text & "," _
+                        & cfgGlobal. & "," _
                         & frmConfig.txtAuditZero.Text & "," _
                         & frmConfig.txtRow4Resistor.Text & "," _
                         & frmConfig.txtRow5Resistor.Text & "," _

@@ -120,7 +120,7 @@ Public Module modShared
         SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
 
         ' Set the Autozero for both channels to autozero once
-        SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
+        SwitchIOWrite("node[2].smu.measure.autozero = 1") 'autozero once
         SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
 
         'Turn on SourceMeter

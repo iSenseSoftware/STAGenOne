@@ -83,10 +83,12 @@ Public Module modMain
                         & cfgGlobal.AuditTolerance)
 
         'hardware verification
-        HardwareVerification()
-
-        'Show test info form
-        frmSensorID.Show()
+        If HardwareVerification() Then
+            'Show test info form
+            frmSensorID.Show()
+        Else
+            Exit Sub
+        End If
 
     End Sub
 

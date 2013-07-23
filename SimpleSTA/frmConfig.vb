@@ -16,9 +16,9 @@ Public Class frmConfig
     ' Description: Populates the configuration form fields based on values set in the config object
     Private Sub PopulateConfigurationForm()
         Try
-            cmbRange.SelectedValue = cfgGlobal.Range
-            cmbCardConfig.SelectedValue = cfgGlobal.CardConfig
-            cmbFilterType.SelectedValue = cfgGlobal.Filter
+            cmbRange.Text = cfgGlobal.Range
+            cmbCardConfig.Text = cfgGlobal.CardConfig
+            cmbFilterType.Text = cfgGlobal.Filter
             txtAddress.Text = cfgGlobal.Address
             txtSTAID.Text = cfgGlobal.STAID
             txtBias.Text = cfgGlobal.Bias
@@ -243,32 +243,32 @@ Public Class frmConfig
     Private Sub frmConfig_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
             'Populate CurrentRange combo box
-            Dim lstRangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
-            lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
-            lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
-            lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
-            cmbRange.DataSource = lstRangeList
-            cmbRange.ValueMember = "Key"
-            cmbRange.DisplayMember = "Value"
+            'Dim lstRangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
+            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
+            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
+            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
+            'cmbRange.DataSource = lstRangeList
+            'cmbRange.ValueMember = "Key"
+            'cmbRange.DisplayMember = "Value"
             ' Populate CardConfiguration combo box
-            Dim lstCardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
-            lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
-            cmbCardConfig.DataSource = lstCardConfigList
-            cmbCardConfig.ValueMember = "Key"
-            cmbCardConfig.DisplayMember = "Value"
+            'Dim lstCardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
+            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
+            'cmbCardConfig.DataSource = lstCardConfigList
+            'cmbCardConfig.ValueMember = "Key"
+            'cmbCardConfig.DisplayMember = "Value"
             ' Populate FilterType combo box
-            Dim ftFilterTypeList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
-            ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
-            ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Average"))
-            ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Average"))
-            cmbFilterType.DataSource = ftFilterTypeList
-            cmbFilterType.ValueMember = "Key"
-            cmbFilterType.DisplayMember = "Value"
+            'Dim ftFilterTypeList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
+            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
+            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Average"))
+            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Average"))
+            'cmbFilterType.DataSource = ftFilterTypeList
+            'cmbFilterType.ValueMember = "Key"
+            'cmbFilterType.DisplayMember = "Value"
 
             '-----------------
             ' Attempt to load the configuration from file and set form values
@@ -301,16 +301,16 @@ Public Class frmConfig
                 ' If the form is unlocked, attempt to validate the inputs and save new configuration
                 If (ValidateForm()) Then
                     ' Set property values for config object
-                    cfgGlobal.Range = cmbRange.SelectedValue
+                    cfgGlobal.Range = CDbl(cmbRange.Text)
                     cfgGlobal.Address = txtAddress.Text
                     cfgGlobal.STAID = txtSTAID.Text
-                    cfgGlobal.CardConfig = cmbCardConfig.SelectedValue
+                    cfgGlobal.CardConfig = CInt(cmbCardConfig.Text)
                     cfgGlobal.Bias = CDbl(txtBias.Text)
                     cfgGlobal.RecordInterval = CDbl(txtInterval.Text)
                     cfgGlobal.Samples = txtSamples.Text
                     cfgGlobal.DumpDirectory = txtDataDir.Text
                     cfgGlobal.NPLC = txtNPLC.Text
-                    cfgGlobal.Filter = cmbFilterType.SelectedValue
+                    cfgGlobal.Filter = cmbFilterType.Text
                     cfgGlobal.SettlingTime = txtSettlingTime.Text
                     cfgGlobal.ResistorNominalValues(0) = CDbl(txtRow3Resistor.Text) * 10 ^ 6
                     cfgGlobal.ResistorNominalValues(1) = CDbl(txtRow4Resistor.Text) * 10 ^ 6
@@ -374,4 +374,5 @@ Public Class frmConfig
             GenericExceptionHandler(ex)
         End Try
     End Sub
+
 End Class

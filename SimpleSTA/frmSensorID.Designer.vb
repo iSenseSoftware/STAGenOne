@@ -23,22 +23,22 @@ Partial Class frmSensorID
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.txtSensor1 = New System.Windows.Forms.TextBox()
-        Me.txtSensor2 = New System.Windows.Forms.TextBox()
+        Me.txtSensor01 = New System.Windows.Forms.TextBox()
+        Me.txtSensor02 = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.txtSensor3 = New System.Windows.Forms.TextBox()
+        Me.txtSensor03 = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtSensor4 = New System.Windows.Forms.TextBox()
+        Me.txtSensor04 = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.txtSensor5 = New System.Windows.Forms.TextBox()
+        Me.txtSensor05 = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
-        Me.txtSensor6 = New System.Windows.Forms.TextBox()
+        Me.txtSensor06 = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.txtSensor7 = New System.Windows.Forms.TextBox()
+        Me.txtSensor07 = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
-        Me.txtSensor8 = New System.Windows.Forms.TextBox()
+        Me.txtSensor08 = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
-        Me.txtSensor9 = New System.Windows.Forms.TextBox()
+        Me.txtSensor09 = New System.Windows.Forms.TextBox()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.txtSensor10 = New System.Windows.Forms.TextBox()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -100,21 +100,21 @@ Partial Class frmSensorID
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Sensor 1"
         '
-        'txtSensor1
+        'txtSensor01
         '
-        Me.txtSensor1.Location = New System.Drawing.Point(67, 17)
-        Me.txtSensor1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor1.Name = "txtSensor1"
-        Me.txtSensor1.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor1.TabIndex = 0
+        Me.txtSensor01.Location = New System.Drawing.Point(67, 17)
+        Me.txtSensor01.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor01.Name = "txtSensor01"
+        Me.txtSensor01.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor01.TabIndex = 0
         '
-        'txtSensor2
+        'txtSensor02
         '
-        Me.txtSensor2.Location = New System.Drawing.Point(67, 46)
-        Me.txtSensor2.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor2.Name = "txtSensor2"
-        Me.txtSensor2.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor2.TabIndex = 1
+        Me.txtSensor02.Location = New System.Drawing.Point(67, 46)
+        Me.txtSensor02.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor02.Name = "txtSensor02"
+        Me.txtSensor02.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor02.TabIndex = 1
         '
         'Label2
         '
@@ -126,13 +126,13 @@ Partial Class frmSensorID
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Sensor 2"
         '
-        'txtSensor3
+        'txtSensor03
         '
-        Me.txtSensor3.Location = New System.Drawing.Point(67, 76)
-        Me.txtSensor3.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor3.Name = "txtSensor3"
-        Me.txtSensor3.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor3.TabIndex = 2
+        Me.txtSensor03.Location = New System.Drawing.Point(67, 76)
+        Me.txtSensor03.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor03.Name = "txtSensor03"
+        Me.txtSensor03.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor03.TabIndex = 2
         '
         'Label3
         '
@@ -144,13 +144,13 @@ Partial Class frmSensorID
         Me.Label3.TabIndex = 4
         Me.Label3.Text = "Sensor 3"
         '
-        'txtSensor4
+        'txtSensor04
         '
-        Me.txtSensor4.Location = New System.Drawing.Point(67, 105)
-        Me.txtSensor4.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor4.Name = "txtSensor4"
-        Me.txtSensor4.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor4.TabIndex = 3
+        Me.txtSensor04.Location = New System.Drawing.Point(67, 105)
+        Me.txtSensor04.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor04.Name = "txtSensor04"
+        Me.txtSensor04.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor04.TabIndex = 3
         '
         'Label4
         '
@@ -162,13 +162,13 @@ Partial Class frmSensorID
         Me.Label4.TabIndex = 6
         Me.Label4.Text = "Sensor 4"
         '
-        'txtSensor5
+        'txtSensor05
         '
-        Me.txtSensor5.Location = New System.Drawing.Point(67, 134)
-        Me.txtSensor5.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor5.Name = "txtSensor5"
-        Me.txtSensor5.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor5.TabIndex = 4
+        Me.txtSensor05.Location = New System.Drawing.Point(67, 134)
+        Me.txtSensor05.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor05.Name = "txtSensor05"
+        Me.txtSensor05.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor05.TabIndex = 4
         '
         'Label5
         '
@@ -180,13 +180,13 @@ Partial Class frmSensorID
         Me.Label5.TabIndex = 8
         Me.Label5.Text = "Sensor 5"
         '
-        'txtSensor6
+        'txtSensor06
         '
-        Me.txtSensor6.Location = New System.Drawing.Point(67, 163)
-        Me.txtSensor6.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor6.Name = "txtSensor6"
-        Me.txtSensor6.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor6.TabIndex = 5
+        Me.txtSensor06.Location = New System.Drawing.Point(67, 163)
+        Me.txtSensor06.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor06.Name = "txtSensor06"
+        Me.txtSensor06.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor06.TabIndex = 5
         '
         'Label6
         '
@@ -198,13 +198,13 @@ Partial Class frmSensorID
         Me.Label6.TabIndex = 10
         Me.Label6.Text = "Sensor 6"
         '
-        'txtSensor7
+        'txtSensor07
         '
-        Me.txtSensor7.Location = New System.Drawing.Point(67, 193)
-        Me.txtSensor7.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor7.Name = "txtSensor7"
-        Me.txtSensor7.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor7.TabIndex = 6
+        Me.txtSensor07.Location = New System.Drawing.Point(67, 193)
+        Me.txtSensor07.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor07.Name = "txtSensor07"
+        Me.txtSensor07.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor07.TabIndex = 6
         '
         'Label7
         '
@@ -216,13 +216,13 @@ Partial Class frmSensorID
         Me.Label7.TabIndex = 12
         Me.Label7.Text = "Sensor 7"
         '
-        'txtSensor8
+        'txtSensor08
         '
-        Me.txtSensor8.Location = New System.Drawing.Point(67, 222)
-        Me.txtSensor8.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor8.Name = "txtSensor8"
-        Me.txtSensor8.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor8.TabIndex = 7
+        Me.txtSensor08.Location = New System.Drawing.Point(67, 222)
+        Me.txtSensor08.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor08.Name = "txtSensor08"
+        Me.txtSensor08.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor08.TabIndex = 7
         '
         'Label8
         '
@@ -234,13 +234,13 @@ Partial Class frmSensorID
         Me.Label8.TabIndex = 14
         Me.Label8.Text = "Sensor 8"
         '
-        'txtSensor9
+        'txtSensor09
         '
-        Me.txtSensor9.Location = New System.Drawing.Point(67, 251)
-        Me.txtSensor9.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
-        Me.txtSensor9.Name = "txtSensor9"
-        Me.txtSensor9.Size = New System.Drawing.Size(151, 20)
-        Me.txtSensor9.TabIndex = 8
+        Me.txtSensor09.Location = New System.Drawing.Point(67, 251)
+        Me.txtSensor09.Margin = New System.Windows.Forms.Padding(2)
+        Me.txtSensor09.Name = "txtSensor09"
+        Me.txtSensor09.Size = New System.Drawing.Size(151, 20)
+        Me.txtSensor09.TabIndex = 8
         '
         'Label9
         '
@@ -255,7 +255,7 @@ Partial Class frmSensorID
         'txtSensor10
         '
         Me.txtSensor10.Location = New System.Drawing.Point(67, 280)
-        Me.txtSensor10.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor10.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor10.Name = "txtSensor10"
         Me.txtSensor10.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor10.TabIndex = 9
@@ -273,7 +273,7 @@ Partial Class frmSensorID
         'txtSensor11
         '
         Me.txtSensor11.Location = New System.Drawing.Point(67, 310)
-        Me.txtSensor11.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor11.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor11.Name = "txtSensor11"
         Me.txtSensor11.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor11.TabIndex = 10
@@ -291,7 +291,7 @@ Partial Class frmSensorID
         'txtSensor12
         '
         Me.txtSensor12.Location = New System.Drawing.Point(67, 339)
-        Me.txtSensor12.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor12.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor12.Name = "txtSensor12"
         Me.txtSensor12.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor12.TabIndex = 11
@@ -309,7 +309,7 @@ Partial Class frmSensorID
         'txtSensor13
         '
         Me.txtSensor13.Location = New System.Drawing.Point(67, 368)
-        Me.txtSensor13.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor13.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor13.Name = "txtSensor13"
         Me.txtSensor13.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor13.TabIndex = 12
@@ -327,7 +327,7 @@ Partial Class frmSensorID
         'txtSensor14
         '
         Me.txtSensor14.Location = New System.Drawing.Point(67, 397)
-        Me.txtSensor14.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor14.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor14.Name = "txtSensor14"
         Me.txtSensor14.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor14.TabIndex = 13
@@ -345,7 +345,7 @@ Partial Class frmSensorID
         'txtSensor15
         '
         Me.txtSensor15.Location = New System.Drawing.Point(67, 427)
-        Me.txtSensor15.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor15.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor15.Name = "txtSensor15"
         Me.txtSensor15.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor15.TabIndex = 14
@@ -363,7 +363,7 @@ Partial Class frmSensorID
         'txtSensor16
         '
         Me.txtSensor16.Location = New System.Drawing.Point(67, 456)
-        Me.txtSensor16.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor16.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor16.Name = "txtSensor16"
         Me.txtSensor16.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor16.TabIndex = 15
@@ -381,7 +381,7 @@ Partial Class frmSensorID
         'txtSensor17
         '
         Me.txtSensor17.Location = New System.Drawing.Point(298, 17)
-        Me.txtSensor17.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor17.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor17.Name = "txtSensor17"
         Me.txtSensor17.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor17.TabIndex = 16
@@ -399,7 +399,7 @@ Partial Class frmSensorID
         'txtSensor18
         '
         Me.txtSensor18.Location = New System.Drawing.Point(298, 46)
-        Me.txtSensor18.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor18.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor18.Name = "txtSensor18"
         Me.txtSensor18.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor18.TabIndex = 17
@@ -417,7 +417,7 @@ Partial Class frmSensorID
         'txtSensor19
         '
         Me.txtSensor19.Location = New System.Drawing.Point(298, 76)
-        Me.txtSensor19.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor19.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor19.Name = "txtSensor19"
         Me.txtSensor19.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor19.TabIndex = 18
@@ -435,7 +435,7 @@ Partial Class frmSensorID
         'txtSensor20
         '
         Me.txtSensor20.Location = New System.Drawing.Point(298, 105)
-        Me.txtSensor20.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor20.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor20.Name = "txtSensor20"
         Me.txtSensor20.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor20.TabIndex = 19
@@ -453,7 +453,7 @@ Partial Class frmSensorID
         'txtSensor21
         '
         Me.txtSensor21.Location = New System.Drawing.Point(298, 134)
-        Me.txtSensor21.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor21.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor21.Name = "txtSensor21"
         Me.txtSensor21.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor21.TabIndex = 20
@@ -471,7 +471,7 @@ Partial Class frmSensorID
         'txtSensor22
         '
         Me.txtSensor22.Location = New System.Drawing.Point(298, 163)
-        Me.txtSensor22.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor22.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor22.Name = "txtSensor22"
         Me.txtSensor22.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor22.TabIndex = 21
@@ -489,7 +489,7 @@ Partial Class frmSensorID
         'txtSensor23
         '
         Me.txtSensor23.Location = New System.Drawing.Point(298, 193)
-        Me.txtSensor23.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor23.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor23.Name = "txtSensor23"
         Me.txtSensor23.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor23.TabIndex = 22
@@ -507,7 +507,7 @@ Partial Class frmSensorID
         'txtSensor24
         '
         Me.txtSensor24.Location = New System.Drawing.Point(298, 222)
-        Me.txtSensor24.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor24.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor24.Name = "txtSensor24"
         Me.txtSensor24.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor24.TabIndex = 23
@@ -525,7 +525,7 @@ Partial Class frmSensorID
         'txtSensor25
         '
         Me.txtSensor25.Location = New System.Drawing.Point(298, 251)
-        Me.txtSensor25.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor25.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor25.Name = "txtSensor25"
         Me.txtSensor25.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor25.TabIndex = 24
@@ -543,7 +543,7 @@ Partial Class frmSensorID
         'txtSensor26
         '
         Me.txtSensor26.Location = New System.Drawing.Point(298, 280)
-        Me.txtSensor26.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor26.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor26.Name = "txtSensor26"
         Me.txtSensor26.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor26.TabIndex = 25
@@ -561,7 +561,7 @@ Partial Class frmSensorID
         'txtSensor27
         '
         Me.txtSensor27.Location = New System.Drawing.Point(298, 310)
-        Me.txtSensor27.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor27.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor27.Name = "txtSensor27"
         Me.txtSensor27.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor27.TabIndex = 26
@@ -579,7 +579,7 @@ Partial Class frmSensorID
         'txtSensor28
         '
         Me.txtSensor28.Location = New System.Drawing.Point(298, 339)
-        Me.txtSensor28.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor28.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor28.Name = "txtSensor28"
         Me.txtSensor28.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor28.TabIndex = 27
@@ -597,7 +597,7 @@ Partial Class frmSensorID
         'txtSensor29
         '
         Me.txtSensor29.Location = New System.Drawing.Point(298, 368)
-        Me.txtSensor29.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor29.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor29.Name = "txtSensor29"
         Me.txtSensor29.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor29.TabIndex = 28
@@ -615,7 +615,7 @@ Partial Class frmSensorID
         'txtSensor30
         '
         Me.txtSensor30.Location = New System.Drawing.Point(298, 397)
-        Me.txtSensor30.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor30.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor30.Name = "txtSensor30"
         Me.txtSensor30.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor30.TabIndex = 29
@@ -633,7 +633,7 @@ Partial Class frmSensorID
         'txtSensor31
         '
         Me.txtSensor31.Location = New System.Drawing.Point(298, 427)
-        Me.txtSensor31.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor31.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor31.Name = "txtSensor31"
         Me.txtSensor31.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor31.TabIndex = 30
@@ -651,7 +651,7 @@ Partial Class frmSensorID
         'txtSensor32
         '
         Me.txtSensor32.Location = New System.Drawing.Point(298, 456)
-        Me.txtSensor32.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtSensor32.Margin = New System.Windows.Forms.Padding(2)
         Me.txtSensor32.Name = "txtSensor32"
         Me.txtSensor32.Size = New System.Drawing.Size(151, 20)
         Me.txtSensor32.TabIndex = 31
@@ -669,7 +669,7 @@ Partial Class frmSensorID
         'btnOK
         '
         Me.btnOK.Location = New System.Drawing.Point(128, 479)
-        Me.btnOK.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnOK.Margin = New System.Windows.Forms.Padding(2)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(69, 28)
         Me.btnOK.TabIndex = 63
@@ -679,7 +679,7 @@ Partial Class frmSensorID
         'btnCancel
         '
         Me.btnCancel.Location = New System.Drawing.Point(271, 479)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.btnCancel.Margin = New System.Windows.Forms.Padding(2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(69, 28)
         Me.btnCancel.TabIndex = 64
@@ -739,25 +739,25 @@ Partial Class frmSensorID
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.txtSensor10)
         Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.txtSensor9)
+        Me.Controls.Add(Me.txtSensor09)
         Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.txtSensor8)
+        Me.Controls.Add(Me.txtSensor08)
         Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.txtSensor7)
+        Me.Controls.Add(Me.txtSensor07)
         Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.txtSensor6)
+        Me.Controls.Add(Me.txtSensor06)
         Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.txtSensor5)
+        Me.Controls.Add(Me.txtSensor05)
         Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.txtSensor4)
+        Me.Controls.Add(Me.txtSensor04)
         Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.txtSensor3)
+        Me.Controls.Add(Me.txtSensor03)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.txtSensor2)
+        Me.Controls.Add(Me.txtSensor02)
         Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.txtSensor1)
+        Me.Controls.Add(Me.txtSensor01)
         Me.Controls.Add(Me.Label1)
-        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "frmSensorID"
         Me.Text = "frmSensorID"
         Me.ResumeLayout(False)
@@ -765,22 +765,22 @@ Partial Class frmSensorID
 
     End Sub
     Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor1 As System.Windows.Forms.TextBox
-    Friend WithEvents txtSensor2 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor01 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor02 As System.Windows.Forms.TextBox
     Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor3 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor03 As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor4 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor04 As System.Windows.Forms.TextBox
     Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor5 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor05 As System.Windows.Forms.TextBox
     Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor6 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor06 As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor7 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor07 As System.Windows.Forms.TextBox
     Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor8 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor08 As System.Windows.Forms.TextBox
     Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents txtSensor9 As System.Windows.Forms.TextBox
+    Friend WithEvents txtSensor09 As System.Windows.Forms.TextBox
     Friend WithEvents Label9 As System.Windows.Forms.Label
     Friend WithEvents txtSensor10 As System.Windows.Forms.TextBox
     Friend WithEvents Label10 As System.Windows.Forms.Label

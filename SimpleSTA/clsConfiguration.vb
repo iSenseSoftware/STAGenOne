@@ -17,15 +17,15 @@ Public Class clsConfiguration
     ' Declare vars, set defaults
     Dim dblBias As Double = 0.65
     Dim dblRecordInterval As Double = 8
-    Dim crCurrentRange As CurrentRange = CurrentRange.one_uA
-    Dim ftFilterType As FilterType = FilterType.FILTER_REPEAT_AVG
+    Dim dblCurrentRange As Double = 1000
+    Dim strFilterType As String = "FILTER_REPEAT_AVG"
     Dim lngSamples As Long = 6
     Dim lngNPLC As Long = 1
     Dim intSettlingTime As Integer = 20 ' Settling time in milliseconds
     Dim aryResistorNominalValues(0 To 3) As Double
     Dim dblAuditCheckZero As Double = 10 ^ -10 ' "zero" value used for open circuit checks
     Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
-    Dim ccfCardConfig As CardConfiguration = CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS
+    Dim intCardConfig As Integer = 2
 
     ' The Address and STAID properties are dependent on the PC/Hardware configuration and cannot be assigned default values
     Dim strAddress As String
@@ -98,20 +98,20 @@ Public Class clsConfiguration
             dblRecordInterval = dblValue
         End Set
     End Property
-    Public Property Range As CurrentRange
+    Public Property Range As Double
         Get
-            Return crCurrentRange
+            Return dblCurrentRange
         End Get
-        Set(ByVal crValue As CurrentRange)
-            crCurrentRange = crValue
+        Set(ByVal dblValue As Double)
+            dblCurrentRange = dblValue
         End Set
     End Property
-    Public Property Filter As FilterType
+    Public Property Filter As String
         Get
-            Return ftFilterType
+            Return strFilterType
         End Get
-        Set(ByVal ftValue As FilterType)
-            ftFilterType = ftValue
+        Set(ByVal strValue As String)
+            strFilterType = strValue
         End Set
     End Property
     Public Property Samples As Long
@@ -146,12 +146,12 @@ Public Class clsConfiguration
             strSTAID = strValue
         End Set
     End Property
-    Public Property CardConfig As CardConfiguration
+    Public Property CardConfig As Integer
         Get
-            Return ccfCardConfig
+            Return intCardConfig
         End Get
-        Set(ByVal ccfValue As CardConfiguration)
-            ccfCardConfig = ccfValue
+        Set(ByVal intValue As Integer)
+            intCardConfig = intValue
         End Set
     End Property
     ' Name: WriteToFile()

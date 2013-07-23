@@ -65,25 +65,25 @@ Public Module modTest
             SwitchIOWrite("node[1].display.settext('Test Running')")
 
             ' Configure SourceMeter
-            ConfigureHardware(cfgGlobal.Bias, cfgGlobal.Range, cfgGlobal.Filter, cfgGlobal.Samples, cfgGlobal.NPLC)
+            ConfigureHardware(cfgGlobal.Bias, cfgGlobal.Range * 0.000000001, cfgGlobal.Filter, cfgGlobal.Samples, cfgGlobal.NPLC)
 
-            Select Case cfgGlobal.Range
-                Case CurrentRange.one_uA
-                    SwitchIOWrite("node[2].smua.source.rangei = .001")
-                    SwitchIOWrite("node[2].smub.source.rangei = .001")
-                Case CurrentRange.ten_uA
-                    SwitchIOWrite("node[2].smua.source.rangei = .01")
-                    SwitchIOWrite("node[2].smub.source.rangei = .01")
-                Case CurrentRange.hundred_uA
-                    SwitchIOWrite("node[2].smua.source.rangei = .1")
-                    SwitchIOWrite("node[2].smub.source.rangei = .1")
-            End Select
+            'Select Case cfgGlobal.Range
+            '    Case CurrentRange.one_uA
+            '        SwitchIOWrite("node[2].smua.source.rangei = .001")
+            '        SwitchIOWrite("node[2].smub.source.rangei = .001")
+            '    Case CurrentRange.ten_uA
+            '        SwitchIOWrite("node[2].smua.source.rangei = .01")
+            '        SwitchIOWrite("node[2].smub.source.rangei = .01")
+            '    Case CurrentRange.hundred_uA
+            '        SwitchIOWrite("node[2].smua.source.rangei = .1")
+            '        SwitchIOWrite("node[2].smub.source.rangei = .1")
+            'End Select
 
             'Here's some legacy code to figure out:
             '' '' Start all timers
-            ' ''frmTestForm.ElapsedTimer.Start() ' Start the form timer component
-            ' ''stpIntervalTimer.Start() ' Current interval stopwatch
-            ' ''stpTotalTime.Start() ' total test time stopwatch
+            frmTestForm.ElapsedTimer.Start() ' Start the form timer component
+            stpIntervalTimer.Start() ' Current interval stopwatch
+            stpTotalTime.Start() ' total test time stopwatch
             ' ''fCurrentTestFile.TestStart = DateTime.Now()
 
             'Set the flags for running the loop

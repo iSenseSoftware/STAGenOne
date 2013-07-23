@@ -63,6 +63,7 @@ Public Module modKeithleyComm
     Public Function EstablishKeithleyIO(ByVal strIPAddress As String) As Boolean
         Dim switchIOReset As New TcpClient
         Dim byteReadBuffer(256) As Byte
+        Dim switchDriver As New TcpClient
 
         Try
             'Connect to the Dead Socket Termination port to close any previous sessions

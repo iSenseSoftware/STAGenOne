@@ -120,7 +120,6 @@ Public Module modShared
         SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
 
         ' Set the Autozero for both channels to autozero once
-        SwitchIOWrite("node[2].smu.measure.autozero = 1") 'autozero once
         SwitchIOWrite("node[2].smua.measure.autozero = 1") 'autozero once
         SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once
 
@@ -131,24 +130,38 @@ Public Module modShared
 
     End Sub
 
-    Public Sub HardwareVerification()
+    Public Function HardwareVerification() As Boolean
         'Display Message to "Open all Fixtures"
         MsgBox("Open all Fixtures")
 
         Dim dblPassHigh As Double
         Dim dblPassLow As Double
         Dim strPassFail As String
+        Dim strSwitchPattern As String
+        strHardwareErrorList = ""
 
         'Set Pass/Fail Array
         ReDim boolAuditPassFail(cfgGlobal.CardConfig * 16)
         For i = 1 To 32
             boolAuditPassFail(i) = True
         Next
+        boolAuditVerificationFailure = False
 
         'Verification of Row 3 Open
         dblPassHigh = CDbl(cfgGlobal.AuditZero) * 10 ^ 9
         dblPassLow = 0
         RowVerification(3, True, dblPassHigh, dblPassLow)
+
+        'Close all switches in a single row to dissipate any stored charge
+        strSwitchPattern = ""
+        For i = 1 To 32
+            strSwitchPattern = strSwitchPattern + SwitchNumberGenerator(1, i) + ","
+        Next
+        strSwitchPattern = strSwitchPattern + "1911,1913,2911,2913"
+        SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+        SwitchIOWrite("node[2].smua.source.output = 1")
+        Delay(100)
+        SwitchIOWrite("channel.open('allslots')")
 
         'Verification of Row 3 Closed
         dblPassHigh = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(0)) * (1 + (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
@@ -170,6 +183,7 @@ Public Module modShared
         dblPassLow = CDbl(strAuditVolt) / CDbl(cfgGlobal.ResistorNominalValues(3)) * (1 - (CDbl(cfgGlobal.AuditTolerance))) * 10 ^ 9
         RowVerification(6, False, dblPassHigh, dblPassLow)
 
+
         'Write Pass/Fail Data to file
         strPassFail = "Pass/Fail"
         For i = 1 To 32
@@ -187,12 +201,14 @@ Public Module modShared
             MsgBox("Hardware Verification Failed" + vbCr + strHardwareErrorList)
 
             EndTest()
+            Return False
         Else
             'Open all switches
             SwitchIOWrite("channel.open('allslots')")
+            Return True
         End If
 
-    End Sub
+    End Function
     ' Name: RowVerification()
     ' Parameters:
     '           intRow: The switch matrix row in which the resistor to be used for testing is wired
@@ -245,35 +261,24 @@ Public Module modShared
 
             'When boolOpen = True then the switches on Row need to be open, this loops sets the row under investigation (3-6 of Cards)
             'to be equal to the SourceMeter value (2 measurements rows)
-         
+
 
             'Column Counter loop to run through all 32 sensor channels
             For intColumnCounter = 1 To cfgGlobal.CardConfig * 16
 
-                If boolOpen = True Then
-                    'Special case of Row 3 Open
-                    'Generate Switch Pattern 
-                    'intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
-                    'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
-                    'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
-                    strSwitchPattern = AuditPatternGenerator(intRow, intRow, intColumnCounter)
-                Else
-                    'All cases where switches are closed
-                    'Generate Switch Pattern 
-                    ''intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
-                    'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
-                    'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
-                    strSwitchPattern = AuditPatternGenerator(intSourceMeter, intRow, intColumnCounter)
-                End If
-
-
+                'Special case of Row 3 Open
+                'Generate Switch Pattern 
+                'intSourceMeter determines which measurement row will be analyzed SMUA or SMUB
+                'intRow passed from Hardware Verification Subroutine determines which verification row will be analyzed (rows 3-6, which contain different resistors)
+                'intColumn determines wihch sensor channel is being analyzed (sensor channels 1-32)
+                strSwitchPattern = AuditPatternGenerator(intSourceMeter, intRow, intColumnCounter, boolOpen)
 
                 'Close Switches based on AuditPatternGenerator Function
                 SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
                 Debug.Print("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
 
                 If intColumnCounter = 1 Then
-                    Delay(20)
+                    Delay(50)
                 End If
                 'Record I Reading
                 If intSourceMeter = 1 Then
@@ -305,17 +310,30 @@ Public Module modShared
 
     End Sub
 
-    Function AuditPatternGenerator(ByVal intRowA As Integer, ByVal intRowB As Integer, ByVal intColumn As Integer) As String
+    Function AuditPatternGenerator(ByVal intRowA As Integer, ByVal intRowB As Integer, ByVal intColumn As Integer, ByVal boolOpen As Boolean) As String
         Dim strSwitchPattern As String
 
         'Generates the switch pattern needed to be closed to run Row Verification
         '191x and 291x are the backplanes to read across the 6 cards int the STA (x corresponds to which card)
-        strSwitchPattern = SwitchNumberGenerator(intRowA, intColumn)
+        If boolOpen = False Then
+            strSwitchPattern = SwitchNumberGenerator(intRowA, intColumn)
+        End If
+
         strSwitchPattern = strSwitchPattern + "," + SwitchNumberGenerator(intRowB, intColumn)
         strSwitchPattern = strSwitchPattern + ",191" + CStr(intRowA) + ",291" + CStr(intRowA) + ",191" + CStr(intRowB) + ",291" + CStr(intRowB)
         Return strSwitchPattern
 
     End Function
+
+    Public Sub PopulateSensorID()
+        Dim txtTextBoxItem As Control
+        For Each txtTextBoxItem In frmSensorID.Controls
+            If TypeOf txtTextBoxItem Is TextBox Then
+                txtTextBoxItem.Text = frmTestName.txtTestID.Text + "-" + Right(txtTextBoxItem.Name, 2)
+            End If
+
+        Next
+    End Sub
 
 
     ' ------------------------------------------------------------

@@ -31,6 +31,7 @@ Public Module modMain
         If Not OpenDataFile(cfgGlobal.DumpDirectory, strBatch & ".csv") Then
             MsgBox("Batch Number already in use.  Please choose another.", MsgBoxStyle.OkOnly, "File already exists.")
             frmTestName.Show()
+            frmTestName.txtTestID.Select()
             Exit Sub
         End If
 

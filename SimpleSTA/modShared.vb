@@ -138,7 +138,15 @@ Public Module modShared
         Dim dblPassLow As Double
         Dim strPassFail As String
         Dim strSwitchPattern As String
+        Dim strAuditHeader As String
         strHardwareErrorList = ""
+
+        strAuditHeader = "" + vbCr + "Audit Row ID,"
+        For i = 1 To cfgGlobal.CardConfig * 16
+            strAuditHeader = strAuditHeader + "Sensor" + CStr(i) + ","
+        Next
+
+        WriteToDataFile(strAuditHeader)
 
         'Set Pass/Fail Array
         ReDim boolAuditPassFail(cfgGlobal.CardConfig * 16)
@@ -146,6 +154,19 @@ Public Module modShared
             boolAuditPassFail(i) = True
         Next
         boolAuditVerificationFailure = False
+
+        'Close all switches in a single row to dissipate any stored charge
+        strSwitchPattern = ""
+        For i = 1 To 32
+            strSwitchPattern = strSwitchPattern + SwitchNumberGenerator(3, i) + ","
+            strSwitchPattern = strSwitchPattern + SwitchNumberGenerator(1, i) + ","
+        Next
+        strSwitchPattern = strSwitchPattern + "1911,1913,2911,2913"
+        SwitchIOWrite("node[1].channel.exclusiveclose('" & strSwitchPattern & "')")
+        SwitchIOWrite("node[2].smub.source.output = 0")
+        Delay(500)
+        SwitchIOWrite("channel.open('allslots')")
+
 
         'Verification of Row 3 Open
         dblPassHigh = CDbl(cfgGlobal.AuditZero) * 10 ^ 9
@@ -229,6 +250,7 @@ Public Module modShared
         Dim strAuditPassFail As String
         Dim intSourceMeter As Integer
         Dim strSourceMeter As String
+
 
         'When boolOpen = True will List "Open" in the Audit Configuration Row Identififier about the Switches
         'When boolOpen = False will List "Close" in the Audit Configuration Row Identififier about the Switches
@@ -317,6 +339,8 @@ Public Module modShared
         '191x and 291x are the backplanes to read across the 6 cards int the STA (x corresponds to which card)
         If boolOpen = False Then
             strSwitchPattern = SwitchNumberGenerator(intRowA, intColumn)
+        Else
+            strSwitchPattern = ""
         End If
 
         strSwitchPattern = strSwitchPattern + "," + SwitchNumberGenerator(intRowB, intColumn)
@@ -334,6 +358,7 @@ Public Module modShared
 
         Next
     End Sub
+
 
 
     ' ------------------------------------------------------------

@@ -67,8 +67,12 @@ Partial Class frmTestForm
         Me.HideShowSensors.SuspendLayout()
         Me.SuspendLayout()
         '
+        'MainLoop
+        '
+        '
         'TestChart
         '
+        Me.TestChart.AccessibleRole = System.Windows.Forms.AccessibleRole.None
         ChartArea1.Name = "ChartArea1"
         Me.TestChart.ChartAreas.Add(ChartArea1)
         resources.ApplyResources(Me.TestChart, "TestChart")

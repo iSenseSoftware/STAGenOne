@@ -185,6 +185,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestForm.af-ZA.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestInfo.resx">
       <DependentUpon>frmTestInfo.vb</DependentUpon>

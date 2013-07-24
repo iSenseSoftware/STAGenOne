@@ -143,8 +143,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="modFileComm.vb" />
+    <Compile Include="modGlobalVariables.vb" />
     <Compile Include="modGraph.vb" />
-    <Compile Include="modMain.vb" />
     <Compile Include="modTest.vb" />
     <Compile Include="modKeithleyComm.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

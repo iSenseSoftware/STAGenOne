@@ -1,6 +1,8 @@
-﻿
-Public Class frmSensorID
+﻿Public Class frmSensorID
 
+    Private Sub frmSensorID_Load(sender As Object, e As EventArgs) Handles Me.Load
+        PopulateSensorID()
+    End Sub
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         'Verify boxes all filled
@@ -24,9 +26,16 @@ Public Class frmSensorID
         EndTest()
     End Sub
 
-    Private Sub frmSensorID_Load(sender As Object, e As EventArgs) Handles Me.Load
-        PopulateSensorID()
+    Public Sub PopulateSensorID()
+        Dim txtTextBoxItem As Control
+        For Each txtTextBoxItem In Me.Controls
+            If TypeOf txtTextBoxItem Is TextBox Then
+                txtTextBoxItem.Text = strTestID + "-" + Microsoft.VisualBasic.Right(txtTextBoxItem.Name, 2)
+            End If
+
+        Next
     End Sub
+
     Public Property SensorHeader As String
         Get
             Dim strHeader As String = ""   'string to return with a comma separated list of the sensor IDs

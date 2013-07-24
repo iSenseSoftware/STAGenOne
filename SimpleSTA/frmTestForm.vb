@@ -99,7 +99,7 @@ Public Class frmTestForm
     Private Sub ElapsedTimer_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ElapsedTimer.Tick
         Try
             ' Update the total time timer in the user interface
-            txtTime.Text = "Total Time: " & StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2) & ":" & StrPad(stpTotalTime.Elapsed.Seconds, 2)
+            txtTime.Text = "Total Time: " & Format(stpTotalTime.Elapsed.Hours, "00") & ":" & Format(stpTotalTime.Elapsed.Minutes, "00") & ":" & Format(stpTotalTime.Elapsed.Seconds, "00")
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
@@ -113,7 +113,7 @@ Public Class frmTestForm
         Try
             ' Updat the time since injection in the user interface
             If Not boolIsTestStopped Then
-                txtTimeSinceInjection.Text = "Time Since Injection: " & StrPad(stpInjectionTime.Elapsed.Hours, 2) & ":" & StrPad(stpInjectionTime.Elapsed.Minutes, 2) & ":" & StrPad(stpInjectionTime.Elapsed.Seconds, 2)
+                txtTimeSinceInjection.Text = "Time Since Injection: " & Format(stpInjectionTime.Elapsed.Hours, "00") & ":" & Format(stpInjectionTime.Elapsed.Minutes, "00") & ":" & Format(stpInjectionTime.Elapsed.Seconds, "00")
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
@@ -127,7 +127,7 @@ Public Class frmTestForm
         ' Add the current time to the test file injections array
         Try
             Dim txtNewInjection As New Label
-            txtNewInjection.Text = StrPad(stpTotalTime.Elapsed.Hours, 2) & ":" & StrPad(stpTotalTime.Elapsed.Minutes, 2)
+            txtNewInjection.Text = Format(stpTotalTime.Elapsed.Hours, "00") & ":" & Format(stpTotalTime.Elapsed.Minutes, "00")
             flwInjections.Controls.Add(txtNewInjection)
             intInjectionCounter = intInjectionCounter + 1
 

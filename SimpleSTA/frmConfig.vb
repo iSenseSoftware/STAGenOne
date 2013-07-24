@@ -46,6 +46,8 @@ Public Class frmConfig
     ' 2. The correct data type
     ' 3. Within the acceptable range of values and contains only acceptable characters
     Private Function ValidateForm() As Boolean
+        Dim dblTest As Double
+        Dim intTest As Integer
         Try
             ' Check each field against it's requirements and return true/false
             Dim boolValidates As Boolean = True
@@ -69,7 +71,7 @@ Public Class frmConfig
                 MsgBox("The NPLC field cannot be blank")
                 boolValidates = False
             End If
-            If Not (isDouble(txtNPLC.Text)) Then
+            If Not (Double.TryParse(txtNPLC.Text, dblTest)) Then
                 MsgBox("NPLC must be a positive number")
                 boolValidates = False
             Else
@@ -82,7 +84,7 @@ Public Class frmConfig
                 MsgBox("Sample Count field cannot be left blank")
                 boolValidates = False
             End If
-            If Not (isInteger(txtSamples.Text)) Then
+            If Not (Integer.TryParse(txtSamples.Text, intTest)) Then
                 MsgBox("Sample Count must be a positive integer")
                 boolValidates = False
             Else
@@ -99,7 +101,7 @@ Public Class frmConfig
                 MsgBox("The Sample Interval field cannot be left blank")
                 boolValidates = False
             End If
-            If Not (isInteger(txtInterval.Text)) Then
+            If Not (Integer.TryParse(txtInterval.Text, intTest)) Then
                 MsgBox("The Sample Interval must be a positive integer")
                 boolValidates = False
             Else
@@ -120,7 +122,7 @@ Public Class frmConfig
                 MsgBox("Settling Time field cannot be blank")
                 boolValidates = False
             End If
-            If Not (isInteger(txtSettlingTime.Text)) Then
+            If Not (Integer.TryParse(txtSettlingTime.Text, intTest)) Then
                 MsgBox("Settling Time must be a positive integer")
                 boolValidates = False
             Else
@@ -141,7 +143,7 @@ Public Class frmConfig
                 MsgBox("Row 5 Resistor Nominal Value field cannot be left blank")
                 boolValidates = False
             End If
-            If Not (isDouble(txtRow3Resistor.Text)) Then
+            If Not (Double.TryParse(txtRow3Resistor.Text, dblTest)) Then
                 MsgBox("Row 3 Resistor Nominal Value must be a positive number")
                 boolValidates = False
             Else
@@ -150,7 +152,7 @@ Public Class frmConfig
                     boolValidates = False
                 End If
             End If
-            If Not (isDouble(txtRow4Resistor.Text)) Then
+            If Not (Double.TryParse(txtRow4Resistor.Text, dblTest)) Then
                 MsgBox("Row 4 Resistor Nominal Value must be a positive number")
                 boolValidates = False
             Else
@@ -159,7 +161,7 @@ Public Class frmConfig
                     boolValidates = False
                 End If
             End If
-            If Not (isDouble(txtRow5Resistor.Text)) Then
+            If Not (Double.TryParse(txtRow5Resistor.Text, dblTest)) Then
                 MsgBox("Row 5 Resistor Nominal Value must be a positive number")
                 boolValidates = False
             Else
@@ -172,7 +174,7 @@ Public Class frmConfig
                 MsgBox("Self Test Tolerance field cannot be left blank")
                 boolValidates = False
             End If
-            If Not (isDouble(txtTolerance.Text)) Then
+            If Not (Double.TryParse(txtTolerance.Text, dblTest)) Then
                 MsgBox("Self Test Tolerance must be a positive number less than 100")
                 boolValidates = False
             Else
@@ -185,7 +187,7 @@ Public Class frmConfig
                 MsgBox("Self Test Zero field cannot be left blank")
                 boolValidates = False
             End If
-            If Not (IsDouble(txtAuditZero.Text)) Then
+            If Not (Double.TryParse(txtAuditZero.Text, dblTest)) Then
                 MsgBox("Self Test Zero must be a positive number")
                 boolValidates = False
             Else
@@ -242,34 +244,6 @@ Public Class frmConfig
     ' 3. Set display values in config form
     Private Sub frmConfig_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            'Populate CurrentRange combo box
-            'Dim lstRangeList As List(Of KeyValuePair(Of CurrentRange, String)) = New List(Of KeyValuePair(Of CurrentRange, String))
-            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.one_uA, "0 - 1 uA"))
-            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.ten_uA, "1 - 10 uA"))
-            'lstRangeList.Add(New KeyValuePair(Of CurrentRange, String)(CurrentRange.hundred_uA, "1 - 100 uA"))
-            'cmbRange.DataSource = lstRangeList
-            'cmbRange.ValueMember = "Key"
-            'cmbRange.DisplayMember = "Value"
-            ' Populate CardConfiguration combo box
-            'Dim lstCardConfigList As List(Of KeyValuePair(Of CardConfiguration, String)) = New List(Of KeyValuePair(Of CardConfiguration, String))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.ONE_CARD_SIXTEEN_SENSORS, "1 Card, 16 Sensors"))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.TWO_CARD_THIRTY_TWO_SENSORS, "2 Card, 32 Sensors"))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.THREE_CARD_FOURTY_EIGHT_SENSORS, "3 Card, 48 Sensors"))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FOUR_CARD_SIXTY_FOUR_SENSORS, "4 Card, 64 Sensors"))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.FIVE_CARD_EIGHTY_SENSORS, "5 Card, 80 Sensors"))
-            'lstCardConfigList.Add(New KeyValuePair(Of CardConfiguration, String)(CardConfiguration.SIX_CARD_NINETY_SIX_SENSORS, "6 Card, 96 Sensors"))
-            'cmbCardConfig.DataSource = lstCardConfigList
-            'cmbCardConfig.ValueMember = "Key"
-            'cmbCardConfig.DisplayMember = "Value"
-            ' Populate FilterType combo box
-            'Dim ftFilterTypeList As List(Of KeyValuePair(Of FilterType, String)) = New List(Of KeyValuePair(Of FilterType, String))
-            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MEDIAN, "Median"))
-            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_MOVING_AVG, "Moving Average"))
-            'ftFilterTypeList.Add(New KeyValuePair(Of FilterType, String)(FilterType.FILTER_REPEAT_AVG, "Repeat Average"))
-            'cmbFilterType.DataSource = ftFilterTypeList
-            'cmbFilterType.ValueMember = "Key"
-            'cmbFilterType.DisplayMember = "Value"
-
             '-----------------
             ' Attempt to load the configuration from file and set form values
             '-----------------

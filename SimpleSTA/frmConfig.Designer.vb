@@ -122,6 +122,7 @@ Partial Class frmConfig
         '
         'cmbCardConfig
         '
+        Me.cmbCardConfig.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbCardConfig.Enabled = False
         Me.cmbCardConfig.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbCardConfig.FormattingEnabled = True
@@ -153,6 +154,7 @@ Partial Class frmConfig
         '
         'cmbRange
         '
+        Me.cmbRange.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbRange.Enabled = False
         Me.cmbRange.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbRange.FormattingEnabled = True
@@ -221,6 +223,7 @@ Partial Class frmConfig
         '
         'cmbFilterType
         '
+        Me.cmbFilterType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbFilterType.Enabled = False
         Me.cmbFilterType.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbFilterType.FormattingEnabled = True

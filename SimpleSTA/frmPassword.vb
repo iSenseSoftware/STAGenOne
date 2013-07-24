@@ -13,6 +13,8 @@ Public Class frmPassword
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Try
             If (frmConfig.validatePassword(txtPassword.Text)) Then
+                frmConfig.EnableControls()
+                frmConfig.btnSave.Text = "Save"
                 Me.Close()
             Else
                 MsgBox("Incorrect password")

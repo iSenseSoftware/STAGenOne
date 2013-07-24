@@ -319,6 +319,9 @@ Partial Class frmConfig
         Me.txtDataDir.Size = New System.Drawing.Size(255, 26)
         Me.txtDataDir.TabIndex = 9
         '
+        'FolderBrowserDialog1
+        '
+        '
         'txtSettlingTime
         '
         Me.txtSettlingTime.Enabled = False

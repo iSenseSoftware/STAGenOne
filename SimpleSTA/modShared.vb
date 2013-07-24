@@ -168,4 +168,37 @@ Public Module modShared
             Throw
         End Try
     End Sub
+
+    '' Description: Checks user inputs against a set of formatting / data type rules
+    'Private Function ValidateForm() As Boolean
+    '    ' Check each field against its requirements and return true/false
+    '    Try
+    '        Dim boolValidates As Boolean = True
+    '        ' Check that operator initials are alpha-only and non-empty
+    '        Dim regexObj As New System.Text.RegularExpressions.Regex("^[a-zA-Z][a-zA-Z]*$")
+    '        If Not (regexObj.IsMatch(txtOperatorInitials.Text)) Then
+    '            boolValidates = False
+    '        End If
+
+    '        ' Check Test Name.  Must be non-null
+    '        If (txtTestName.Text = "") Then
+    '            boolValidates = False
+    '        End If
+    '        ' Check Card tabs.  Must be non-null
+    '        For Each aTab In Tabs.TabPages
+    '            If (aTab.Enabled) Then
+    '                ' check all fields for blankness
+    '                For Each aControl In aTab.Controls
+    '                    If (aControl.GetType() = GetType(System.Windows.Forms.TextBox) And aControl.Text = "") Then
+    '                        boolValidates = False
+    '                    End If
+    '                Next
+    '            End If
+    '        Next
+    '        Return boolValidates
+    '    Catch ex As Exception
+    '        GenericExceptionHandler(ex)
+    '        Return False
+    '    End Try
+    'End Function
 End Module

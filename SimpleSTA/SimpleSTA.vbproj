@@ -124,12 +124,6 @@
     <Compile Include="frmSensorID.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmTestInfo.Designer.vb">
-      <DependentUpon>frmTestInfo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="frmTestInfo.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="frmMain.Designer.vb">
       <DependentUpon>frmMain.vb</DependentUpon>
     </Compile>
@@ -144,7 +138,6 @@
     </Compile>
     <Compile Include="modFileComm.vb" />
     <Compile Include="modGlobalVariables.vb" />
-    <Compile Include="modGraph.vb" />
     <Compile Include="modTest.vb" />
     <Compile Include="modKeithleyComm.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -186,9 +179,6 @@
     <EmbeddedResource Include="frmTestForm.af-ZA.resx">
       <DependentUpon>frmTestForm.vb</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmTestInfo.resx">
-      <DependentUpon>frmTestInfo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTestName.resx">
       <DependentUpon>frmTestName.vb</DependentUpon>

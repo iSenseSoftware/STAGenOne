@@ -6,10 +6,15 @@
 
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         'Verify boxes all filled
-        MsgBox("Add code to verify that all boxes are filled")
-        Me.Hide()
-        'Show testform
-        frmTestForm.Show()
+        If ValidateForm() Then
+            Me.Hide()
+            'Show testform
+            frmTestForm.Show()
+        Else
+            MsgBox("Sensor ID cannot be Blank")
+        End If
+
+
     End Sub
 
     Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
@@ -59,4 +64,24 @@
             'Doesn't set anything
         End Set
     End Property
+
+    Private Function ValidateForm() As Boolean
+       
+        Dim boolValidates As Boolean = True
+
+        Dim emptyTextBox = From txt In Me.Controls.OfType(Of TextBox)()
+                      Where txt.Text.Length = 0
+                      Select txt.Name
+        If emptyTextBox.Any Then
+            boolValidates = False
+        End If
+
+        Return boolValidates
+
+
+        
+    End Function
+
+
+
 End Class

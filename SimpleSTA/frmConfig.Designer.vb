@@ -61,9 +61,9 @@ Partial Class frmConfig
         Me.txtAuditZero = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.LineShape3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShape2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
+        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.SuspendLayout()
         '
         'Label3
@@ -115,7 +115,7 @@ Partial Class frmConfig
         Me.txtSTAID.Enabled = False
         Me.txtSTAID.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSTAID.Location = New System.Drawing.Point(444, 18)
-        Me.txtSTAID.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSTAID.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSTAID.Name = "txtSTAID"
         Me.txtSTAID.Size = New System.Drawing.Size(172, 26)
         Me.txtSTAID.TabIndex = 1
@@ -125,7 +125,7 @@ Partial Class frmConfig
         Me.txtAddress.Enabled = False
         Me.txtAddress.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAddress.Location = New System.Drawing.Point(165, 15)
-        Me.txtAddress.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtAddress.Margin = New System.Windows.Forms.Padding(4)
         Me.txtAddress.Name = "txtAddress"
         Me.txtAddress.Size = New System.Drawing.Size(172, 26)
         Me.txtAddress.TabIndex = 0
@@ -138,7 +138,7 @@ Partial Class frmConfig
         Me.cmbCardConfig.FormattingEnabled = True
         Me.cmbCardConfig.Items.AddRange(New Object() {"2"})
         Me.cmbCardConfig.Location = New System.Drawing.Point(165, 62)
-        Me.cmbCardConfig.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmbCardConfig.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbCardConfig.Name = "cmbCardConfig"
         Me.cmbCardConfig.Size = New System.Drawing.Size(172, 28)
         Me.cmbCardConfig.TabIndex = 2
@@ -147,7 +147,7 @@ Partial Class frmConfig
         '
         Me.btnSave.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSave.Location = New System.Drawing.Point(189, 602)
-        Me.btnSave.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSave.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(156, 43)
         Me.btnSave.TabIndex = 20
@@ -158,7 +158,7 @@ Partial Class frmConfig
         '
         Me.btnCancel.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnCancel.Location = New System.Drawing.Point(371, 602)
-        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCancel.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(156, 43)
         Me.btnCancel.TabIndex = 21
@@ -173,7 +173,7 @@ Partial Class frmConfig
         Me.cmbRange.FormattingEnabled = True
         Me.cmbRange.Items.AddRange(New Object() {"100", "1000", "10000"})
         Me.cmbRange.Location = New System.Drawing.Point(165, 210)
-        Me.cmbRange.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmbRange.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbRange.Name = "cmbRange"
         Me.cmbRange.Size = New System.Drawing.Size(172, 28)
         Me.cmbRange.TabIndex = 3
@@ -183,7 +183,7 @@ Partial Class frmConfig
         Me.txtBias.Enabled = False
         Me.txtBias.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtBias.Location = New System.Drawing.Point(444, 210)
-        Me.txtBias.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtBias.Margin = New System.Windows.Forms.Padding(4)
         Me.txtBias.Name = "txtBias"
         Me.txtBias.Size = New System.Drawing.Size(172, 26)
         Me.txtBias.TabIndex = 4
@@ -204,7 +204,7 @@ Partial Class frmConfig
         Me.txtNPLC.Enabled = False
         Me.txtNPLC.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtNPLC.Location = New System.Drawing.Point(444, 263)
-        Me.txtNPLC.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNPLC.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNPLC.Name = "txtNPLC"
         Me.txtNPLC.Size = New System.Drawing.Size(172, 26)
         Me.txtNPLC.TabIndex = 5
@@ -225,7 +225,7 @@ Partial Class frmConfig
         Me.txtInterval.Enabled = False
         Me.txtInterval.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtInterval.Location = New System.Drawing.Point(165, 263)
-        Me.txtInterval.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtInterval.Margin = New System.Windows.Forms.Padding(4)
         Me.txtInterval.Name = "txtInterval"
         Me.txtInterval.Size = New System.Drawing.Size(172, 26)
         Me.txtInterval.TabIndex = 6
@@ -249,7 +249,7 @@ Partial Class frmConfig
         Me.cmbFilterType.FormattingEnabled = True
         Me.cmbFilterType.Items.AddRange(New Object() {"FILTER_MEDIAN", "FILTER_MOVING_AVG", "FILTER_REPEAT_AVG"})
         Me.cmbFilterType.Location = New System.Drawing.Point(444, 311)
-        Me.cmbFilterType.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.cmbFilterType.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbFilterType.Name = "cmbFilterType"
         Me.cmbFilterType.Size = New System.Drawing.Size(172, 28)
         Me.cmbFilterType.TabIndex = 7
@@ -270,7 +270,7 @@ Partial Class frmConfig
         Me.txtSamples.Enabled = False
         Me.txtSamples.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSamples.Location = New System.Drawing.Point(165, 314)
-        Me.txtSamples.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSamples.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSamples.Name = "txtSamples"
         Me.txtSamples.Size = New System.Drawing.Size(172, 26)
         Me.txtSamples.TabIndex = 8
@@ -302,7 +302,7 @@ Partial Class frmConfig
         Me.btnSelDataDir.Enabled = False
         Me.btnSelDataDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnSelDataDir.Location = New System.Drawing.Point(545, 127)
-        Me.btnSelDataDir.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnSelDataDir.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSelDataDir.Name = "btnSelDataDir"
         Me.btnSelDataDir.Size = New System.Drawing.Size(31, 27)
         Me.btnSelDataDir.TabIndex = 10
@@ -314,20 +314,17 @@ Partial Class frmConfig
         Me.txtDataDir.Enabled = False
         Me.txtDataDir.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtDataDir.Location = New System.Drawing.Point(276, 127)
-        Me.txtDataDir.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtDataDir.Margin = New System.Windows.Forms.Padding(4)
         Me.txtDataDir.Name = "txtDataDir"
         Me.txtDataDir.Size = New System.Drawing.Size(255, 26)
         Me.txtDataDir.TabIndex = 9
-        '
-        'FolderBrowserDialog1
-        '
         '
         'txtSettlingTime
         '
         Me.txtSettlingTime.Enabled = False
         Me.txtSettlingTime.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtSettlingTime.Location = New System.Drawing.Point(429, 380)
-        Me.txtSettlingTime.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtSettlingTime.Margin = New System.Windows.Forms.Padding(4)
         Me.txtSettlingTime.Name = "txtSettlingTime"
         Me.txtSettlingTime.Size = New System.Drawing.Size(81, 26)
         Me.txtSettlingTime.TabIndex = 13
@@ -348,7 +345,7 @@ Partial Class frmConfig
         Me.txtRow3Resistor.Enabled = False
         Me.txtRow3Resistor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRow3Resistor.Location = New System.Drawing.Point(233, 432)
-        Me.txtRow3Resistor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRow3Resistor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRow3Resistor.Name = "txtRow3Resistor"
         Me.txtRow3Resistor.Size = New System.Drawing.Size(81, 26)
         Me.txtRow3Resistor.TabIndex = 14
@@ -369,7 +366,7 @@ Partial Class frmConfig
         Me.txtRow4Resistor.Enabled = False
         Me.txtRow4Resistor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRow4Resistor.Location = New System.Drawing.Point(535, 426)
-        Me.txtRow4Resistor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRow4Resistor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRow4Resistor.Name = "txtRow4Resistor"
         Me.txtRow4Resistor.Size = New System.Drawing.Size(81, 26)
         Me.txtRow4Resistor.TabIndex = 15
@@ -390,7 +387,7 @@ Partial Class frmConfig
         Me.txtRow5Resistor.Enabled = False
         Me.txtRow5Resistor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRow5Resistor.Location = New System.Drawing.Point(233, 478)
-        Me.txtRow5Resistor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRow5Resistor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRow5Resistor.Name = "txtRow5Resistor"
         Me.txtRow5Resistor.Size = New System.Drawing.Size(81, 26)
         Me.txtRow5Resistor.TabIndex = 16
@@ -411,7 +408,7 @@ Partial Class frmConfig
         Me.txtTolerance.Enabled = False
         Me.txtTolerance.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtTolerance.Location = New System.Drawing.Point(535, 526)
-        Me.txtTolerance.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtTolerance.Margin = New System.Windows.Forms.Padding(4)
         Me.txtTolerance.Name = "txtTolerance"
         Me.txtTolerance.Size = New System.Drawing.Size(81, 26)
         Me.txtTolerance.TabIndex = 18
@@ -432,7 +429,7 @@ Partial Class frmConfig
         Me.txtRow6Resistor.Enabled = False
         Me.txtRow6Resistor.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtRow6Resistor.Location = New System.Drawing.Point(535, 475)
-        Me.txtRow6Resistor.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtRow6Resistor.Margin = New System.Windows.Forms.Padding(4)
         Me.txtRow6Resistor.Name = "txtRow6Resistor"
         Me.txtRow6Resistor.Size = New System.Drawing.Size(81, 26)
         Me.txtRow6Resistor.TabIndex = 17
@@ -453,7 +450,7 @@ Partial Class frmConfig
         Me.txtAuditZero.Enabled = False
         Me.txtAuditZero.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.txtAuditZero.Location = New System.Drawing.Point(233, 524)
-        Me.txtAuditZero.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtAuditZero.Margin = New System.Windows.Forms.Padding(4)
         Me.txtAuditZero.Name = "txtAuditZero"
         Me.txtAuditZero.Size = New System.Drawing.Size(81, 26)
         Me.txtAuditZero.TabIndex = 19
@@ -475,25 +472,9 @@ Partial Class frmConfig
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape3, Me.LineShape2, Me.LineShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(650, 645)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(671, 645)
         Me.ShapeContainer1.TabIndex = 42
         Me.ShapeContainer1.TabStop = False
-        '
-        'LineShape1
-        '
-        Me.LineShape1.Name = "LineShape1"
-        Me.LineShape1.X1 = 30
-        Me.LineShape1.X2 = 612
-        Me.LineShape1.Y1 = 109
-        Me.LineShape1.Y2 = 109
-        '
-        'LineShape2
-        '
-        Me.LineShape2.Name = "LineShape2"
-        Me.LineShape2.X1 = 33
-        Me.LineShape2.X2 = 615
-        Me.LineShape2.Y1 = 182
-        Me.LineShape2.Y2 = 182
         '
         'LineShape3
         '
@@ -503,13 +484,29 @@ Partial Class frmConfig
         Me.LineShape3.Y1 = 366
         Me.LineShape3.Y2 = 366
         '
+        'LineShape2
+        '
+        Me.LineShape2.Name = "LineShape2"
+        Me.LineShape2.X1 = 33
+        Me.LineShape2.X2 = 615
+        Me.LineShape2.Y1 = 182
+        Me.LineShape2.Y2 = 182
+        '
+        'LineShape1
+        '
+        Me.LineShape1.Name = "LineShape1"
+        Me.LineShape1.X1 = 30
+        Me.LineShape1.X2 = 612
+        Me.LineShape1.Y1 = 109
+        Me.LineShape1.Y2 = 109
+        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(671, 455)
+        Me.ClientSize = New System.Drawing.Size(692, 455)
         Me.Controls.Add(Me.txtAuditZero)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.txtRow6Resistor)
@@ -548,7 +545,7 @@ Partial Class frmConfig
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.ShapeContainer1)
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmConfig"
         Me.Text = "Configuration Settings"
         Me.ResumeLayout(False)

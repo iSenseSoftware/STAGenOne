@@ -472,12 +472,13 @@ Partial Class frmConfig
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape3, Me.LineShape2, Me.LineShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(671, 645)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(650, 645)
         Me.ShapeContainer1.TabIndex = 42
         Me.ShapeContainer1.TabStop = False
         '
         'LineShape3
         '
+        Me.LineShape3.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.LineShape3.Name = "LineShape3"
         Me.LineShape3.X1 = 36
         Me.LineShape3.X2 = 618
@@ -486,6 +487,7 @@ Partial Class frmConfig
         '
         'LineShape2
         '
+        Me.LineShape2.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.LineShape2.Name = "LineShape2"
         Me.LineShape2.X1 = 33
         Me.LineShape2.X2 = 615
@@ -494,6 +496,7 @@ Partial Class frmConfig
         '
         'LineShape1
         '
+        Me.LineShape1.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.LineShape1.Name = "LineShape1"
         Me.LineShape1.X1 = 30
         Me.LineShape1.X2 = 612
@@ -506,7 +509,7 @@ Partial Class frmConfig
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(692, 455)
+        Me.ClientSize = New System.Drawing.Size(671, 455)
         Me.Controls.Add(Me.txtAuditZero)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.txtRow6Resistor)

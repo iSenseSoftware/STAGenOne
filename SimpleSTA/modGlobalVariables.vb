@@ -7,6 +7,7 @@ Module modGlobalVariables
     ' The modGlobalVariables, as the name suggests, a collection of global variables for use in all objects 
     ' and forms
     ' -----------------------------------------------------------------------------------------------------------
+    ' Testing, testing, 1,2,3
 
     'Constants
     Public Const strConfigFileName As String = "Config.xml"

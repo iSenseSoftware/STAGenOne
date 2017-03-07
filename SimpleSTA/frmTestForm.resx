@@ -117,62 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ToolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ToolStrip1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
-  </data>
-  <data name="ToolStrip1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1014, 25</value>
-  </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ToolStrip1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ToolStrip1.Text" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;ToolStrip1.Name" xml:space="preserve">
-    <value>ToolStrip1</value>
-  </data>
-  <data name="&gt;&gt;ToolStrip1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ToolStrip1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ToolStrip1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <metadata name="MainStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>124, 17</value>
-  </metadata>
-  <data name="MainStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="MainStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1014, 24</value>
-  </data>
-  <data name="MainStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="MainStrip.Text" xml:space="preserve">
-    <value>MenuStrip1</value>
-  </data>
-  <data name="&gt;&gt;MainStrip.Name" xml:space="preserve">
-    <value>MainStrip</value>
-  </data>
-  <data name="&gt;&gt;MainStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;MainStrip.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;MainStrip.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
   <metadata name="MainLoop.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>239, 17</value>
   </metadata>
@@ -180,12 +124,14 @@
   <data name="TestChart.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="TestChart.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="TestChart.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 586</value>
+    <value>696, 609</value>
   </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="TestChart.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
@@ -211,7 +157,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnApply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>293, 10</value>
+    <value>294, 10</value>
   </data>
   <data name="btnApply.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 36</value>
@@ -307,7 +253,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnZoomOut.Location" type="System.Drawing.Point, System.Drawing">
-    <value>541, 25</value>
+    <value>542, 25</value>
   </data>
   <data name="btnZoomOut.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 35</value>
@@ -337,7 +283,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnZoomReset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>293, 47</value>
+    <value>294, 47</value>
   </data>
   <data name="btnZoomReset.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 37</value>
@@ -370,7 +316,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>188, 77</value>
+    <value>189, 77</value>
   </data>
   <data name="Label5.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 13</value>
@@ -403,7 +349,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>187, 36</value>
+    <value>188, 36</value>
   </data>
   <data name="Label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>27, 13</value>
@@ -436,7 +382,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>119, 77</value>
+    <value>120, 77</value>
   </data>
   <data name="Label4.Size" type="System.Drawing.Size, System.Drawing">
     <value>24, 13</value>
@@ -499,7 +445,7 @@
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="txtYMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 52</value>
+    <value>175, 52</value>
   </data>
   <data name="txtYMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -526,7 +472,7 @@
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="txtYMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 52</value>
+    <value>104, 52</value>
   </data>
   <data name="txtYMin.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -553,7 +499,7 @@
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="txtXMax.Location" type="System.Drawing.Point, System.Drawing">
-    <value>174, 11</value>
+    <value>175, 11</value>
   </data>
   <data name="txtXMax.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -580,7 +526,7 @@
     <value>Microsoft Sans Serif, 9.75pt</value>
   </data>
   <data name="txtXMin.Location" type="System.Drawing.Point, System.Drawing">
-    <value>103, 11</value>
+    <value>104, 11</value>
   </data>
   <data name="txtXMin.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 22</value>
@@ -613,7 +559,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 55</value>
+    <value>37, 55</value>
   </data>
   <data name="Label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 16</value>
@@ -649,7 +595,7 @@
     <value>NoControl</value>
   </data>
   <data name="Label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>36, 11</value>
+    <value>37, 11</value>
   </data>
   <data name="Label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 16</value>
@@ -676,7 +622,7 @@
     <value>Bottom</value>
   </data>
   <data name="Panel4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 586</value>
+    <value>0, 609</value>
   </data>
   <data name="Panel4.Size" type="System.Drawing.Size, System.Drawing">
     <value>696, 95</value>
@@ -700,10 +646,10 @@
     <value>Fill</value>
   </data>
   <data name="Panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>147, 49</value>
+    <value>147, 0</value>
   </data>
   <data name="Panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 681</value>
+    <value>696, 704</value>
   </data>
   <data name="Panel1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -931,7 +877,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnStartTest.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 592</value>
+    <value>12, 604</value>
   </data>
   <data name="btnStartTest.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 35</value>
@@ -964,7 +910,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnNoteInjection.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 634</value>
+    <value>12, 645</value>
   </data>
   <data name="btnNoteInjection.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 35</value>
@@ -991,10 +937,10 @@
     <value>Left</value>
   </data>
   <data name="Panel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 49</value>
+    <value>0, 0</value>
   </data>
   <data name="Panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>147, 681</value>
+    <value>147, 704</value>
   </data>
   <data name="Panel2.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1054,10 +1000,10 @@
     <value>TopDown</value>
   </data>
   <data name="HideShowSensors.Location" type="System.Drawing.Point, System.Drawing">
-    <value>843, 49</value>
+    <value>843, 0</value>
   </data>
   <data name="HideShowSensors.Size" type="System.Drawing.Size, System.Drawing">
-    <value>171, 681</value>
+    <value>171, 704</value>
   </data>
   <data name="HideShowSensors.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1096,10 +1042,10 @@
     <value>True</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1014, 730</value>
+    <value>1014, 704</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>1022, 720</value>
+    <value>1013, 719</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Run Test</value>

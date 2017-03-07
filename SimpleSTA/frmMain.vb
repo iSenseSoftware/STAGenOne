@@ -4,35 +4,40 @@
 ' ------------------------------------------------------------------------
 Option Explicit On
 Public Class frmMain
+
     ' ------------------------------------------
     ' Event Handlers
     ' -------------------------------------------
-    ' Name: EditConfigurationToolStripMenuItem_Click()
-    ' Handles: User clicks "Edit Configuration" button
+
+    ' Name: frmMain_Load
+    ' Handles: Opening of program
+    ' Description: Attempts to load the configuration file and updates status box
+
+    Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        LoadOrRefreshConfiguration()
+    End Sub
+    ' Name: btnNewTest_Click
+    ' Handles: User clicks the "New Test" button
+    ' Description: Opens the frmTestInfo form allowing the user to enter test info and create a new test
+    Private Sub btnNewTest_Click(sender As Object, e As EventArgs) Handles btnNewTest.Click
+        If EstablishKeithleyIO(cfgGlobal.Address) = False Then
+            MsgBox("Communication not established")
+            Exit Sub
+        End If
+
+        btnConfig.Enabled = False
+        btnNewTest.Enabled = False
+        frmTestName.Show()
+    End Sub
+    ' Name: btnConfig_Click
+    ' Handles: User clicks "Configuration" button
     ' Description: Opens the config form! (frmConfig)
-    Private Sub EditConfigurationToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles EditConfigurationToolStripMenuItem.Click
+    Private Sub btnConfig_Click(sender As Object, e As EventArgs) Handles btnConfig.Click
         Try
             frmConfig.Show()
             frmConfig.BringToFront()
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
-    End Sub
-    ' Name: NewTestToolStripMenuItem_Click()
-    ' Handles: User clicks the "New Test" button
-    ' Description: Opens the frmTestInfo form allowing the user to enter test info and create a new test
-    Private Sub NewTestToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles NewTestToolStripMenuItem.Click
-        frmTestInfo.Show()
-        'Dim comm As New SerialCommunicator()
-        'comm.Initialize()
-        'comm.SendCommand("display.clear()")
-    End Sub
-
-    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
-        Me.Close()
-    End Sub
-
-    Private Sub AboutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles AboutToolStripMenuItem.Click
-        frmAbout.Show()
     End Sub
 End Class

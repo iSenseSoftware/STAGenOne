@@ -640,11 +640,11 @@ Public Class frmTestForm
     Public Sub UpdateTraces(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             If (sender.Checked) Then
-                TestChart.Series(TestChart.Name).Enabled = True
-                TestChart.Series(TestChart.Name).IsVisibleInLegend = True
+                TestChart.Series(sender.Text).Enabled = True
+                TestChart.Series(sender.Text).IsVisibleInLegend = True
             Else
-                TestChart.Series(TestChart.Name).Enabled = False
-                TestChart.Series(TestChart.Name).IsVisibleInLegend = False
+                TestChart.Series(sender.Text).Enabled = False
+                TestChart.Series(sender.Text).IsVisibleInLegend = False
             End If
         Catch ex As Exception
             GenericExceptionHandler(ex)

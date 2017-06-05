@@ -29,18 +29,20 @@ Partial Class frmMain
         '
         'btnNewTest
         '
-        Me.btnNewTest.Location = New System.Drawing.Point(223, 61)
+        Me.btnNewTest.Location = New System.Drawing.Point(167, 50)
+        Me.btnNewTest.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.btnNewTest.Name = "btnNewTest"
-        Me.btnNewTest.Size = New System.Drawing.Size(297, 181)
+        Me.btnNewTest.Size = New System.Drawing.Size(223, 147)
         Me.btnNewTest.TabIndex = 7
         Me.btnNewTest.Text = "New Test"
         Me.btnNewTest.UseVisualStyleBackColor = True
         '
         'btnConfig
         '
-        Me.btnConfig.Location = New System.Drawing.Point(223, 275)
+        Me.btnConfig.Location = New System.Drawing.Point(167, 223)
+        Me.btnConfig.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
         Me.btnConfig.Name = "btnConfig"
-        Me.btnConfig.Size = New System.Drawing.Size(297, 181)
+        Me.btnConfig.Size = New System.Drawing.Size(223, 147)
         Me.btnConfig.TabIndex = 8
         Me.btnConfig.Text = "Configuration"
         Me.btnConfig.UseVisualStyleBackColor = True
@@ -48,21 +50,21 @@ Partial Class frmMain
         'lblVersion
         '
         Me.lblVersion.AutoSize = True
-        Me.lblVersion.Location = New System.Drawing.Point(28, 9)
+        Me.lblVersion.Location = New System.Drawing.Point(21, 7)
+        Me.lblVersion.Margin = New System.Windows.Forms.Padding(2, 0, 2, 0)
         Me.lblVersion.Name = "lblVersion"
-        Me.lblVersion.Size = New System.Drawing.Size(92, 17)
+        Me.lblVersion.Size = New System.Drawing.Size(69, 13)
         Me.lblVersion.TabIndex = 9
         Me.lblVersion.Text = "Version 0.0.0"
         '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(782, 555)
+        Me.ClientSize = New System.Drawing.Size(586, 451)
         Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.btnConfig)
         Me.Controls.Add(Me.btnNewTest)
-        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmMain"
         Me.Text = "GlucoMatrix"
         Me.ResumeLayout(False)

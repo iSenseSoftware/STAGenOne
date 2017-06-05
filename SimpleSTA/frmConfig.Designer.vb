@@ -60,10 +60,6 @@ Partial Class frmConfig
         Me.Label18 = New System.Windows.Forms.Label()
         Me.txtAuditZero = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
-        Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.LineShape3 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape2 = New Microsoft.VisualBasic.PowerPacks.LineShape()
-        Me.LineShape1 = New Microsoft.VisualBasic.PowerPacks.LineShape()
         Me.SuspendLayout()
         '
         'Label3
@@ -429,43 +425,6 @@ Partial Class frmConfig
         Me.Label19.TabIndex = 41
         Me.Label19.Text = "Self Test ""Zero"" (nA):"
         '
-        'ShapeContainer1
-        '
-        Me.ShapeContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
-        Me.ShapeContainer1.Name = "ShapeContainer1"
-        Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.LineShape3, Me.LineShape2, Me.LineShape1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(502, 524)
-        Me.ShapeContainer1.TabIndex = 42
-        Me.ShapeContainer1.TabStop = False
-        '
-        'LineShape3
-        '
-        Me.LineShape3.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.LineShape3.Name = "LineShape3"
-        Me.LineShape3.X1 = 48
-        Me.LineShape3.X2 = 461
-        Me.LineShape3.Y1 = 297
-        Me.LineShape3.Y2 = 297
-        '
-        'LineShape2
-        '
-        Me.LineShape2.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.LineShape2.Name = "LineShape2"
-        Me.LineShape2.X1 = 48
-        Me.LineShape2.X2 = 461
-        Me.LineShape2.Y1 = 148
-        Me.LineShape2.Y2 = 148
-        '
-        'LineShape1
-        '
-        Me.LineShape1.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.LineShape1.Name = "LineShape1"
-        Me.LineShape1.X1 = 48
-        Me.LineShape1.X2 = 461
-        Me.LineShape1.Y1 = 89
-        Me.LineShape1.Y2 = 89
-        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -510,7 +469,6 @@ Partial Class frmConfig
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.ShapeContainer1)
         Me.Name = "frmConfig"
         Me.Text = "Configuration Settings"
         Me.ResumeLayout(False)
@@ -555,9 +513,5 @@ Partial Class frmConfig
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtAuditZero As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
-    Friend WithEvents ShapeContainer1 As Microsoft.VisualBasic.PowerPacks.ShapeContainer
-    Friend WithEvents LineShape3 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape2 As Microsoft.VisualBasic.PowerPacks.LineShape
-    Friend WithEvents LineShape1 As Microsoft.VisualBasic.PowerPacks.LineShape
 
 End Class

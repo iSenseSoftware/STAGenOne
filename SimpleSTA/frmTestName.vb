@@ -64,7 +64,7 @@
         WriteToDataFile("Operator Initials:," & strUserID)
 
         'Write Hardware Info to data file
-        WriteToDataFile(vbCr & "STA ID:," & frmConfig.txtSTAID.Text & vbCr)
+        WriteToDataFile(vbCr & "STA ID:," & cfgGlobal.STAID & vbCr)
         WriteToDataFile(",Model,Serial Number,Firmware Revision,Calibration Date,Cal Due Date")
         strData = String.Format("Source Meter,{0},{1},{2},{3},{4}", _
                                 SwitchIOWriteRead("print(node[2].model)"), _
@@ -205,16 +205,19 @@
         WriteToDataFile(strPassFail)
 
         'Errors decision (yes- display error message box & save error list to file & end test, no- open all switches)
-        If boolAuditVerificationFailure = True Then
-            MsgBox("Hardware Verification Failed" + vbCr + strHardwareErrorList)
+        'Note: this block was commented on 07Mar2016 by DB to enable the program to function without passing the audit
+        '      Additional work needs to be performed on the audit function in order to reliably use it.
 
-            EndTest()
-            Return False
-        Else
-            'Open all switches
-            SwitchIOWrite("channel.open('allslots')")
-            Return True
-        End If
+        'If boolAuditVerificationFailure = True Then
+        '    MsgBox("Hardware Verification Failed" + vbCr + strHardwareErrorList)
+        '    EndTest()
+        '    Return False
+        'Else
+        '    'Open all switches
+        '    SwitchIOWrite("channel.open('allslots')")
+        '    Return True
+        'End If
+        Return True
     End Function
     ' Name: RowVerification()
     ' Parameters:

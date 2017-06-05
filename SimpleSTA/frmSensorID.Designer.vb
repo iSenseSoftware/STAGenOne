@@ -668,7 +668,7 @@ Partial Class frmSensorID
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(128, 479)
+        Me.btnOK.Location = New System.Drawing.Point(127, 523)
         Me.btnOK.Margin = New System.Windows.Forms.Padding(2)
         Me.btnOK.Name = "btnOK"
         Me.btnOK.Size = New System.Drawing.Size(69, 28)
@@ -678,7 +678,7 @@ Partial Class frmSensorID
         '
         'btnCancel
         '
-        Me.btnCancel.Location = New System.Drawing.Point(271, 479)
+        Me.btnCancel.Location = New System.Drawing.Point(270, 523)
         Me.btnCancel.Margin = New System.Windows.Forms.Padding(2)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(69, 28)
@@ -690,7 +690,7 @@ Partial Class frmSensorID
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(466, 517)
+        Me.ClientSize = New System.Drawing.Size(466, 562)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.txtSensor32)

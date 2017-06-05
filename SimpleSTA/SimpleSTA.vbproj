@@ -8,8 +8,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{939E802D-20F3-4940-BABA-5AD2D436B95C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>GlucoMatrix.My.MyApplication</StartupObject>
-    <RootNamespace>GlucoMatrix</RootNamespace>
+    <StartupObject>SimpleSTA.My.MyApplication</StartupObject>
+    <RootNamespace>SimpleSTA</RootNamespace>
     <AssemblyName>GlucoMatrix</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>

@@ -64,9 +64,9 @@ Namespace My
     Friend Module MySettingsProperty
         
         <Global.System.ComponentModel.Design.HelpKeywordAttribute("My.Settings")>  _
-        Friend ReadOnly Property Settings() As Global.GlucoMatrix.My.MySettings
+        Friend ReadOnly Property Settings() As Global.SimpleSTA.My.MySettings
             Get
-                Return Global.GlucoMatrix.My.MySettings.Default
+                Return Global.SimpleSTA.My.MySettings.Default
             End Get
         End Property
     End Module

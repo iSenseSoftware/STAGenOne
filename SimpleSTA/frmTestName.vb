@@ -64,7 +64,7 @@
         WriteToDataFile("Operator Initials:," & strUserID)
 
         'Write Hardware Info to data file
-        WriteToDataFile(vbCr & "STA ID:," & frmConfig.txtSTAID.Text & vbCr)
+        WriteToDataFile(vbCr & "STA ID:," & cfgGlobal.STAID & vbCr)
         WriteToDataFile(",Model,Serial Number,Firmware Revision,Calibration Date,Cal Due Date")
         strData = String.Format("Source Meter,{0},{1},{2},{3},{4}", _
                                 SwitchIOWriteRead("print(node[2].model)"), _

@@ -44,7 +44,7 @@ Public Module modFileComm
 
     Public Sub CloseDataFile()
         Try
-            swDataFile.Close()
+            swDataFile.Dispose()
             boolDataFileOpen = False
         Catch ex As Exception
             GenericExceptionHandler(ex)

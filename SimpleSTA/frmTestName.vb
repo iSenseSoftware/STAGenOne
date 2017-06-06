@@ -63,14 +63,25 @@
         WriteToDataFile("Batch Number:," & strBatch)
         WriteToDataFile("Operator Initials:," & strUserID)
 
+        'Write test configuration to data file - DB 05Jun2017
+        WriteToDataFile("GlucoMatrix Rev:," & strApplicationVersion)
+        WriteToDataFile("Bias Voltage:," & cfgGlobal.Bias)
+        WriteToDataFile("Current Range:," & cfgGlobal.Range)
+        WriteToDataFile("NPLC:," & cfgGlobal.NPLC)
+        WriteToDataFile("Filter Count:," & cfgGlobal.Samples)
+        WriteToDataFile("Filter Type:," & cfgGlobal.Filter)
+        WriteToDataFile("Sample Interval:," & cfgGlobal.RecordInterval)
+        WriteToDataFile("Settling Time:," & cfgGlobal.SettlingTime)
+
+
         'Write Hardware Info to data file
-        WriteToDataFile(vbCr & "STA ID:," & cfgGlobal.STAID & vbCr)
+        WriteToDataFile(vbCr & "Equipment ID:," & cfgGlobal.STAID & vbCr)
         WriteToDataFile(",Model,Serial Number,Firmware Revision,Calibration Date,Cal Due Date")
-        strData = String.Format("Source Meter,{0},{1},{2},{3},{4}", _
-                                SwitchIOWriteRead("print(node[2].model)"), _
-                                SwitchIOWriteRead("print(node[2].serialno)"), _
-                                SwitchIOWriteRead("print(node[2].revision)"), _
-                                SwitchIOWriteRead("print(node[2].smua.cal.date)"), _
+        strData = String.Format("Source Meter,{0},{1},{2},{3},{4}",
+                                SwitchIOWriteRead("print(node[2].model)"),
+                                SwitchIOWriteRead("print(node[2].serialno)"),
+                                SwitchIOWriteRead("print(node[2].revision)"),
+                                SwitchIOWriteRead("print(node[2].smua.cal.date)"),
                                 SwitchIOWriteRead("print(node[2].smua.cal.due)"))
         WriteToDataFile(strData)
         strData = String.Format("System Switch,{0},{1},{2},{3},{4}", _

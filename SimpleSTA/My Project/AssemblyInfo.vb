@@ -8,11 +8,11 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("SimpleSTA")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("BBS")> 
-<Assembly: AssemblyProduct("SimpleSTA")> 
-<Assembly: AssemblyCopyright("Copyright © BBS 2012")> 
+<Assembly: AssemblyTitle("GlucoMatrix")>
+<Assembly: AssemblyDescription("")>
+<Assembly: AssemblyCompany("WaveForm Technologies")>
+<Assembly: AssemblyProduct("SimpleSTA")>
+<Assembly: AssemblyCopyright("Copyright © WaveForm Technologies 2017")>
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>

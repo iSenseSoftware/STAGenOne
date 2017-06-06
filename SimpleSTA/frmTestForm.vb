@@ -47,6 +47,8 @@ Public Class frmTestForm
                 Me.Hide()
                 frmMain.btnConfig.Enabled = True
                 frmMain.btnNewTest.Enabled = True
+                EndTest()
+
             Else
                 e.Cancel = True
                 MsgBox("Cannot close test form while test is running.  Stop test and close form.", vbOKOnly)
@@ -62,14 +64,22 @@ Public Class frmTestForm
     ' Description: Enabled the start and note injection buttons, populates the form with test specific data
     ' and sets the display text on the SMU to indicate readiness to perform a test
     Private Sub TestForm_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        TestFormLoaded()
+    End Sub
+
+    Private Sub TestFormLoaded()
         Try
             btnStartTest.Show()
             btnNoteInjection.Show()
             ' Set the background worker to report progress so that it can make cross-thread communications to the chart updater
             MainLoop.WorkerReportsProgress = True
-            prepareForm(sender, e)
+            prepareForm()
             SwitchIOWrite("node[2].display.clear()")
             SwitchIOWrite("node[2].display.settext('Ready to test')")
+            stpTotalTime.Reset() 'Needed to reset the clock if a second test is run - DB 05Jun2017
+            stpInjectionTime.Stop() 'Needed to reset the clock if a second test is run - DB 05Jun2017
+            stpInjectionTime.Reset() 'Needed to reset the clock if a second test is run - DB 05Jun2017
+            intInjectionCounter = 0 ' Needed to reset the number of injections in the data file if a second test is run - DB 05Jun2017
         Catch ex As COMException
             ComExceptionHandler(ex)
             Me.Close()
@@ -166,7 +176,7 @@ Public Class frmTestForm
     ' ----------------------------------------------
     ' Utility functions
     ' ----------------------------------------------
-    Private Sub prepareForm(ByVal sender As Object, ByVal e As System.EventArgs)
+    Private Sub prepareForm()
         Try
             ' Clear the default or previous series and legends from the test chart
             TestChart.Series.Clear()
@@ -337,8 +347,8 @@ Public Class frmTestForm
             WriteToDataFile(strData)
 
             '       Next, add in the sensor IDs
-            strData = frmSensorID.SensorHeader
-            WriteToDataFile("," & strData & ",Period,," & strData & ",SMUA,SMUA")
+            'strData = frmSensorID.SensorHeader
+            WriteToDataFile("Time:," & strSensorIDHeader & ",Period,," & strSensorIDHeader & ",SMUA,SMUA")
 
             '' '' Start all timers
             ElapsedTimer.Start() ' Start the form timer component
@@ -665,5 +675,9 @@ Public Class frmTestForm
 
     Private Sub txtYMax_Enter(sender As Object, e As EventArgs) Handles txtYMax.Enter
         btnApply_Click()
+    End Sub
+
+    Private Sub frmTestForm_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        TestFormLoaded()
     End Sub
 End Class

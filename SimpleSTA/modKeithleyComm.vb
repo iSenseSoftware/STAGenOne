@@ -64,12 +64,14 @@ Public Module modKeithleyComm
         Dim switchIOReset As New TcpClient
         Dim byteReadBuffer(256) As Byte
         Dim switchDriver As New TcpClient
-
         Try
             'Connect to the Dead Socket Termination port to close any previous sessions
             'then close.  Dead sockets are closed when the DST port closes
             switchIOReset.Connect(strIPAddress, 5030)
             switchIOReset.Close()
+
+            'Allow the switch to detach any dead sockets
+            Delay(100)
 
             'Connect to the Raw port
             switchDriver.Connect(strIPAddress, 5025)
@@ -105,7 +107,7 @@ Public Module modKeithleyComm
 
         Catch SException As SocketException
             MsgBox("Communication could not be established with the communication hardware.  " _
-            & "Please check the IP Address in the configuration and try again.  Error code " & SException.ErrorCode, _
+            & "Please check the IP Address in the configuration and try again.  Error code " & SException.ErrorCode,
             MsgBoxStyle.OkOnly, "Communication not established.")
             EndTest()
             Return False
@@ -141,7 +143,6 @@ Public Module modKeithleyComm
         'Dim strReadBuffer As String
         Dim strMessage As String = ""
         Dim intBytesRead As Integer
-
         Try
             'Wait until there is data in the IO buffer
             While switchStream.DataAvailable = False
@@ -176,7 +177,6 @@ Public Module modKeithleyComm
     ' Description: This command will send a command to the measurement hardware and check to see if an error is generated.
     Public Sub SwitchIOCheckError()
         Dim strErrorCheck As String
-
         'Check for error message in the error queue
         strErrorCheck = SwitchIOReceive()
         If strErrorCheck <> "TSP>" Then
@@ -203,7 +203,7 @@ Public Module modKeithleyComm
             End If
         Catch comex As COMException
             ' Rethrow the exception to the calling function
-            Throw
+            MsgBox("Error")
         End Try
     End Sub
 
@@ -215,14 +215,12 @@ Public Module modKeithleyComm
     Public Function SwitchIOWriteRead(ByVal strCommand As String)
         Dim strMessage As String
         Dim strCommandPrompt As String
-
         Try
             'Send the strCommand to the measurement system
             SwitchIOSend(strCommand)
-
+            Delay(5)
             'Receive the reply
             strMessage = SwitchIOReceive()
-
             '
             strCommandPrompt = Right(strMessage, 5)
             strMessage = Left(strMessage, strMessage.Length - 6)

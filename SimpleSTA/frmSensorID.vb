@@ -7,6 +7,7 @@
     Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         'Verify boxes all filled
         If ValidateForm() Then
+            strSensorIDHeader = Me.SensorHeader
             Me.Hide()
             'Show testform
             frmTestForm.Show()
@@ -82,6 +83,7 @@
         
     End Function
 
-
-
+    Private Sub frmSensorID_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+        PopulateSensorID()
+    End Sub
 End Class

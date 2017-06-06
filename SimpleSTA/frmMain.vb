@@ -16,6 +16,7 @@ Public Class frmMain
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadOrRefreshConfiguration()
         lblVersion.Text = "Version " & strApplicationVersion
+
     End Sub
     ' Name: btnNewTest_Click
     ' Handles: User clicks the "New Test" button

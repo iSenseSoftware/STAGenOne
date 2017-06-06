@@ -26,6 +26,7 @@ Public Class clsConfiguration
     Dim dblAuditCheckZero As Double = 10 ^ -10 ' "zero" value used for open circuit checks
     Dim dblAuditCheckTolerance As Double = 0.1  ' The audit check tolerance expressed as a % error from nominal expected current.  Valid values are 0 - 1 inclusive
     Dim intCardConfig As Integer = 2
+    Dim boolSensorNaming As Boolean = False
 
     ' The Address and STAID properties are dependent on the PC/Hardware configuration and cannot be assigned default values
     Dim strAddress As String
@@ -152,6 +153,14 @@ Public Class clsConfiguration
         End Get
         Set(ByVal intValue As Integer)
             intCardConfig = intValue
+        End Set
+    End Property
+    Public Property SensorNaming As Boolean
+        Get
+            Return boolSensorNaming
+        End Get
+        Set(ByVal boolValue As Boolean)
+            boolSensorNaming = boolValue
         End Set
     End Property
     ' Name: WriteToFile()

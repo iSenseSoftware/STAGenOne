@@ -33,6 +33,7 @@ Public Class frmConfig
             txtRow6Resistor.Text = cfgGlobal.ResistorNominalValues(3) \ 10 ^ 6
             txtTolerance.Text = cfgGlobal.AuditTolerance * 100
             txtAuditZero.Text = cfgGlobal.AuditZero * 10 ^ 9
+            ckbxSensorNaming.Checked = cfgGlobal.SensorNaming
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -221,6 +222,7 @@ Public Class frmConfig
         txtRow6Resistor.Enabled = True
         txtTolerance.Enabled = True
         txtAuditZero.Enabled = True
+        ckbxSensorNaming.Enabled = True
     End Sub
     ' Name: ValidatePassword
     ' Returns: True/False
@@ -292,6 +294,7 @@ Public Class frmConfig
                     cfgGlobal.ResistorNominalValues(3) = CDbl(txtRow6Resistor.Text) * 10 ^ 6
                     cfgGlobal.AuditTolerance = CDbl(txtTolerance.Text) / 100
                     cfgGlobal.AuditZero = CDbl(txtAuditZero.Text) * 10 ^ -9
+                    cfgGlobal.SensorNaming = ckbxSensorNaming.Checked
                     ' Perform secondary validation on the cfgGlobal object
                     If cfgGlobal.Validate() Then
                         ' Attempt to write the configuration to file
@@ -348,5 +351,4 @@ Public Class frmConfig
             GenericExceptionHandler(ex)
         End Try
     End Sub
-
 End Class

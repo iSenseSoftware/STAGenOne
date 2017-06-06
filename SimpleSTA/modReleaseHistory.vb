@@ -10,10 +10,10 @@
     '       - Fixed reseting the clock at the start of the test
     '       - Added test configuration to the data file
     '
-    '
-    '
-    '
-    '
+    ' Version 0.0.3   Released 06Jun2017
+    '       - Added the ability to add carrier IDs to the test info
+    '       - Added test type to the test info
+    '       - Fixed the autopopulate feature of the sensor ID form so it works with multiple tests
     '
     '
     '

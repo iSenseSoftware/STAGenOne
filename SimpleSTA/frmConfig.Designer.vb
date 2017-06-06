@@ -60,6 +60,7 @@ Partial Class frmConfig
         Me.Label18 = New System.Windows.Forms.Label()
         Me.txtAuditZero = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
+        Me.ckbxSensorNaming = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -425,13 +426,26 @@ Partial Class frmConfig
         Me.Label19.TabIndex = 41
         Me.Label19.Text = "Self Test ""Zero"" (nA):"
         '
+        'ckbxSensorNaming
+        '
+        Me.ckbxSensorNaming.AutoSize = True
+        Me.ckbxSensorNaming.Enabled = False
+        Me.ckbxSensorNaming.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ckbxSensorNaming.Location = New System.Drawing.Point(314, 51)
+        Me.ckbxSensorNaming.Name = "ckbxSensorNaming"
+        Me.ckbxSensorNaming.Size = New System.Drawing.Size(180, 20)
+        Me.ckbxSensorNaming.TabIndex = 42
+        Me.ckbxSensorNaming.Text = "Individual Sensor Naming"
+        Me.ckbxSensorNaming.UseVisualStyleBackColor = True
+        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
         Me.AutoSize = True
-        Me.ClientSize = New System.Drawing.Size(519, 370)
+        Me.ClientSize = New System.Drawing.Size(536, 370)
+        Me.Controls.Add(Me.ckbxSensorNaming)
         Me.Controls.Add(Me.txtAuditZero)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.txtRow6Resistor)
@@ -513,5 +527,5 @@ Partial Class frmConfig
     Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents txtAuditZero As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
-
+    Friend WithEvents ckbxSensorNaming As CheckBox
 End Class

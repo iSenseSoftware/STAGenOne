@@ -12,7 +12,7 @@ Module modGlobalVariables
     'Constants
     Public Const strConfigFileName As String = "Config.xml"
     Public Const strApplicationName As String = "GlucoMatrix"
-    Public Const strApplicationVersion As String = "0.0.2"
+    Public Const strApplicationVersion As String = "0.0.3"
     Public Const strApplicationDescription As String = "Software for CGM Sensor release testing"
     ' The admin password to unlock the configuration settings is hardcoded.  In the future
     ' it may be desireable to incorporate database-driven user authentication / authorization for granular permissions
@@ -42,5 +42,8 @@ Module modGlobalVariables
     'Test Variables
     Public strTestID As String
     Public strSensorIDHeader As String
+    Public strCarrier1 As String
+    Public strCarrier2 As String
+    Public strTestType As String
 
 End Module

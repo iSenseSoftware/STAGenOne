@@ -1,6 +1,6 @@
 ﻿Public Class frmSensorID
 
-    Private Sub frmSensorID_Load(sender As Object, e As EventArgs) Handles Me.Load
+    Private Sub frmSensorID_Activated(sender As Object, e As EventArgs) Handles Me.Activated ' Changed to activated from load to allow autopopulation to occur each time the form is activated
         PopulateSensorID()
     End Sub
 
@@ -11,6 +11,7 @@
             Me.Hide()
             'Show testform
             frmTestForm.Show()
+
         Else
             MsgBox("Sensor ID cannot be Blank")
         End If
@@ -86,4 +87,6 @@
     Private Sub frmSensorID_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         PopulateSensorID()
     End Sub
+
+
 End Class

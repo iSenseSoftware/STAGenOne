@@ -3,6 +3,9 @@
     
     Private Sub btnOk_Click() Handles btnOk.Click
         strTestID = txtTestID.Text
+        strCarrier1 = txbxCarrier1.Text
+        strCarrier2 = txbxCarrier2.Text
+        strTestType = combxTestType.Text
         NewTest(txtTestID.Text, txtOperatorIntitials.Text)
     End Sub
 
@@ -51,6 +54,9 @@
         'Hide frmTestInfo
         Me.Hide()
 
+        'Build filename from batch number and carriers and test type    'Added 06Jun2017
+        strBatch = strBatch & "-" & strCarrier1 & strCarrier2 & "-" & strTestType
+
         'Open data file
         If Not OpenDataFile(cfgGlobal.DumpDirectory, strBatch & ".csv") Then
             MsgBox("Batch Number already in use.  Please choose another.", MsgBoxStyle.OkOnly, "File already exists.")
@@ -61,6 +67,9 @@
 
         'Write Test ID and User initials to data file
         WriteToDataFile("Batch Number:," & strBatch)
+        WriteToDataFile("Slot 1 Carrier:," & strCarrier1)   'Added 06Jun2017
+        WriteToDataFile("Slot 2 Carrier:," & strCarrier2)    'Added 06Jun2017
+        WriteToDataFile("Test Type:," & strTestType)        'Added 06Jun2017
         WriteToDataFile("Operator Initials:," & strUserID)
 
         'Write test configuration to data file - DB 05Jun2017
@@ -120,9 +129,17 @@
 
         'hardware verification
         If HardwareVerification() Then
-            'Show test info form
-            frmSensorID.Show()
+            'Check to see if frmSensorID should be used
+            If cfgGlobal.SensorNaming = True Then
+                'Show test info form
+                frmSensorID.Show()
+            Else
+                strSensorIDHeader = SensorHeaderFromCarriers()
+                frmTestForm.Show()
+            End If
+
         Else
+            EndTest()
             Exit Sub
         End If
 
@@ -346,6 +363,25 @@
         strSwitchPattern = strSwitchPattern + "," + SwitchNumberGenerator(intRowB, intColumn)
         strSwitchPattern = strSwitchPattern + ",191" + CStr(intRowA) + ",291" + CStr(intRowA) + ",191" + CStr(intRowB) + ",291" + CStr(intRowB)
         Return strSwitchPattern
+
+    End Function
+
+    Function SensorHeaderFromCarriers() As String
+        Dim strTemp As String
+        Dim i As Integer
+
+        strTemp = "Time:,"
+        'Add carrier 1 IDs
+        For i = 1 To 16
+            strTemp = strTemp & strCarrier1 & i & ","
+        Next
+
+        'Add carrier 2 IDs
+        For i = 1 To 16
+            strTemp = strTemp & strCarrier2 & i & ","
+        Next
+
+        Return strTemp
 
     End Function
 End Class

@@ -18,6 +18,7 @@ Public Module modFileComm
             Else
                 swDataFile = New StreamWriter(strPath & Path.DirectorySeparatorChar & strFile, True)
                 swDataFile.AutoFlush = True
+                boolDataFileOpen = True
                 Return True
             End If
         Catch ex As Exception

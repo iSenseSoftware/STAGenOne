@@ -258,6 +258,10 @@ Public Class frmConfig
                 MsgBox("Unable to load configuration.")
                 populateConfigurationForm()
             End If
+
+            'Added 13Jun2017 DB to enable/diable logging
+            ckbxLogFile.CheckState = boolLogFile
+
         Catch ex As Exception
             GenericExceptionHandler(ex)
             Me.Close()
@@ -350,5 +354,10 @@ Public Class frmConfig
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try
+    End Sub
+
+    Private Sub ckbxLogFile_CheckedChanged(sender As Object, e As EventArgs) Handles ckbxLogFile.CheckedChanged
+        'Added 13Jun2017 to enable/disable logging
+        boolLogFile = ckbxLogFile.CheckState
     End Sub
 End Class

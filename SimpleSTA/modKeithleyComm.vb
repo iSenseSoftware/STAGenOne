@@ -62,9 +62,16 @@ Public Module modKeithleyComm
     ' Description: This command opens a TCP network stream to the Keithley 3700 and prepares it for communication
     Public Function EstablishKeithleyIO(ByVal strIPAddress As String) As Boolean
         Dim switchIOReset As New TcpClient
-        Dim byteReadBuffer(256) As Byte
+        Dim byteReadBuffer(1024) As Byte
         Dim switchDriver As New TcpClient
+
+        'Open a log file - Added 09Jun2017 DB
+        If boolLogFile Then
+            OpenLogFile()
+        End If
+
         Try
+
             'Connect to the Dead Socket Termination port to close any previous sessions
             'then close.  Dead sockets are closed when the DST port closes
             switchIOReset.Connect(strIPAddress, 5030)
@@ -88,7 +95,7 @@ Public Module modKeithleyComm
             SwitchIOSend("localnode.prompts = 1")
 
             'Read the IO buffer to remove any prompts have accumulated
-            Delay(10)
+            Delay(20)
             Do
                 switchStream.Read(byteReadBuffer, 0, byteReadBuffer.Length)
             Loop While switchStream.DataAvailable
@@ -127,6 +134,11 @@ Public Module modKeithleyComm
         Try
             'Send the strCommand to the measurement system
             switchStream.Write(byteMessage, 0, byteMessage.Length)
+            'Log the command - Added 09Jun2017 DB
+            If boolLogFile Then
+                WriteToLogFile(strCommand)
+            End If
+
         Catch ex As Exception
             ' Rethrow the exception to the calling function
             Throw
@@ -151,6 +163,11 @@ Public Module modKeithleyComm
             'Read the data in the buffer
             intBytesRead = switchStream.Read(byteReadBuffer, 0, byteReadBuffer.Length)
             strMessage = System.Text.Encoding.ASCII.GetString(byteReadBuffer, 0, intBytesRead)
+
+            'Log the data - Added 09Jun2017 DB
+            If boolLogFile Then
+                WriteToLogFile(strMessage)
+            End If
 
             'check for command prompt
             If strMessage.Contains("TSP>") Or strMessage.Contains("TSP?") Then

@@ -6,6 +6,21 @@ Public Module modFileComm
     Dim swDataFile As StreamWriter  'StreamWriter for data file, to remain open until test is complete
     Public boolDataFileOpen As Boolean 'flag to indicate if the data file has been sucessfully created
 
+    ' Name: OpenLogFile()
+    ' Variables: None
+    ' Description: This function attempts to open a new Log File.  If this is successful, it will set the 
+    '              property of the StreamWriter to autoflush data to the file with each attempt to write data.
+    'Added 09Jun2017 DB to add logging functionality
+    Public Sub OpenLogFile()
+        Try
+            swLogFile = New StreamWriter(cfgGlobal.DumpDirectory & Path.DirectorySeparatorChar & "Log.txt", False)
+            swLogFile.AutoFlush = True
+
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+
     ' Name: OpenDataFile()
     ' Variables: strFile
     ' Description: This function attempts to open a new Data File.  If this is successful, it will set the 
@@ -39,6 +54,20 @@ Public Module modFileComm
             GenericExceptionHandler(ex)
         End Try
     End Sub
+
+    ' Name: WriteToLogFile()
+    ' Variables: strFile
+    ' Description: This function attempts to open a new Data File.  If this is successful, it will set the 
+    '              property of the StreamWriter to autoflush data to the file with each attempt to write data.
+    'Added 09Jun2017 to create logging of data
+    Public Sub WriteToLogFile(strData As String)
+        Try
+            swLogFile.WriteLine(strData)
+        Catch ex As Exception
+            GenericExceptionHandler(ex)
+        End Try
+    End Sub
+
     ' Name: CloseDataFile()
     ' Variables: 
     ' Description: This function closes the data file.
@@ -47,6 +76,9 @@ Public Module modFileComm
         Try
             swDataFile.Dispose()
             boolDataFileOpen = False
+            If boolLogFile Then             'added 13Jun2017 DB to enable/disable logging
+                swLogFile.Dispose()         'added 09Jun2017 to close log file when the test is completed
+            End If
         Catch ex As Exception
             GenericExceptionHandler(ex)
         End Try

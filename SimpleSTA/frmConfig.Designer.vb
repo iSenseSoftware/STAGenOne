@@ -61,6 +61,7 @@ Partial Class frmConfig
         Me.txtAuditZero = New System.Windows.Forms.TextBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.ckbxSensorNaming = New System.Windows.Forms.CheckBox()
+        Me.ckbxLogFile = New System.Windows.Forms.CheckBox()
         Me.SuspendLayout()
         '
         'Label3
@@ -438,6 +439,16 @@ Partial Class frmConfig
         Me.ckbxSensorNaming.Text = "Individual Sensor Naming"
         Me.ckbxSensorNaming.UseVisualStyleBackColor = True
         '
+        'ckbxLogFile
+        '
+        Me.ckbxLogFile.AutoSize = True
+        Me.ckbxLogFile.Location = New System.Drawing.Point(144, 459)
+        Me.ckbxLogFile.Name = "ckbxLogFile"
+        Me.ckbxLogFile.Size = New System.Drawing.Size(90, 17)
+        Me.ckbxLogFile.TabIndex = 43
+        Me.ckbxLogFile.Text = "Create log file"
+        Me.ckbxLogFile.UseVisualStyleBackColor = True
+        '
         'frmConfig
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -445,6 +456,7 @@ Partial Class frmConfig
         Me.AutoScroll = True
         Me.AutoSize = True
         Me.ClientSize = New System.Drawing.Size(536, 370)
+        Me.Controls.Add(Me.ckbxLogFile)
         Me.Controls.Add(Me.ckbxSensorNaming)
         Me.Controls.Add(Me.txtAuditZero)
         Me.Controls.Add(Me.Label19)
@@ -528,4 +540,5 @@ Partial Class frmConfig
     Friend WithEvents txtAuditZero As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents ckbxSensorNaming As CheckBox
+    Friend WithEvents ckbxLogFile As CheckBox
 End Class

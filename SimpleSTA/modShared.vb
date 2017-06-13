@@ -70,6 +70,12 @@ Public Module modShared
         SwitchIOWrite("node[2].smub.nvbuffer1.clear()")
         SwitchIOWrite("node[2].smub.nvbuffer2.clear()")
 
+        ' Set Buffer Storage-Mode to Overwrite - Added 12Jun2016 DB
+        SwitchIOWrite("node[2].smua.nvbuffer1.appendmode = 0")
+        SwitchIOWrite("node[2].smua.nvbuffer2.appendmode = 0")
+        SwitchIOWrite("node[2].smub.nvbuffer1.appendmode = 0")
+        SwitchIOWrite("node[2].smub.nvbuffer2.appendmode = 0")
+
         ' Set the Autozero for both channels to autozero once
         SwitchIOWrite("node[2].smua.measure.autozero = 1") 'autozero once
         SwitchIOWrite("node[2].smub.measure.autozero = 1") 'autozero once

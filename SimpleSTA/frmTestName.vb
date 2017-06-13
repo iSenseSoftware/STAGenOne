@@ -146,6 +146,11 @@
     End Sub
 
     Public Function HardwareVerification() As Boolean
+        'Skip HardwareVerification - Added 12Jun2017 DB
+        'The following two lines should be removed when HardwareVerification has been fixed
+        Return True
+        Exit Function
+
         'Display Message to "Open all Fixtures"
         MsgBox("Open all Fixtures")
 
